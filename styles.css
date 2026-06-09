@@ -9,101 +9,415 @@
   --shadow: 0 18px 45px rgba(53, 42, 25, 0.12);
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
   min-height: 100vh;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--ink);
-  background: linear-gradient(135deg, rgba(191,143,47,.16), transparent 38%), linear-gradient(315deg, rgba(56,111,164,.14), transparent 34%), var(--bg);
+  background:
+    linear-gradient(135deg, rgba(191, 143, 47, 0.16), transparent 38%),
+    linear-gradient(315deg, rgba(56, 111, 164, 0.14), transparent 34%),
+    var(--bg);
 }
 
-button, input, select { font: inherit; }
+button,
+input,
+select {
+  font: inherit;
+}
 
-.app-shell { width: min(1180px, 100%); margin: 0 auto; padding: 22px; }
+.app-shell {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 22px;
+}
 
-.topbar, .section-heading, .skill-top, .skill-footer, .rules-list div, .workout-log li { display: flex; justify-content: space-between; gap: 12px; }
-.topbar, .section-heading, .workout-log li { align-items: center; }
-.topbar { margin-bottom: 18px; }
+.topbar,
+.section-heading,
+skill-top,
+.skill-footer,
+.rules-list div,
+.workout-log li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
 
-.eyebrow { margin: 0 0 4px; color: var(--gold); font-size: .73rem; font-weight: 800; letter-spacing: 0; text-transform: uppercase; }
-h1, h2 { margin: 0; letter-spacing: 0; }
-h1 { font-size: clamp(2rem, 7vw, 3.5rem); line-height: .95; }
-h2 { font-size: 1.25rem; }
+.topbar,
+.section-heading,
+.workout-log li {
+  align-items: center;
+}
 
-.total-panel, .panel, .skill-card, .pet-card, .rules-list div, .workout-log li, select, input { border: 1px solid var(--line); border-radius: 8px; }
-.total-panel, .panel { background: rgba(255,250,240,.92); box-shadow: var(--shadow); }
-.total-panel { min-width: 132px; padding: 12px 16px; text-align: right; }
-.total-panel span, .xp-preview span { display: block; color: var(--muted); font-size: .78rem; font-weight: 700; }
-.total-panel strong { display: block; font-size: 2rem; line-height: 1; }
+.topbar {
+  margin-bottom: 18px;
+}
 
-.tabbar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
-.tab-button, .icon-button, .primary-button { min-height: 44px; border: 0; border-radius: 8px; cursor: pointer; font-weight: 900; }
-.tab-button, .icon-button { color: var(--ink); background: var(--panel-strong); }
-.tab-button.active, .primary-button { color: #fff; background: #2f5d50; }
+.eyebrow {
+  margin: 0 0 4px;
+  color: var(--gold);
+  font-size: 0.73rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
 
-.tab-view { display: none; }
-.tab-view.active { display: block; }
-.layout.active { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(320px, .8fr); gap: 16px; align-items: start; }
-.panel { padding: 16px; }
-.section-heading { margin-bottom: 14px; }
+h1,
+h2 {
+  margin: 0;
+  letter-spacing: 0;
+}
 
-.skill-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.skills-panel { grid-row: span 2; }
-.skill-card, .pet-card { background: #fffdf7; padding: 14px; }
-.skill-card.discipline { grid-column: 1 / -1; }
+h1 {
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  line-height: 0.95;
+}
+
+h2 {
+  font-size: 1.25rem;
+}
+
+.total-panel,
+.panel,
+.skill-card,
+.pet-card,
+.rules-list div,
+.workout-log li,
+select,
+input {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.total-panel,
+.panel {
+  background: rgba(255, 250, 240, 0.92);
+  box-shadow: var(--shadow);
+}
+
+.total-panel {
+  min-width: 132px;
+  padding: 12px 16px;
+  text-align: right;
+}
+
+.total-panel span,
+.xp-preview span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.total-panel strong {
+  display: block;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.tabbar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tab-button,
+.icon-button,
+.primary-button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.tab-button,
+.icon-button {
+  color: var(--ink);
+  background: var(--panel-strong);
+}
+
+.tab-button.active,
+.primary-button {
+  color: #fff;
+  background: #2f5d50;
+}
+
+.tab-view {
+  display: none;
+}
+
+.tab-view.active {
+  display: block;
+}
+
+.layout.active {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.8fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.panel {
+  padding: 16px;
+}
+
+.section-heading {
+  margin-bottom: 14px;
+}
+
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.skills-panel {
+  grid-row: span 2;
+}
+
+.skill-card,
+.pet-card {
+  background: #fffdf7;
+  padding: 14px;
+}
+
+.skill-card.discipline {
+  grid-column: 1 / -1;
+}
 
 .sprite-icon {
   width: 74px;
   height: 74px;
-  border: 1px solid rgba(31, 36, 29, .22);
+  border: 1px solid rgba(31, 36, 29, 0.22);
   border-radius: 8px;
-  background-image: url("assets/skill-pet-sprites.jpg");
+  background-image: url("assets/skill-pet-sprites.webp");
   background-repeat: no-repeat;
   background-size: 500% 200%;
-  box-shadow: inset 0 0 0 2px rgba(255,255,255,.18);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.18);
 }
 
-.sprite-icon.locked { filter: grayscale(1) brightness(.72); opacity: .52; }
-.skill-name, .pet-name, .log-title, .log-xp { font-weight: 900; }
-.skill-name { margin: 10px 0 2px; font-size: 1.05rem; }
-.skill-method, .skill-footer, .rules-list span, .log-meta, .pet-source, .pet-status, .drop-rate { color: var(--muted); }
-.skill-method { font-size: .88rem; }
-.level-block { text-align: right; }
-.level-block span { display: block; color: var(--muted); font-size: .72rem; font-weight: 800; text-transform: uppercase; }
-.level-block strong { display: block; font-size: 2.2rem; line-height: .95; }
-.progress-track { width: 100%; height: 11px; overflow: hidden; border: 1px solid rgba(31,36,29,.18); border-radius: 999px; background: #e2d7c2; }
-.progress-fill { height: 100%; border-radius: 999px; }
-.skill-footer { margin-top: 10px; font-size: .78rem; font-weight: 700; }
+.sprite-icon.locked {
+  filter: grayscale(1) brightness(0.72);
+  opacity: 0.52;
+}
 
-.workout-form, .rules-list, .workout-log, .pet-grid { display: grid; gap: 12px; }
-label { color: var(--muted); font-size: .8rem; font-weight: 800; }
-select, input { width: 100%; min-height: 46px; margin-top: 6px; padding: 0 12px; color: var(--ink); background: #fffdf7; }
-.number-row { display: grid; grid-template-columns: minmax(0, 1fr) 124px; gap: 12px; align-items: end; }
-.xp-preview { min-height: 46px; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; background: var(--panel-strong); }
-.xp-preview strong { display: block; font-size: 1.2rem; line-height: 1; }
-.rules-list { margin-top: 16px; }
-.rules-list div, .workout-log li { background: #fffdf7; padding: 10px; }
-.workout-log { margin: 0; padding: 0; list-style: none; }
-.empty-state { border: 1px dashed var(--line); border-radius: 8px; padding: 18px; color: var(--muted); text-align: center; }
-.pet-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-.pet-card { min-height: 230px; }
-.pet-card .sprite-icon { width: 100%; max-width: 150px; height: auto; aspect-ratio: 1; margin: 0 auto 12px; }
-.pet-name, .pet-source, .pet-status { text-align: center; }
-.pet-source, .pet-status, .drop-rate { font-size: .82rem; font-weight: 800; }
-.pet-card.unlocked { border-color: rgba(191,143,47,.72); background: #fff7df; }
-.pet-card.unlocked .pet-status { color: #2f5d50; }
-.pet-drop { margin-top: 4px; color: var(--gold); font-weight: 900; }
+.skill-name,
+.pet-name,
+.log-title,
+.log-xp {
+  font-weight: 900;
+}
+
+.skill-name {
+  margin: 10px 0 2px;
+  font-size: 1.05rem;
+}
+
+.skill-method,
+.skill-footer,
+.rules-list span,
+.log-meta,
+.pet-source,
+.pet-status,
+.drop-rate {
+  color: var(--muted);
+}
+
+.skill-method {
+  font-size: 0.88rem;
+}
+
+.level-block {
+  text-align: right;
+}
+
+.level-block span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.level-block strong {
+  display: block;
+  font-size: 2.2rem;
+  line-height: 0.95;
+}
+
+.progress-track {
+  width: 100%;
+  height: 11px;
+  overflow: hidden;
+  border: 1px solid rgba(31, 36, 29, 0.18);
+  border-radius: 999px;
+  background: #e2d7c2;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.skill-footer {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.workout-form,
+.rules-list,
+.workout-log,
+.pet-grid {
+  display: grid;
+  gap: 12px;
+}
+
+label {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+select,
+input {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 6px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: #fffdf7;
+}
+
+.number-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 124px;
+  gap: 12px;
+  align-items: end;
+}
+
+.xp-preview {
+  min-height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: var(--panel-strong);
+}
+
+.xp-preview strong {
+  display: block;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.rules-list {
+  margin-top: 16px;
+}
+
+.rules-list div,
+.workout-log li {
+  background: #fffdf7;
+  padding: 10px;
+}
+
+.workout-log {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.empty-state {
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.pet-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.pet-card {
+  min-height: 230px;
+}
+
+.pet-card .sprite-icon {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  aspect-ratio: 1;
+  margin: 0 auto 12px;
+}
+
+.pet-name,
+.pet-source,
+.pet-status {
+  text-align: center;
+}
+
+.pet-source,
+.pet-status,
+.drop-rate {
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.pet-card.unlocked {
+  border-color: rgba(191, 143, 47, 0.72);
+  background: #fff7df;
+}
+
+.pet-card.unlocked .pet-status {
+  color: #2f5d50;
+}
+
+.pet-drop {
+  margin-top: 4px;
+  color: var(--gold);
+  font-weight: 900;
+}
 
 @media (max-width: 860px) {
-  .layout.active, .skill-grid, .pet-grid { grid-template-columns: 1fr; }
-  .skills-panel, .skill-card.discipline { grid-row: auto; grid-column: auto; }
+  .layout.active,
+  .skill-grid,
+  .pet-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skills-panel,
+  .skill-card.discipline {
+    grid-row: auto;
+    grid-column: auto;
+  }
 }
 
 @media (max-width: 560px) {
-  .app-shell { padding: 14px; }
-  .topbar, .skill-footer, .rules-list div, .workout-log li { align-items: flex-start; flex-direction: column; }
-  .tabbar, .number-row { grid-template-columns: 1fr; }
-  .total-panel, .log-xp { text-align: left; }
+  .app-shell {
+    padding: 14px;
+  }
+
+  .topbar,
+  .skill-footer,
+  .rules-list div,
+  .workout-log li {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .tabbar,
+  .number-row {
+    grid-template-columns: 1fr;
+  }
+
+  .total-panel,
+  .log-xp {
+    text-align: left;
+  }
 }
