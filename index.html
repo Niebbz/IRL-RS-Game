@@ -19,7 +19,13 @@
         </div>
       </header>
 
-      <main class="layout">
+      <nav class="tabbar" aria-label="Main views">
+        <button class="tab-button active" type="button" data-tab="skills">Skills</button>
+        <button class="tab-button" type="button" data-tab="pets">Pets</button>
+        <button class="tab-button" type="button" data-tab="history">Workouts</button>
+      </nav>
+
+      <main class="layout tab-view active" id="skillsTab">
         <section class="panel skills-panel" aria-labelledby="skillsTitle">
           <div class="section-heading">
             <div>
@@ -72,7 +78,22 @@
             <div><span>Any workout</span><strong>50 Discipline XP</strong></div>
           </div>
         </section>
+      </main>
 
+      <main class="tab-view" id="petsTab">
+        <section class="panel" aria-labelledby="petsTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Collection</p>
+              <h2 id="petsTitle">Pets</h2>
+            </div>
+            <div class="drop-rate">1 / 5,000 drop chance</div>
+          </div>
+          <div class="pet-grid" id="petGrid"></div>
+        </section>
+      </main>
+
+      <main class="tab-view" id="historyTab">
         <section class="panel log-panel" aria-labelledby="logTitle">
           <div class="section-heading">
             <div>
