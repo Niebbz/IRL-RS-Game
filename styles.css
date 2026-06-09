@@ -198,7 +198,7 @@ input {
   border-radius: 8px;
   background-image: url("assets/skill-pet-sprites.webp");
   background-repeat: no-repeat;
-  background-size: 500% 200%;
+  background-size: 625% 250%;
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.18);
 }
 
