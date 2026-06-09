@@ -1,0 +1,382 @@
+:root {
+  color-scheme: light;
+  --bg: #f4f1ea;
+  --panel: #fffaf0;
+  --panel-strong: #efe4cd;
+  --ink: #1f241d;
+  --muted: #6d6a5f;
+  --line: #d1c2a7;
+  --gold: #bf8f2f;
+  --red: #b84b43;
+  --blue: #386fa4;
+  --green: #4f7d50;
+  --orange: #c8742a;
+  --purple: #7351a6;
+  --shadow: 0 18px 45px rgba(53, 42, 25, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--ink);
+  background:
+    linear-gradient(135deg, rgba(191, 143, 47, 0.16), transparent 38%),
+    linear-gradient(315deg, rgba(56, 111, 164, 0.14), transparent 34%),
+    var(--bg);
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.app-shell {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 22px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: var(--gold);
+  font-size: 0.73rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+h1,
+h2 {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+h1 {
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  line-height: 0.95;
+}
+
+h2 {
+  font-size: 1.25rem;
+}
+
+.total-panel,
+.panel {
+  border: 1px solid var(--line);
+  background: rgba(255, 250, 240, 0.92);
+  box-shadow: var(--shadow);
+}
+
+.total-panel {
+  min-width: 132px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  text-align: right;
+}
+
+.total-panel span,
+.xp-preview span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.total-panel strong {
+  display: block;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.8fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.panel {
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.skills-panel {
+  grid-row: span 2;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.icon-button,
+.primary-button {
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.icon-button {
+  min-height: 38px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: var(--panel-strong);
+}
+
+.primary-button {
+  width: 100%;
+  min-height: 48px;
+  color: #fff;
+  background: #2f5d50;
+}
+
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.skill-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 176px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  background: #fffdf7;
+}
+
+.skill-card.discipline {
+  grid-column: 1 / -1;
+  min-height: 150px;
+}
+
+.skill-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.skill-mark {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.skill-name {
+  margin: 10px 0 2px;
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.skill-method {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.level-block {
+  text-align: right;
+}
+
+.level-block span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.level-block strong {
+  display: block;
+  font-size: 2.2rem;
+  line-height: 0.95;
+}
+
+.progress-track {
+  width: 100%;
+  height: 11px;
+  overflow: hidden;
+  border: 1px solid rgba(31, 36, 29, 0.18);
+  border-radius: 999px;
+  background: #e2d7c2;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 180ms ease;
+}
+
+.skill-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.workout-form {
+  display: grid;
+  gap: 12px;
+}
+
+label {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+select,
+input {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 6px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: #fffdf7;
+}
+
+.number-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 124px;
+  gap: 12px;
+  align-items: end;
+}
+
+.xp-preview {
+  min-height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: var(--panel-strong);
+}
+
+.xp-preview strong {
+  display: block;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.rules-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.rules-list div,
+.workout-log li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  background: #fffdf7;
+}
+
+.rules-list span,
+.log-meta {
+  color: var(--muted);
+}
+
+.workout-log {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.workout-log li {
+  align-items: center;
+}
+
+.log-title {
+  font-weight: 900;
+}
+
+.log-xp {
+  text-align: right;
+  font-weight: 900;
+}
+
+.empty-state {
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (max-width: 860px) {
+  .layout,
+  .skill-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skills-panel {
+    grid-row: auto;
+  }
+
+  .skill-card.discipline {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .app-shell {
+    padding: 14px;
+  }
+
+  .topbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .total-panel {
+    text-align: left;
+  }
+
+  .number-row {
+    grid-template-columns: 1fr;
+  }
+
+  .skill-footer,
+  .rules-list div,
+  .workout-log li {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .log-xp {
+    text-align: left;
+  }
+}
