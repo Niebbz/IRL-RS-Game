@@ -1,10 +1,15 @@
+const petDropRate = 1 / 5000;
+
 const skills = [
   {
     id: "attack",
     name: "Attack",
     method: "Push day",
     rule: "10 XP per minute",
-    mark: "ATK",
+    spriteX: 0,
+    spriteY: 0,
+    petName: "Cyclops",
+    petSpriteX: 0,
     color: "#b84b43"
   },
   {
@@ -12,7 +17,10 @@ const skills = [
     name: "Strength",
     method: "Pull day",
     rule: "10 XP per minute",
-    mark: "STR",
+    spriteX: 1,
+    spriteY: 0,
+    petName: "Ram",
+    petSpriteX: 2,
     color: "#386fa4"
   },
   {
@@ -20,7 +28,10 @@ const skills = [
     name: "Defence",
     method: "Leg day",
     rule: "10 XP per minute",
-    mark: "DEF",
+    spriteX: 2,
+    spriteY: 0,
+    petName: "Armadillo",
+    petSpriteX: 3,
     color: "#4f7d50"
   },
   {
@@ -28,7 +39,10 @@ const skills = [
     name: "Agility",
     method: "Running",
     rule: "100 XP per mile",
-    mark: "AGI",
+    spriteX: 3,
+    spriteY: 0,
+    petName: "Deer",
+    petSpriteX: 1,
     color: "#c8742a"
   },
   {
@@ -36,7 +50,10 @@ const skills = [
     name: "Discipline",
     method: "Completed workouts",
     rule: "50 XP per workout",
-    mark: "DIS",
+    spriteX: 4,
+    spriteY: 0,
+    petName: "Eagle",
+    petSpriteX: 4,
     color: "#7351a6"
   }
 ];
@@ -76,7 +93,7 @@ const workoutMap = {
   }
 };
 
-const storageKey = "irl-rs-game-state-v1";
+const storageKey = "irl-rs-game-state-v2";
 const startingState = {
   xp: {
     attack: 0,
@@ -85,12 +102,20 @@ const startingState = {
     agility: 0,
     discipline: 0
   },
+  pets: {
+    attack: false,
+    strength: false,
+    defence: false,
+    agility: false,
+    discipline: false
+  },
   log: []
 };
 
 const state = loadState();
 
 const skillGrid = document.querySelector("#skillGrid");
+const petGrid = document.querySelector("#petGrid");
 const totalLevel = document.querySelector("#totalLevel");
 const workoutForm = document.querySelector("#workoutForm");
 const workoutType = document.querySelector("#workoutType");
@@ -100,6 +125,8 @@ const xpPreview = document.querySelector("#xpPreview");
 const workoutLog = document.querySelector("#workoutLog");
 const emptyLog = document.querySelector("#emptyLog");
 const resetButton = document.querySelector("#resetButton");
+const tabButtons = document.querySelectorAll(".tab-button");
+const tabViews = document.querySelectorAll(".tab-view");
 
 function xpForLevel(level) {
   if (level <= 1) return 0;
@@ -145,12 +172,13 @@ function remainingForXP(xp) {
 
 function loadState() {
   try {
-    const saved = localStorage.getItem(storageKey);
+    const saved = localStorage.getItem(storageKey) || localStorage.getItem("irl-rs-game-state-v1");
     if (!saved) return structuredClone(startingState);
 
     const parsed = JSON.parse(saved);
     return {
       xp: { ...startingState.xp, ...parsed.xp },
+      pets: { ...startingState.pets, ...parsed.pets },
       log: Array.isArray(parsed.log) ? parsed.log : []
     };
   } catch {
@@ -164,6 +192,18 @@ function saveState() {
 
 function formatNumber(value) {
   return Math.round(value).toLocaleString();
+}
+
+function spriteStyle(x, y) {
+  return `background-position: ${x * 25}% ${y * 100}%;`;
+}
+
+function rollPet(skillId) {
+  if (state.pets[skillId]) return null;
+  if (Math.random() >= petDropRate) return null;
+
+  state.pets[skillId] = true;
+  return skills.find((skill) => skill.id === skillId);
 }
 
 function renderSkills() {
@@ -182,7 +222,7 @@ function renderSkills() {
     card.innerHTML = `
       <div class="skill-top">
         <div>
-          <div class="skill-mark" style="background: ${skill.color}">${skill.mark}</div>
+          <div class="sprite-icon" style="${spriteStyle(skill.spriteX, skill.spriteY)}" aria-hidden="true"></div>
           <div class="skill-name">${skill.name}</div>
           <div class="skill-method">${skill.method}</div>
         </div>
@@ -200,6 +240,7 @@ function renderSkills() {
       </div>
       <div class="skill-footer">
         <span>${skill.rule}</span>
+        <span>${state.pets[skill.id] ? `${skill.petName} pet owned` : `${skill.petName} pet: 1 / 5,000`}</span>
       </div>
     `;
 
@@ -207,6 +248,23 @@ function renderSkills() {
   }
 
   totalLevel.textContent = total.toLocaleString();
+}
+
+function renderPets() {
+  petGrid.innerHTML = "";
+
+  for (const skill of skills) {
+    const unlocked = state.pets[skill.id];
+    const card = document.createElement("article");
+    card.className = `pet-card ${unlocked ? "unlocked" : "locked"}`;
+    card.innerHTML = `
+      <div class="sprite-icon ${unlocked ? "" : "locked"}" style="${spriteStyle(skill.petSpriteX, 1)}" aria-hidden="true"></div>
+      <div class="pet-name">${skill.petName}</div>
+      <div class="pet-source">${skill.name} pet</div>
+      <div class="pet-status">${unlocked ? "Unlocked" : "Not found yet"}</div>
+    `;
+    petGrid.appendChild(card);
+  }
 }
 
 function updateWorkoutFields() {
@@ -231,12 +289,17 @@ function renderLog() {
   workoutLog.innerHTML = "";
   emptyLog.hidden = state.log.length > 0;
 
-  for (const entry of state.log.slice(0, 8)) {
+  for (const entry of state.log) {
     const item = document.createElement("li");
+    const dropText = entry.petDrops?.length
+      ? `<div class="pet-drop">Pet drop: ${entry.petDrops.join(", ")}</div>`
+      : "";
+
     item.innerHTML = `
       <div>
         <div class="log-title">${entry.title}</div>
         <div class="log-meta">${entry.detail}</div>
+        ${dropText}
       </div>
       <div class="log-xp">+${formatNumber(entry.mainXP)} ${entry.skillName}<br>+50 Discipline</div>
     `;
@@ -256,34 +319,58 @@ function addWorkout(event) {
   const amountText = selected.unit === "Miles"
     ? `${amount.toLocaleString()} miles`
     : `${amount.toLocaleString()} minutes`;
+  const petDrops = [];
 
   state.xp[selected.skillId] += mainXP;
   state.xp.discipline += 50;
+
+  for (const petRollSkill of [selected.skillId, "discipline"]) {
+    const pet = rollPet(petRollSkill);
+    if (pet) petDrops.push(pet.petName);
+  }
+
   state.log.unshift({
     title: selected.label,
     detail: amountText,
     skillName: skill.name,
     mainXP,
+    petDrops,
     createdAt: new Date().toISOString()
   });
-  state.log = state.log.slice(0, 20);
+  state.log = state.log.slice(0, 50);
 
   saveState();
   render();
+
+  if (petDrops.length > 0) {
+    window.alert(`Pet drop: ${petDrops.join(", ")}!`);
+  }
 }
 
 function resetProgress() {
-  const confirmed = window.confirm("Reset all XP and workout history?");
+  const confirmed = window.confirm("Reset all XP, pets, and workout history?");
   if (!confirmed) return;
 
   state.xp = { ...startingState.xp };
+  state.pets = { ...startingState.pets };
   state.log = [];
   saveState();
   render();
 }
 
+function switchTab(tabId) {
+  for (const button of tabButtons) {
+    button.classList.toggle("active", button.dataset.tab === tabId);
+  }
+
+  for (const view of tabViews) {
+    view.classList.toggle("active", view.id === `${tabId}Tab`);
+  }
+}
+
 function render() {
   renderSkills();
+  renderPets();
   renderLog();
   updateXPPreview();
 }
@@ -292,6 +379,10 @@ workoutType.addEventListener("change", updateWorkoutFields);
 amountInput.addEventListener("input", updateXPPreview);
 workoutForm.addEventListener("submit", addWorkout);
 resetButton.addEventListener("click", resetProgress);
+
+for (const button of tabButtons) {
+  button.addEventListener("click", () => switchTab(button.dataset.tab));
+}
 
 updateWorkoutFields();
 render();
