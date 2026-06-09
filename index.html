@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IRL RS Game</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Workout RPG</p>
+          <h1>IRL RS Game</h1>
+        </div>
+        <div class="total-panel" aria-label="Account progress">
+          <span>Total Level</span>
+          <strong id="totalLevel">5</strong>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="panel skills-panel" aria-labelledby="skillsTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Skills</p>
+              <h2 id="skillsTitle">Progress</h2>
+            </div>
+            <button class="icon-button" id="resetButton" type="button" title="Reset progress" aria-label="Reset progress">
+              <span aria-hidden="true">Reset</span>
+            </button>
+          </div>
+          <div class="skill-grid" id="skillGrid"></div>
+        </section>
+
+        <section class="panel workout-panel" aria-labelledby="workoutTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Add XP</p>
+              <h2 id="workoutTitle">Log Workout</h2>
+            </div>
+          </div>
+
+          <form class="workout-form" id="workoutForm">
+            <label for="workoutType">Workout type</label>
+            <select id="workoutType" name="workoutType">
+              <option value="push">Push day - Attack</option>
+              <option value="pull">Pull day - Strength</option>
+              <option value="legs">Leg day - Defence</option>
+              <option value="run">Run - Agility</option>
+            </select>
+
+            <div class="number-row">
+              <div>
+                <label for="amount" id="amountLabel">Minutes</label>
+                <input id="amount" name="amount" type="number" min="1" step="1" value="45" inputmode="decimal">
+              </div>
+              <div class="xp-preview">
+                <span>Workout XP</span>
+                <strong id="xpPreview">450</strong>
+              </div>
+            </div>
+
+            <button class="primary-button" type="submit">Add Workout</button>
+          </form>
+
+          <div class="rules-list" aria-label="XP rules">
+            <div><span>Push day</span><strong>10 Attack XP / min</strong></div>
+            <div><span>Pull day</span><strong>10 Strength XP / min</strong></div>
+            <div><span>Leg day</span><strong>10 Defence XP / min</strong></div>
+            <div><span>Running</span><strong>100 Agility XP / mile</strong></div>
+            <div><span>Any workout</span><strong>50 Discipline XP</strong></div>
+          </div>
+        </section>
+
+        <section class="panel log-panel" aria-labelledby="logTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">History</p>
+              <h2 id="logTitle">Recent Workouts</h2>
+            </div>
+          </div>
+          <div class="empty-state" id="emptyLog">No workouts logged yet.</div>
+          <ol class="workout-log" id="workoutLog"></ol>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
