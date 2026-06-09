@@ -191,18 +191,18 @@ input {
   grid-column: 1 / -1;
 }
 
-.sprite-icon {
+.art-icon {
+  display: block;
   width: 74px;
   height: 74px;
   border: 1px solid rgba(31, 36, 29, 0.22);
   border-radius: 8px;
-  background-image: url("assets/skill-pet-sprites.svg");
-  background-repeat: no-repeat;
-  background-size: 500% 200%;
+  background: #f3dfb0;
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.18);
+  object-fit: cover;
 }
 
-.sprite-icon.locked {
+.art-icon.locked {
   filter: grayscale(1) brightness(0.72);
   opacity: 0.52;
 }
@@ -348,7 +348,7 @@ input {
   min-height: 230px;
 }
 
-.pet-card .sprite-icon {
+.pet-card .art-icon {
   width: 100%;
   max-width: 150px;
   height: auto;
