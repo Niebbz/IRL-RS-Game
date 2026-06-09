@@ -1,5 +1,4 @@
 :root {
-  color-scheme: light;
   --bg: #f4f1ea;
   --panel: #fffaf0;
   --panel-strong: #efe4cd;
@@ -7,11 +6,6 @@
   --muted: #6d6a5f;
   --line: #d1c2a7;
   --gold: #bf8f2f;
-  --red: #b84b43;
-  --blue: #386fa4;
-  --green: #4f7d50;
-  --orange: #c8742a;
-  --purple: #7351a6;
   --shadow: 0 18px 45px rgba(53, 42, 25, 0.12);
 }
 
@@ -42,11 +36,24 @@ select {
   padding: 22px;
 }
 
-.topbar {
+.topbar,
+.section-heading,
+.skill-top,
+.skill-footer,
+.rules-list div,
+.workout-log li {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
+}
+
+.topbar,
+.section-heading,
+.workout-log li {
+  align-items: center;
+}
+
+.topbar {
   margin-bottom: 18px;
 }
 
@@ -75,8 +82,19 @@ h2 {
 }
 
 .total-panel,
-.panel {
+.panel,
+.skill-card,
+.pet-card,
+.rules-list div,
+.workout-log li,
+select,
+input {
   border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.total-panel,
+.panel {
   background: rgba(255, 250, 240, 0.92);
   box-shadow: var(--shadow);
 }
@@ -84,7 +102,6 @@ h2 {
 .total-panel {
   min-width: 132px;
   padding: 12px 16px;
-  border-radius: 8px;
   text-align: right;
 }
 
@@ -109,19 +126,25 @@ h2 {
   margin-bottom: 16px;
 }
 
-.tab-button {
+.tab-button,
+.icon-button,
+.primary-button {
   min-height: 44px;
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: 8px;
-  color: var(--ink);
-  background: rgba(255, 250, 240, 0.78);
   cursor: pointer;
   font-weight: 900;
 }
 
-.tab-button.active {
+.tab-button,
+.icon-button {
+  color: var(--ink);
+  background: var(--panel-strong);
+}
+
+.tab-button.active,
+.primary-button {
   color: #fff;
-  border-color: #2f5d50;
   background: #2f5d50;
 }
 
@@ -133,54 +156,19 @@ h2 {
   display: block;
 }
 
-.layout {
+.layout.active {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.8fr);
   gap: 16px;
   align-items: start;
 }
 
-.layout.active {
-  display: grid;
-}
-
 .panel {
-  border-radius: 8px;
   padding: 16px;
 }
 
-.skills-panel {
-  grid-row: span 2;
-}
-
 .section-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
   margin-bottom: 14px;
-}
-
-.icon-button,
-.primary-button {
-  border: 0;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 800;
-}
-
-.icon-button {
-  min-height: 38px;
-  padding: 0 12px;
-  color: var(--ink);
-  background: var(--panel-strong);
-}
-
-.primary-button {
-  width: 100%;
-  min-height: 48px;
-  color: #fff;
-  background: #2f5d50;
 }
 
 .skill-grid {
@@ -189,36 +177,26 @@ h2 {
   gap: 12px;
 }
 
-.skill-card {
-  position: relative;
-  overflow: hidden;
-  min-height: 176px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 14px;
+.skills-panel {
+  grid-row: span 2;
+}
+
+.skill-card,
+.pet-card {
   background: #fffdf7;
+  padding: 14px;
 }
 
 .skill-card.discipline {
   grid-column: 1 / -1;
-  min-height: 150px;
-}
-
-.skill-top {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
 }
 
 .sprite-icon {
-  display: grid;
   width: 74px;
   height: 74px;
-  place-items: center;
-  border-radius: 8px;
   border: 1px solid rgba(31, 36, 29, 0.22);
-  background-image: url("assets/skill-pet-sprites.png");
+  border-radius: 8px;
+  background-image: url("assets/skill-pet-sprites.svg");
   background-repeat: no-repeat;
   background-size: 500% 200%;
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.18);
@@ -229,14 +207,29 @@ h2 {
   opacity: 0.52;
 }
 
-.skill-name {
-  margin: 10px 0 2px;
-  font-size: 1.05rem;
+.skill-name,
+.pet-name,
+.log-title,
+.log-xp {
   font-weight: 900;
 }
 
-.skill-method {
+.skill-name {
+  margin: 10px 0 2px;
+  font-size: 1.05rem;
+}
+
+.skill-method,
+.skill-footer,
+.rules-list span,
+.log-meta,
+.pet-source,
+.pet-status,
+.drop-rate {
   color: var(--muted);
+}
+
+.skill-method {
   font-size: 0.88rem;
 }
 
@@ -270,20 +263,18 @@ h2 {
 .progress-fill {
   height: 100%;
   border-radius: 999px;
-  transition: width 180ms ease;
 }
 
 .skill-footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
   margin-top: 10px;
-  color: var(--muted);
   font-size: 0.78rem;
   font-weight: 700;
 }
 
-.workout-form {
+.workout-form,
+.rules-list,
+.workout-log,
+.pet-grid {
   display: grid;
   gap: 12px;
 }
@@ -299,8 +290,6 @@ input {
   width: 100%;
   min-height: 46px;
   margin-top: 6px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
   padding: 0 12px;
   color: var(--ink);
   background: #fffdf7;
@@ -328,46 +317,19 @@ input {
 }
 
 .rules-list {
-  display: grid;
-  gap: 8px;
   margin-top: 16px;
 }
 
 .rules-list div,
 .workout-log li {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 10px;
   background: #fffdf7;
-}
-
-.rules-list span,
-.log-meta {
-  color: var(--muted);
+  padding: 10px;
 }
 
 .workout-log {
-  display: grid;
-  gap: 8px;
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-.workout-log li {
-  align-items: center;
-}
-
-.log-title {
-  font-weight: 900;
-}
-
-.log-xp {
-  text-align: right;
-  font-weight: 900;
 }
 
 .empty-state {
@@ -379,17 +341,11 @@ input {
 }
 
 .pet-grid {
-  display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 12px;
 }
 
 .pet-card {
   min-height: 230px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 14px;
-  background: #fffdf7;
 }
 
 .pet-card .sprite-icon {
@@ -400,23 +356,17 @@ input {
   margin: 0 auto 12px;
 }
 
-.pet-name {
-  font-weight: 900;
+.pet-name,
+.pet-source,
+.pet-status {
   text-align: center;
 }
 
 .pet-source,
 .pet-status,
 .drop-rate {
-  color: var(--muted);
   font-size: 0.82rem;
   font-weight: 800;
-}
-
-.pet-source,
-.pet-status {
-  margin-top: 4px;
-  text-align: center;
 }
 
 .pet-card.unlocked {
@@ -435,17 +385,15 @@ input {
 }
 
 @media (max-width: 860px) {
-  .layout,
+  .layout.active,
   .skill-grid,
   .pet-grid {
     grid-template-columns: 1fr;
   }
 
-  .skills-panel {
-    grid-row: auto;
-  }
-
+  .skills-panel,
   .skill-card.discipline {
+    grid-row: auto;
     grid-column: auto;
   }
 }
@@ -455,23 +403,7 @@ input {
     padding: 14px;
   }
 
-  .topbar {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .tabbar {
-    grid-template-columns: 1fr;
-  }
-
-  .total-panel {
-    text-align: left;
-  }
-
-  .number-row {
-    grid-template-columns: 1fr;
-  }
-
+  .topbar,
   .skill-footer,
   .rules-list div,
   .workout-log li {
@@ -479,6 +411,12 @@ input {
     flex-direction: column;
   }
 
+  .tabbar,
+  .number-row {
+    grid-template-columns: 1fr;
+  }
+
+  .total-panel,
   .log-xp {
     text-align: left;
   }
