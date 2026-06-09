@@ -17,8 +17,8 @@ const skills = [
     name: "Strength",
     method: "Pull day",
     rule: "10 XP per minute",
-    spriteX: 1,
-    spriteY: 0,
+    spriteX: 2,
+    spriteY: 1,
     petName: "Ram",
     petSpriteX: 2,
     color: "#386fa4"
@@ -28,8 +28,8 @@ const skills = [
     name: "Defence",
     method: "Leg day",
     rule: "10 XP per minute",
-    spriteX: 2,
-    spriteY: 0,
+    spriteX: 3,
+    spriteY: 1,
     petName: "Armadillo",
     petSpriteX: 3,
     color: "#4f7d50"
@@ -39,8 +39,8 @@ const skills = [
     name: "Agility",
     method: "Running",
     rule: "100 XP per mile",
-    spriteX: 3,
-    spriteY: 0,
+    spriteX: 1,
+    spriteY: 1,
     petName: "Deer",
     petSpriteX: 1,
     color: "#c8742a"
