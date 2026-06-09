@@ -17,7 +17,7 @@ const skills = [
     method: "Pull day",
     rule: "10 XP per minute",
     skillSprite: [1, 0],
-    petSprite: [2, 1],
+    petSprite: [1, 1],
     petName: "Ram",
     color: "#386fa4"
   },
@@ -27,7 +27,7 @@ const skills = [
     method: "Leg day",
     rule: "10 XP per minute",
     skillSprite: [2, 0],
-    petSprite: [3, 1],
+    petSprite: [2, 1],
     petName: "Armadillo",
     color: "#4f7d50"
   },
@@ -37,7 +37,7 @@ const skills = [
     method: "Running",
     rule: "100 XP per mile",
     skillSprite: [3, 0],
-    petSprite: [1, 1],
+    petSprite: [3, 1],
     petName: "Deer",
     color: "#c8742a"
   },
@@ -190,11 +190,7 @@ function formatNumber(value) {
 }
 
 function spriteStyle([column, row]) {
-  const zoom = 1.25;
-  const x = ((zoom * column + zoom / 2 - 0.5) / (5 * zoom - 1)) * 100;
-  const y = ((zoom * row + zoom / 2 - 0.5) / (2 * zoom - 1)) * 100;
-
-  return `background-position: ${x}% ${y}%;`;
+  return `background-position: ${column * 25}% ${row * 100}%;`;
 }
 
 function rollPet(skillId) {
