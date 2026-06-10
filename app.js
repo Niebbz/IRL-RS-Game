@@ -189,6 +189,33 @@ function formatNumber(value) {
   return Math.round(value).toLocaleString();
 }
 
+function formatLoggedDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Date unknown";
+
+  return date.toLocaleString([], {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit"
+  });
+}
+
+function skillIdForEntry(entry) {
+  if (entry.skillId) return entry.skillId;
+
+  return skills.find((skill) => skill.name === entry.skillName)?.id;
+}
+
+function skillIdForPetName(petName) {
+  return skills.find((skill) => skill.petName === petName)?.id;
+}
+
+function hasRemainingPetDrop(petName) {
+  return state.log.some((entry) => entry.petDrops?.includes(petName));
+}
+
 function rollPet(skillId, rollCount = 1) {
   if (state.pets[skillId]) return null;
 
@@ -282,7 +309,7 @@ function renderLog() {
   workoutLog.innerHTML = "";
   emptyLog.hidden = state.log.length > 0;
 
-  for (const entry of state.log) {
+  for (const [index, entry] of state.log.entries()) {
     const item = document.createElement("li");
     const dropText = entry.petDrops?.length
       ? `<div class="pet-drop">Pet drop: ${entry.petDrops.join(", ")}</div>`
@@ -292,9 +319,13 @@ function renderLog() {
       <div>
         <div class="log-title">${entry.title}</div>
         <div class="log-meta">${entry.detail}</div>
+        <div class="log-date">${formatLoggedDate(entry.createdAt)}</div>
         ${dropText}
       </div>
-      <div class="log-xp">+${formatNumber(entry.mainXP)} ${entry.skillName}<br>+50 Discipline</div>
+      <div class="log-actions">
+        <div class="log-xp">+${formatNumber(entry.mainXP)} ${entry.skillName}<br>+50 Discipline</div>
+        <button class="delete-workout-button" type="button" data-log-index="${index}">Delete</button>
+      </div>
     `;
     workoutLog.appendChild(item);
   }
@@ -327,6 +358,7 @@ function addWorkout(event) {
   state.log.unshift({
     title: selected.label,
     detail: amountText,
+    skillId: selected.skillId,
     skillName: skill.name,
     mainXP,
     petDrops,
@@ -340,6 +372,32 @@ function addWorkout(event) {
   if (petDrops.length > 0) {
     window.alert(`Pet drop: ${petDrops.join(", ")}!`);
   }
+}
+
+function deleteWorkout(index) {
+  const entry = state.log[index];
+  if (!entry) return;
+
+  const confirmed = window.confirm(`Delete ${entry.title} from ${formatLoggedDate(entry.createdAt)}?`);
+  if (!confirmed) return;
+
+  const skillId = skillIdForEntry(entry);
+  if (skillId) {
+    state.xp[skillId] = Math.max(0, (state.xp[skillId] ?? 0) - (entry.mainXP ?? 0));
+  }
+  state.xp.discipline = Math.max(0, (state.xp.discipline ?? 0) - 50);
+
+  state.log.splice(index, 1);
+
+  for (const petName of entry.petDrops ?? []) {
+    if (hasRemainingPetDrop(petName)) continue;
+
+    const petSkillId = skillIdForPetName(petName);
+    if (petSkillId) state.pets[petSkillId] = false;
+  }
+
+  saveState();
+  render();
 }
 
 function resetProgress() {
@@ -374,6 +432,12 @@ workoutType.addEventListener("change", updateWorkoutFields);
 amountInput.addEventListener("input", updateXPPreview);
 workoutForm.addEventListener("submit", addWorkout);
 resetButton.addEventListener("click", resetProgress);
+workoutLog.addEventListener("click", (event) => {
+  const button = event.target.closest(".delete-workout-button");
+  if (!button) return;
+
+  deleteWorkout(Number(button.dataset.logIndex));
+});
 
 for (const button of tabButtons) {
   button.addEventListener("click", () => switchTab(button.dataset.tab));
