@@ -281,7 +281,6 @@ function renderSkills() {
       </div>
       <div class="skill-footer">
         <span>${skill.rule}</span>
-        <span>${state.pets[skill.id] ? `${skill.petName} pet owned` : `${skill.petName} pet: 1 / ${formatDropRate(skill.id)} per ${dropRateUnit(skill.id)}`}</span>
       </div>
     `;
 
@@ -302,6 +301,7 @@ function renderPets() {
       <img class="asset-icon pet-icon ${unlocked ? "" : "locked"}" src="${skill.petImage}" alt="${skill.petName}">
       <div class="pet-name">${skill.petName}</div>
       <div class="pet-source">${skill.name} pet</div>
+      <div class="pet-source">Drop rate: 1 / ${formatDropRate(skill.id)} per ${dropRateUnit(skill.id)}</div>
       <div class="pet-status">${unlocked ? "Unlocked" : "Not found yet"}</div>
     `;
     petGrid.appendChild(card);
