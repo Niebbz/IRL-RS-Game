@@ -260,8 +260,11 @@ const workoutType = document.querySelector("#workoutType");
 const amountInput = document.querySelector("#amount");
 const amountLabel = document.querySelector("#amountLabel");
 const mileSliderRow = document.querySelector("#mileSliderRow");
-const mileSlider = document.querySelector("#mileSlider");
+const wholeMileSlider = document.querySelector("#wholeMileSlider");
+const tenthMileSlider = document.querySelector("#tenthMileSlider");
 const mileSliderValue = document.querySelector("#mileSliderValue");
+const wholeMileValue = document.querySelector("#wholeMileValue");
+const tenthMileValue = document.querySelector("#tenthMileValue");
 const xpPreview = document.querySelector("#xpPreview");
 const goldPreview = document.querySelector("#goldPreview");
 const workoutLog = document.querySelector("#workoutLog");
@@ -276,7 +279,6 @@ const emptyDungeonHistory = document.querySelector("#emptyDungeonHistory");
 const pageMenuButton = document.querySelector("#pageMenuButton");
 const pageMenu = document.querySelector("#pageMenu");
 const currentPageLabel = document.querySelector("#currentPageLabel");
-const tabButtons = document.querySelectorAll(".tab-button");
 const menuButtons = document.querySelectorAll("[data-menu-tab]");
 const tabViews = document.querySelectorAll(".tab-view");
 
@@ -503,6 +505,20 @@ function normalizeAmount(selected, value) {
   const maximum = selected.maxAmount ?? Number.POSITIVE_INFINITY;
   const clamped = Math.min(parsed, maximum);
   return selected.amountStep === 0.1 ? Math.round(clamped * 10) / 10 : Math.round(clamped);
+}
+
+function splitMiles(amount) {
+  const normalized = normalizeAmount(workoutMap.run, amount);
+  const wholeMiles = Math.floor(normalized);
+  const tenths = Math.round((normalized - wholeMiles) * 10);
+  return { wholeMiles, tenths };
+}
+
+function amountFromRunSliders() {
+  const wholeMiles = Number(wholeMileSlider.value) || 0;
+  const tenths = Number(tenthMileSlider.value) || 0;
+  const amount = wholeMiles + tenths / 10;
+  return normalizeAmount(workoutMap.run, Math.max(workoutMap.run.minAmount, amount));
 }
 
 function skillGoldRule(skill) {
@@ -769,7 +785,7 @@ function updateWorkoutFields() {
   amountInput.step = selected.amountStep;
   mileSliderRow.hidden = selected.skillId !== "agility";
   amountInput.value = selected.defaultAmount;
-  syncMileSliderFromAmount();
+  syncRunSlidersFromAmount();
   updatePreviews();
 }
 
@@ -780,13 +796,17 @@ function updatePreviews() {
   goldPreview.textContent = formatNumber(goldForWorkout(selected, amount));
 }
 
-function syncMileSliderFromAmount() {
+function syncRunSlidersFromAmount() {
   const selected = workoutMap[workoutType.value];
   if (selected.skillId !== "agility") return;
 
   const amount = normalizeAmount(selected, amountInput.value);
-  mileSlider.value = amount;
+  const { wholeMiles, tenths } = splitMiles(amount);
+  wholeMileSlider.value = wholeMiles;
+  tenthMileSlider.value = tenths;
   mileSliderValue.textContent = `${formatAmount(amount)} mi`;
+  wholeMileValue.textContent = `${wholeMiles} mi`;
+  tenthMileValue.textContent = `${formatAmount(tenths / 10)} mi`;
 }
 
 function updateAmountFromInput() {
@@ -794,15 +814,16 @@ function updateAmountFromInput() {
   const parsed = Number(amountInput.value);
   if (selected.skillId === "agility" && Number.isFinite(parsed) && parsed >= selected.minAmount) {
     const amount = normalizeAmount(selected, parsed);
-    mileSlider.value = amount;
-    mileSliderValue.textContent = `${formatAmount(amount)} mi`;
+    amountInput.value = amount;
+    syncRunSlidersFromAmount();
   }
   updatePreviews();
 }
 
-function updateAmountFromSlider() {
-  amountInput.value = normalizeAmount(workoutMap.run, mileSlider.value);
-  syncMileSliderFromAmount();
+function updateAmountFromRunSliders() {
+  const amount = amountFromRunSliders();
+  amountInput.value = amount;
+  syncRunSlidersFromAmount();
   updatePreviews();
 }
 
@@ -1080,10 +1101,6 @@ function resetProgress() {
 }
 
 function switchTab(tabId) {
-  for (const button of tabButtons) {
-    button.classList.toggle("active", button.dataset.tab === tabId);
-  }
-
   for (const button of menuButtons) {
     button.classList.toggle("active", button.dataset.menuTab === tabId);
   }
@@ -1092,7 +1109,7 @@ function switchTab(tabId) {
     view.classList.toggle("active", view.id === `${tabId}Tab`);
   }
 
-  const activeButton = Array.from(tabButtons).find((button) => button.dataset.tab === tabId);
+  const activeButton = Array.from(menuButtons).find((button) => button.dataset.menuTab === tabId);
   currentPageLabel.textContent = activeButton?.textContent ?? "Pages";
   closePageMenu();
 }
@@ -1125,7 +1142,8 @@ function render() {
 
 workoutType.addEventListener("change", updateWorkoutFields);
 amountInput.addEventListener("input", updateAmountFromInput);
-mileSlider.addEventListener("input", updateAmountFromSlider);
+wholeMileSlider.addEventListener("input", updateAmountFromRunSliders);
+tenthMileSlider.addEventListener("input", updateAmountFromRunSliders);
 workoutForm.addEventListener("submit", addWorkout);
 resetButton.addEventListener("click", resetProgress);
 pageMenuButton.addEventListener("click", togglePageMenu);
@@ -1172,9 +1190,6 @@ activeDungeon.addEventListener("click", (event) => {
   }
 });
 
-for (const button of tabButtons) {
-  button.addEventListener("click", () => switchTab(button.dataset.tab));
-}
-
 updateWorkoutFields();
+switchTab("skills");
 render();
