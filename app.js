@@ -189,9 +189,11 @@ function formatNumber(value) {
   return Math.round(value).toLocaleString();
 }
 
-function rollPet(skillId) {
+function rollPet(skillId, rollCount = 1) {
   if (state.pets[skillId]) return null;
-  if (Math.random() >= petDropRate) return null;
+
+  const dropChance = 1 - Math.pow(1 - petDropRate, Math.max(0, rollCount));
+  if (Math.random() >= dropChance) return null;
 
   state.pets[skillId] = true;
   return skills.find((skill) => skill.id === skillId);
@@ -231,7 +233,7 @@ function renderSkills() {
       </div>
       <div class="skill-footer">
         <span>${skill.rule}</span>
-        <span>${state.pets[skill.id] ? `${skill.petName} pet owned` : `${skill.petName} pet: 1 / 5,000`}</span>
+        <span>${state.pets[skill.id] ? `${skill.petName} pet owned` : `${skill.petName} pet: 1 / 5,000${skill.id === "agility" ? " per mile" : ""}`}</span>
       </div>
     `;
 
@@ -315,10 +317,12 @@ function addWorkout(event) {
   state.xp[selected.skillId] += mainXP;
   state.xp.discipline += 50;
 
-  for (const petRollSkill of [selected.skillId, "discipline"]) {
-    const pet = rollPet(petRollSkill);
-    if (pet) petDrops.push(pet.petName);
-  }
+  const mainPetRollCount = selected.skillId === "agility" ? amount : 1;
+  const mainPet = rollPet(selected.skillId, mainPetRollCount);
+  if (mainPet) petDrops.push(mainPet.petName);
+
+  const disciplinePet = rollPet("discipline");
+  if (disciplinePet) petDrops.push(disciplinePet.petName);
 
   state.log.unshift({
     title: selected.label,
