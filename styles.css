@@ -162,11 +162,72 @@ input,
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
-  margin: 26px 0 22px;
+  margin: 0;
   padding: 6px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(16, 20, 27, 0.86);
+}
+
+.navigation-shell {
+  display: grid;
+  gap: 10px;
+  margin: 26px 0 22px;
+}
+
+.page-menu {
+  position: relative;
+  justify-self: start;
+}
+
+.page-menu-button {
+  display: inline-flex;
+  min-width: 190px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 0 14px;
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  cursor: pointer;
+  font-weight: 900;
+  box-shadow: var(--shadow);
+}
+
+.page-menu-list {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 8px);
+  left: 0;
+  display: grid;
+  min-width: 220px;
+  gap: 4px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 6px;
+  background: rgba(16, 20, 27, 0.98);
+  box-shadow: var(--shadow);
+}
+
+.page-menu-list button {
+  min-height: 42px;
+  border: 0;
+  border-radius: 8px;
+  padding: 0 12px;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-weight: 900;
+}
+
+.page-menu-list button:hover,
+.page-menu-list button.active {
+  color: var(--ink);
+  background: var(--surface-3);
 }
 
 .tab-button,
@@ -429,6 +490,35 @@ select:focus,
 input:focus {
   border-color: rgba(53, 209, 159, 0.8);
   box-shadow: 0 0 0 3px rgba(53, 209, 159, 0.12);
+}
+
+.mile-slider-row {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 13px;
+  background: rgba(16, 20, 27, 0.78);
+}
+
+.range-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.range-heading strong {
+  color: var(--accent-2);
+}
+
+input[type="range"] {
+  min-height: 28px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--accent);
+  background: transparent;
 }
 
 .number-row {
@@ -729,6 +819,12 @@ input:focus {
   .tabbar,
   .number-row {
     grid-template-columns: 1fr;
+  }
+
+  .page-menu,
+  .page-menu-button,
+  .page-menu-list {
+    width: 100%;
   }
 
   .total-panel,
