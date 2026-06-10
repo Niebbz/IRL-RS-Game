@@ -44,7 +44,7 @@ const skills = [
   },
   {
     id: "defence",
-    name: "Defence",
+    name: "Defense",
     method: "Leg day",
     rule: "10 XP per minute",
     skillImage: "Image%20Upload%20Clean%20V2/skill-defence.png",
