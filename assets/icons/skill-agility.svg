@@ -1,3 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="312 8 76 84">
-  <image href="../skill-pet-sprites.webp" width="500" height="200"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <g fill="none" stroke="#2b1608" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <path fill="#b96c20" d="M30 79l24-29 27-1 18 17-23 16-19 26-14-7 11-22-11-5z"/>
+    <path fill="#d98b2e" d="M74 48l11-20 7 23z"/>
+    <path fill="#d98b2e" d="M84 48l21-14-4 24z"/>
+    <path fill="#e6a63b" d="M88 45l19 7 6 13-21 5z"/>
+    <path fill="#6b3d17" d="M47 76l-26 18 16 4 25-17zM78 81l24 24-5-22z"/>
+    <path stroke="#f3b23c" stroke-width="4" d="M16 43h31M9 60h28M13 76h22"/>
+    <circle cx="96" cy="55" r="3" fill="#111"/>
+  </g>
 </svg>
