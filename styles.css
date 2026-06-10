@@ -19,6 +19,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -158,17 +162,6 @@ input,
   line-height: 1;
 }
 
-.tabbar {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 8px;
-  margin: 0;
-  padding: 6px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(16, 20, 27, 0.86);
-}
-
 .navigation-shell {
   display: grid;
   gap: 10px;
@@ -230,7 +223,14 @@ input,
   background: var(--surface-3);
 }
 
-.tab-button,
+.page-menu-caret {
+  transition: transform 160ms ease;
+}
+
+.page-menu-button[aria-expanded="true"] .page-menu-caret {
+  transform: rotate(180deg);
+}
+
 .icon-button,
 .primary-button,
 .secondary-button,
@@ -240,21 +240,6 @@ input,
   border-radius: 8px;
   cursor: pointer;
   font-weight: 900;
-}
-
-.tab-button {
-  color: var(--muted);
-  background: transparent;
-}
-
-.tab-button:hover,
-.tab-button.active {
-  color: var(--ink);
-  background: var(--surface-3);
-}
-
-.tab-button.active {
-  box-shadow: inset 0 0 0 1px rgba(53, 209, 159, 0.34);
 }
 
 .icon-button {
@@ -490,6 +475,14 @@ input:focus {
   color: var(--accent-2);
 }
 
+.range-heading span,
+.distance-slider span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
 input[type="range"] {
   min-height: 28px;
   border: 0;
@@ -497,6 +490,37 @@ input[type="range"] {
   padding: 0;
   accent-color: var(--accent);
   background: transparent;
+}
+
+.distance-slider-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+.distance-slider {
+  display: grid;
+  min-height: 244px;
+  gap: 10px;
+  justify-items: center;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.distance-slider input[type="range"] {
+  width: 34px;
+  height: 160px;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  -webkit-appearance: slider-vertical;
+}
+
+.distance-slider strong {
+  color: var(--accent-2);
+  font-size: 1rem;
 }
 
 .number-row {
@@ -790,7 +814,6 @@ input[type="range"] {
     flex: 1;
   }
 
-  .tabbar,
   .number-row {
     grid-template-columns: 1fr;
   }
