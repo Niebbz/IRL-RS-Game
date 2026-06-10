@@ -1,4 +1,11 @@
-const petDropRate = 1 / 5000;
+const petDropRates = {
+  attack: 1 / 15000,
+  strength: 1 / 15000,
+  defence: 1 / 15000,
+  agility: 1 / 12000,
+  discipline: 1 / 30000
+};
+const runMinutesPerMile = 10;
 
 const skills = [
   {
@@ -189,6 +196,10 @@ function formatNumber(value) {
   return Math.round(value).toLocaleString();
 }
 
+function formatDropRate(skillId) {
+  return Math.round(1 / petDropRates[skillId]).toLocaleString();
+}
+
 function formatLoggedDate(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "Date unknown";
@@ -216,10 +227,16 @@ function hasRemainingPetDrop(petName) {
   return state.log.some((entry) => entry.petDrops?.includes(petName));
 }
 
+function petRollMinutesForWorkout(skillId, amount) {
+  if (skillId === "agility") return amount * runMinutesPerMile;
+  return amount;
+}
+
 function rollPet(skillId, rollCount = 1) {
   if (state.pets[skillId]) return null;
 
-  const dropChance = 1 - Math.pow(1 - petDropRate, Math.max(0, rollCount));
+  const rate = petDropRates[skillId];
+  const dropChance = 1 - Math.pow(1 - rate, Math.max(0, rollCount));
   if (Math.random() >= dropChance) return null;
 
   state.pets[skillId] = true;
@@ -260,7 +277,7 @@ function renderSkills() {
       </div>
       <div class="skill-footer">
         <span>${skill.rule}</span>
-        <span>${state.pets[skill.id] ? `${skill.petName} pet owned` : `${skill.petName} pet: 1 / 5,000${skill.id === "agility" ? " per mile" : ""}`}</span>
+        <span>${state.pets[skill.id] ? `${skill.petName} pet owned` : `${skill.petName} pet: 1 / ${formatDropRate(skill.id)} per minute`}</span>
       </div>
     `;
 
@@ -343,16 +360,16 @@ function addWorkout(event) {
   const amountText = selected.unit === "Miles"
     ? `${amount.toLocaleString()} miles`
     : `${amount.toLocaleString()} minutes`;
+  const petRollMinutes = petRollMinutesForWorkout(selected.skillId, amount);
   const petDrops = [];
 
   state.xp[selected.skillId] += mainXP;
   state.xp.discipline += 50;
 
-  const mainPetRollCount = selected.skillId === "agility" ? amount : 1;
-  const mainPet = rollPet(selected.skillId, mainPetRollCount);
+  const mainPet = rollPet(selected.skillId, petRollMinutes);
   if (mainPet) petDrops.push(mainPet.petName);
 
-  const disciplinePet = rollPet("discipline");
+  const disciplinePet = rollPet("discipline", petRollMinutes);
   if (disciplinePet) petDrops.push(disciplinePet.petName);
 
   state.log.unshift({
@@ -361,6 +378,7 @@ function addWorkout(event) {
     skillId: selected.skillId,
     skillName: skill.name,
     mainXP,
+    petRollMinutes,
     petDrops,
     createdAt: new Date().toISOString()
   });
