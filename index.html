@@ -25,13 +25,29 @@
         </div>
       </header>
 
-      <nav class="tabbar" aria-label="Main views">
-        <button class="tab-button active" type="button" data-tab="skills">Skills</button>
-        <button class="tab-button" type="button" data-tab="log">Log Workout</button>
-        <button class="tab-button" type="button" data-tab="pets">Pets</button>
-        <button class="tab-button" type="button" data-tab="dungeons">Dungeons</button>
-        <button class="tab-button" type="button" data-tab="history">Workouts</button>
-      </nav>
+      <div class="navigation-shell">
+        <div class="page-menu">
+          <button class="page-menu-button" id="pageMenuButton" type="button" aria-expanded="false" aria-controls="pageMenu">
+            <span id="currentPageLabel">Skills</span>
+            <span aria-hidden="true">v</span>
+          </button>
+          <div class="page-menu-list" id="pageMenu" hidden>
+            <button type="button" data-menu-tab="skills">Skills</button>
+            <button type="button" data-menu-tab="log">Log Workout</button>
+            <button type="button" data-menu-tab="pets">Pets</button>
+            <button type="button" data-menu-tab="dungeons">Dungeons</button>
+            <button type="button" data-menu-tab="history">Workouts</button>
+          </div>
+        </div>
+
+        <nav class="tabbar" aria-label="Main views">
+          <button class="tab-button active" type="button" data-tab="skills">Skills</button>
+          <button class="tab-button" type="button" data-tab="log">Log Workout</button>
+          <button class="tab-button" type="button" data-tab="pets">Pets</button>
+          <button class="tab-button" type="button" data-tab="dungeons">Dungeons</button>
+          <button class="tab-button" type="button" data-tab="history">Workouts</button>
+        </nav>
+      </div>
 
       <main class="tab-view active" id="skillsTab">
         <section class="panel skills-panel" aria-labelledby="skillsTitle">
@@ -79,6 +95,14 @@
                 <span>Gold</span>
                 <strong id="goldPreview">45</strong>
               </div>
+            </div>
+
+            <div class="mile-slider-row" id="mileSliderRow" hidden>
+              <div class="range-heading">
+                <label for="mileSlider">Miles</label>
+                <strong id="mileSliderValue">3.0 mi</strong>
+              </div>
+              <input id="mileSlider" name="mileSlider" type="range" min="0.1" max="26.2" step="0.1" value="3">
             </div>
 
             <button class="primary-button" type="submit">Add Workout</button>
