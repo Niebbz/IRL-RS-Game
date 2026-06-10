@@ -5,7 +5,6 @@ const petDropRates = {
   agility: 1 / 12000,
   discipline: 1 / 30000
 };
-const runMinutesPerMile = 10;
 
 const skills = [
   {
@@ -231,9 +230,12 @@ function dropRateUnit(skillId) {
   return skillId === "agility" ? "mile" : "minute";
 }
 
-function disciplineRollMinutesForWorkout(skillId, amount) {
-  if (skillId === "agility") return amount * runMinutesPerMile;
-  return amount;
+function dropRateText(skillId) {
+  if (skillId === "discipline") {
+    return `Drop rate: 1 / ${formatDropRate(skillId)} per minute; Agility rolls per mile`;
+  }
+
+  return `Drop rate: 1 / ${formatDropRate(skillId)} per ${dropRateUnit(skillId)}`;
 }
 
 function rollPet(skillId, rollCount = 1) {
@@ -305,7 +307,7 @@ function renderPets() {
       ${petVisual}
       <div class="pet-name">${skill.petName}</div>
       <div class="pet-source">${skill.name} pet</div>
-      <div class="pet-source">Drop rate: 1 / ${formatDropRate(skill.id)} per ${dropRateUnit(skill.id)}</div>
+      <div class="pet-source">${dropRateText(skill.id)}</div>
       <div class="pet-status">${unlocked ? "Unlocked" : "Not found yet"}</div>
     `;
     petGrid.appendChild(card);
@@ -369,7 +371,7 @@ function addWorkout(event) {
     ? `${amount.toLocaleString()} miles`
     : `${amount.toLocaleString()} minutes`;
   const mainPetRolls = amount;
-  const disciplinePetRollMinutes = disciplineRollMinutesForWorkout(selected.skillId, amount);
+  const disciplinePetRolls = amount;
   const petDrops = [];
 
   state.xp[selected.skillId] += mainXP;
@@ -378,7 +380,7 @@ function addWorkout(event) {
   const mainPet = rollPet(selected.skillId, mainPetRolls);
   if (mainPet) petDrops.push(mainPet.petName);
 
-  const disciplinePet = rollPet("discipline", disciplinePetRollMinutes);
+  const disciplinePet = rollPet("discipline", disciplinePetRolls);
   if (disciplinePet) petDrops.push(disciplinePet.petName);
 
   state.log.unshift({
@@ -388,7 +390,7 @@ function addWorkout(event) {
     skillName: skill.name,
     mainXP,
     mainPetRolls,
-    disciplinePetRollMinutes,
+    disciplinePetRolls,
     petDrops,
     createdAt: new Date().toISOString()
   });
