@@ -1,4 +1,4 @@
-# IRL RS Game Web Prototype
+# Level Forge Web Prototype
 
 Open `index.html` in a browser to test the first version of the workout RPG loop.
 
