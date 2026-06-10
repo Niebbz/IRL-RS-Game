@@ -82,6 +82,7 @@ const workoutMap = {
     unitSingular: "minute",
     xpPerUnit: 10,
     goldPerUnit: 1,
+    minAmount: 1,
     amountStep: 1,
     defaultAmount: 45
   },
@@ -92,6 +93,7 @@ const workoutMap = {
     unitSingular: "minute",
     xpPerUnit: 10,
     goldPerUnit: 1,
+    minAmount: 1,
     amountStep: 1,
     defaultAmount: 45
   },
@@ -102,6 +104,7 @@ const workoutMap = {
     unitSingular: "minute",
     xpPerUnit: 10,
     goldPerUnit: 1,
+    minAmount: 1,
     amountStep: 1,
     defaultAmount: 45
   },
@@ -112,6 +115,8 @@ const workoutMap = {
     unitSingular: "mile",
     xpPerUnit: 100,
     goldPerUnit: 10,
+    minAmount: 0.1,
+    maxAmount: 26.2,
     amountStep: 0.1,
     defaultAmount: 3
   }
@@ -254,6 +259,9 @@ const workoutForm = document.querySelector("#workoutForm");
 const workoutType = document.querySelector("#workoutType");
 const amountInput = document.querySelector("#amount");
 const amountLabel = document.querySelector("#amountLabel");
+const mileSliderRow = document.querySelector("#mileSliderRow");
+const mileSlider = document.querySelector("#mileSlider");
+const mileSliderValue = document.querySelector("#mileSliderValue");
 const xpPreview = document.querySelector("#xpPreview");
 const goldPreview = document.querySelector("#goldPreview");
 const workoutLog = document.querySelector("#workoutLog");
@@ -265,7 +273,11 @@ const activeDungeon = document.querySelector("#activeDungeon");
 const dungeonSelection = document.querySelector("#dungeonSelection");
 const dungeonHistory = document.querySelector("#dungeonHistory");
 const emptyDungeonHistory = document.querySelector("#emptyDungeonHistory");
+const pageMenuButton = document.querySelector("#pageMenuButton");
+const pageMenu = document.querySelector("#pageMenu");
+const currentPageLabel = document.querySelector("#currentPageLabel");
 const tabButtons = document.querySelectorAll(".tab-button");
+const menuButtons = document.querySelectorAll("[data-menu-tab]");
 const tabViews = document.querySelectorAll(".tab-view");
 
 function xpForLevel(level) {
@@ -429,6 +441,16 @@ function disciplineXPForWorkout() {
 
 function goldForWorkout(selected, amount) {
   return Math.floor(amount * selected.goldPerUnit * petBonusForSkill(selected.skillId));
+}
+
+function normalizeAmount(selected, value) {
+  const parsed = Number(value);
+  const minimum = selected.minAmount ?? 1;
+  if (!Number.isFinite(parsed) || parsed < minimum) return selected.defaultAmount;
+
+  const maximum = selected.maxAmount ?? Number.POSITIVE_INFINITY;
+  const clamped = Math.min(parsed, maximum);
+  return selected.amountStep === 0.1 ? Math.round(clamped * 10) / 10 : Math.round(clamped);
 }
 
 function skillGoldRule(skill) {
@@ -686,20 +708,49 @@ function renderDungeons() {
 function updateWorkoutFields() {
   const selected = workoutMap[workoutType.value];
   amountLabel.textContent = selected.unit;
-  amountInput.step = selected.amountStep;
-
-  if (!amountInput.value || Number(amountInput.value) <= 0) {
-    amountInput.value = selected.defaultAmount;
+  amountInput.min = selected.minAmount;
+  if (selected.maxAmount) {
+    amountInput.max = selected.maxAmount;
+  } else {
+    amountInput.removeAttribute("max");
   }
-
+  amountInput.step = selected.amountStep;
+  mileSliderRow.hidden = selected.skillId !== "agility";
+  amountInput.value = selected.defaultAmount;
+  syncMileSliderFromAmount();
   updatePreviews();
 }
 
 function updatePreviews() {
   const selected = workoutMap[workoutType.value];
-  const amount = Math.max(0, Number(amountInput.value) || 0);
+  const amount = normalizeAmount(selected, amountInput.value);
   xpPreview.textContent = formatNumber(xpForWorkout(selected, amount));
   goldPreview.textContent = formatNumber(goldForWorkout(selected, amount));
+}
+
+function syncMileSliderFromAmount() {
+  const selected = workoutMap[workoutType.value];
+  if (selected.skillId !== "agility") return;
+
+  const amount = normalizeAmount(selected, amountInput.value);
+  mileSlider.value = amount;
+  mileSliderValue.textContent = `${formatAmount(amount)} mi`;
+}
+
+function updateAmountFromInput() {
+  const selected = workoutMap[workoutType.value];
+  const parsed = Number(amountInput.value);
+  if (selected.skillId === "agility" && Number.isFinite(parsed) && parsed >= selected.minAmount) {
+    mileSlider.value = normalizeAmount(selected, parsed);
+    mileSliderValue.textContent = `${formatAmount(normalizeAmount(selected, parsed))} mi`;
+  }
+  updatePreviews();
+}
+
+function updateAmountFromSlider() {
+  amountInput.value = normalizeAmount(workoutMap.run, mileSlider.value);
+  syncMileSliderFromAmount();
+  updatePreviews();
 }
 
 function renderLog() {
@@ -793,8 +844,10 @@ function addWorkout(event) {
   event.preventDefault();
 
   const selected = workoutMap[workoutType.value];
-  const amount = Math.max(0, Number(amountInput.value) || 0);
+  const amount = normalizeAmount(selected, amountInput.value);
   if (amount <= 0) return;
+
+  amountInput.value = amount;
 
   const mainXP = xpForWorkout(selected, amount);
   const disciplineXP = disciplineXPForWorkout();
@@ -936,8 +989,34 @@ function switchTab(tabId) {
     button.classList.toggle("active", button.dataset.tab === tabId);
   }
 
+  for (const button of menuButtons) {
+    button.classList.toggle("active", button.dataset.menuTab === tabId);
+  }
+
   for (const view of tabViews) {
     view.classList.toggle("active", view.id === `${tabId}Tab`);
+  }
+
+  const activeButton = Array.from(tabButtons).find((button) => button.dataset.tab === tabId);
+  currentPageLabel.textContent = activeButton?.textContent ?? "Pages";
+  closePageMenu();
+}
+
+function openPageMenu() {
+  pageMenu.hidden = false;
+  pageMenuButton.setAttribute("aria-expanded", "true");
+}
+
+function closePageMenu() {
+  pageMenu.hidden = true;
+  pageMenuButton.setAttribute("aria-expanded", "false");
+}
+
+function togglePageMenu() {
+  if (pageMenu.hidden) {
+    openPageMenu();
+  } else {
+    closePageMenu();
   }
 }
 
@@ -950,9 +1029,27 @@ function render() {
 }
 
 workoutType.addEventListener("change", updateWorkoutFields);
-amountInput.addEventListener("input", updatePreviews);
+amountInput.addEventListener("input", updateAmountFromInput);
+mileSlider.addEventListener("input", updateAmountFromSlider);
 workoutForm.addEventListener("submit", addWorkout);
 resetButton.addEventListener("click", resetProgress);
+pageMenuButton.addEventListener("click", togglePageMenu);
+pageMenu.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-menu-tab]");
+  if (!button) return;
+
+  switchTab(button.dataset.menuTab);
+});
+
+document.addEventListener("click", (event) => {
+  if (pageMenu.hidden || event.target.closest(".page-menu")) return;
+
+  closePageMenu();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closePageMenu();
+});
 workoutLog.addEventListener("click", (event) => {
   const button = event.target.closest(".delete-workout-button");
   if (!button) return;
