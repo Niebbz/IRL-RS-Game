@@ -1,7 +1,7 @@
 const petDropRates = {
   attack: 1 / 15000,
   strength: 1 / 15000,
-  defence: 1 / 15000,
+  defense: 1 / 15000,
   agility: 1 / 12000,
   discipline: 1 / 30000
 };
@@ -43,11 +43,11 @@ const skills = [
     color: "#386fa4"
   },
   {
-    id: "defence",
+    id: "defense",
     name: "Defense",
     method: "Leg day",
     rule: "10 XP per minute",
-    skillImage: "Image%20Upload%20Clean%20V2/skill-defence.png",
+    skillImage: "Image%20Upload%20Clean%20V2/skill-defense.png",
     petImage: "Image%20Upload%20Clean%20V2/pet-armadillo.png",
     petName: "Armadillo",
     color: "#4f7d50"
@@ -99,7 +99,7 @@ const workoutMap = {
   },
   legs: {
     label: "Leg day",
-    skillId: "defence",
+    skillId: "defense",
     unit: "Minutes",
     unitSingular: "minute",
     xpPerUnit: 10,
@@ -172,24 +172,24 @@ const dungeons = [
     rewardXP: 900
   },
   {
-    id: "defence-bronze",
-    skillId: "defence",
+    id: "defense-bronze",
+    skillId: "defense",
     tier: "bronze",
     name: "Stoneguard Crypt",
     requirement: 60,
     rewardXP: 90
   },
   {
-    id: "defence-iron",
-    skillId: "defence",
+    id: "defense-iron",
+    skillId: "defense",
     tier: "iron",
     name: "Ironwall Bastion",
     requirement: 180,
     rewardXP: 360
   },
   {
-    id: "defence-rune",
-    skillId: "defence",
+    id: "defense-rune",
+    skillId: "defense",
     tier: "rune",
     name: "Dragonbone Fortress",
     requirement: 360,
@@ -226,14 +226,14 @@ const startingState = {
   xp: {
     attack: 0,
     strength: 0,
-    defence: 0,
+    defense: 0,
     agility: 0,
     discipline: 0
   },
   pets: {
     attack: false,
     strength: false,
-    defence: false,
+    defense: false,
     agility: false,
     discipline: false
   },
@@ -279,6 +279,54 @@ const currentPageLabel = document.querySelector("#currentPageLabel");
 const tabButtons = document.querySelectorAll(".tab-button");
 const menuButtons = document.querySelectorAll("[data-menu-tab]");
 const tabViews = document.querySelectorAll(".tab-view");
+
+function normalizeSkillId(skillId) {
+  return skillId === "defence" ? "defense" : skillId;
+}
+
+function normalizeDungeonId(dungeonId) {
+  return typeof dungeonId === "string" ? dungeonId.replace(/^defence-/, "defense-") : dungeonId;
+}
+
+function migrateSkillMap(savedMap, defaultMap) {
+  const migrated = { ...defaultMap };
+
+  for (const [skillId, value] of Object.entries(savedMap ?? {})) {
+    const normalizedId = normalizeSkillId(skillId);
+    if (normalizedId in migrated) migrated[normalizedId] = value;
+  }
+
+  return migrated;
+}
+
+function migrateDungeonClears(savedClears) {
+  const migrated = {};
+
+  for (const [dungeonId, value] of Object.entries(savedClears ?? {})) {
+    migrated[normalizeDungeonId(dungeonId)] = value;
+  }
+
+  return migrated;
+}
+
+function migrateDungeonRecord(record) {
+  if (!record) return record;
+
+  return {
+    ...record,
+    dungeonId: normalizeDungeonId(record.dungeonId),
+    skillId: normalizeSkillId(record.skillId)
+  };
+}
+
+function migrateLogEntry(entry) {
+  return {
+    ...entry,
+    skillId: normalizeSkillId(entry.skillId),
+    dungeonContribution: migrateDungeonRecord(entry.dungeonContribution),
+    dungeonCompleted: migrateDungeonRecord(entry.dungeonCompleted)
+  };
+}
 
 function xpForLevel(level) {
   if (level <= 1) return 0;
@@ -329,14 +377,18 @@ function loadState() {
 
     const parsed = JSON.parse(saved);
     return {
-      xp: { ...startingState.xp, ...parsed.xp },
-      pets: { ...startingState.pets, ...parsed.pets },
+      xp: migrateSkillMap(parsed.xp, startingState.xp),
+      pets: migrateSkillMap(parsed.pets, startingState.pets),
       gold: Number.isFinite(parsed.gold) ? parsed.gold : startingState.gold,
       keys: { ...startingState.keys, ...parsed.keys },
-      activeDungeon: parsed.activeDungeon ?? null,
-      dungeonClears: { ...startingState.dungeonClears, ...parsed.dungeonClears },
-      dungeonHistory: Array.isArray(parsed.dungeonHistory) ? parsed.dungeonHistory : [],
-      log: Array.isArray(parsed.log) ? parsed.log : []
+      activeDungeon: parsed.activeDungeon
+        ? { ...parsed.activeDungeon, dungeonId: normalizeDungeonId(parsed.activeDungeon.dungeonId) }
+        : null,
+      dungeonClears: migrateDungeonClears(parsed.dungeonClears),
+      dungeonHistory: Array.isArray(parsed.dungeonHistory)
+        ? parsed.dungeonHistory.map(migrateDungeonRecord)
+        : [],
+      log: Array.isArray(parsed.log) ? parsed.log.map(migrateLogEntry) : []
     };
   } catch {
     return structuredClone(startingState);
@@ -383,7 +435,7 @@ function dungeonById(dungeonId) {
 }
 
 function skillIdForEntry(entry) {
-  if (entry.skillId) return entry.skillId;
+  if (entry.skillId) return normalizeSkillId(entry.skillId);
 
   return skills.find((skill) => skill.name === entry.skillName)?.id;
 }
@@ -419,7 +471,7 @@ function unitForSkillPlural(skillId) {
 function workoutHint(skillId) {
   if (skillId === "attack") return "Complete push-day workouts to progress";
   if (skillId === "strength") return "Complete pull-day workouts to progress";
-  if (skillId === "defence") return "Complete leg-day workouts to progress";
+  if (skillId === "defense") return "Complete leg-day workouts to progress";
   return "Complete runs to progress";
 }
 
@@ -551,7 +603,7 @@ function renderPets() {
     card.className = `pet-card ${unlocked ? "unlocked" : "locked"}`;
     const petVisual = unlocked
       ? `<img class="asset-icon pet-icon" src="${skill.petImage}" alt="${skill.petName}">`
-      : `<div class="pet-placeholder" style="display:grid;width:150px;height:150px;max-width:100%;margin:0 auto 12px;place-items:center;border:1px solid rgba(255,255,255,0.14);border-radius:8px;color:rgba(244,247,251,0.72);background:linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03));box-shadow:inset 0 0 34px rgba(0,0,0,0.28);font-size:4rem;font-weight:950;line-height:1;" aria-label="${skill.petName} locked">?</div>`;
+      : `<div class="pet-placeholder" aria-label="${skill.petName} locked">?</div>`;
 
     card.innerHTML = `
       ${petVisual}
@@ -741,8 +793,9 @@ function updateAmountFromInput() {
   const selected = workoutMap[workoutType.value];
   const parsed = Number(amountInput.value);
   if (selected.skillId === "agility" && Number.isFinite(parsed) && parsed >= selected.minAmount) {
-    mileSlider.value = normalizeAmount(selected, parsed);
-    mileSliderValue.textContent = `${formatAmount(normalizeAmount(selected, parsed))} mi`;
+    const amount = normalizeAmount(selected, parsed);
+    mileSlider.value = amount;
+    mileSliderValue.textContent = `${formatAmount(amount)} mi`;
   }
   updatePreviews();
 }
@@ -901,6 +954,47 @@ function addWorkout(event) {
   }
 }
 
+function removeDungeonHistoryEntry(completedDungeon) {
+  const completedAt = completedDungeon.completedAt;
+  const dungeonId = normalizeDungeonId(completedDungeon.dungeonId);
+  const historyIndex = state.dungeonHistory.findIndex((entry) => (
+    normalizeDungeonId(entry.dungeonId) === dungeonId && entry.completedAt === completedAt
+  ));
+
+  if (historyIndex >= 0) state.dungeonHistory.splice(historyIndex, 1);
+}
+
+function reverseDungeonCompletion(entry, index) {
+  if (!entry.dungeonCompleted) return;
+
+  const completed = migrateDungeonRecord(entry.dungeonCompleted);
+  const skillId = normalizeSkillId(completed.skillId);
+  const dungeonId = normalizeDungeonId(completed.dungeonId);
+
+  if (skillId) {
+    state.xp[skillId] = Math.max(0, (state.xp[skillId] ?? 0) - (completed.bonusXP ?? 0));
+  }
+
+  if (dungeonId) {
+    state.dungeonClears[dungeonId] = Math.max(0, (state.dungeonClears[dungeonId] ?? 0) - 1);
+    if (state.dungeonClears[dungeonId] === 0) delete state.dungeonClears[dungeonId];
+  }
+
+  removeDungeonHistoryEntry(completed);
+
+  if (index !== 0 || state.activeDungeon || !entry.dungeonContribution) return;
+
+  const contribution = migrateDungeonRecord(entry.dungeonContribution);
+  const dungeon = dungeonById(contribution.dungeonId);
+  if (!dungeon) return;
+
+  state.activeDungeon = {
+    dungeonId: dungeon.id,
+    progress: Math.max(0, dungeon.requirement - (contribution.amount ?? 0)),
+    startedAt: entry.createdAt ?? new Date().toISOString()
+  };
+}
+
 function deleteWorkout(index) {
   const entry = state.log[index];
   if (!entry) return;
@@ -914,8 +1008,9 @@ function deleteWorkout(index) {
   }
   state.xp.discipline = Math.max(0, (state.xp.discipline ?? 0) - (entry.disciplineXP ?? 50));
   state.gold = Math.max(0, (state.gold ?? 0) - (entry.goldEarned ?? 0));
+  reverseDungeonCompletion(entry, index);
 
-  if (entry.dungeonContribution && state.activeDungeon?.dungeonId === entry.dungeonContribution.dungeonId) {
+  if (!entry.dungeonCompleted && entry.dungeonContribution && state.activeDungeon?.dungeonId === entry.dungeonContribution.dungeonId) {
     state.activeDungeon.progress = Math.max(0, (state.activeDungeon.progress ?? 0) - entry.dungeonContribution.amount);
   }
 
