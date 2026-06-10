@@ -21,11 +21,12 @@
 
       <nav class="tabbar" aria-label="Main views">
         <button class="tab-button active" type="button" data-tab="skills">Skills</button>
+        <button class="tab-button" type="button" data-tab="log">Log Workout</button>
         <button class="tab-button" type="button" data-tab="pets">Pets</button>
         <button class="tab-button" type="button" data-tab="history">Workouts</button>
       </nav>
 
-      <main class="layout tab-view active" id="skillsTab">
+      <main class="tab-view active" id="skillsTab">
         <section class="panel skills-panel" aria-labelledby="skillsTitle">
           <div class="section-heading">
             <div>
@@ -38,7 +39,9 @@
           </div>
           <div class="skill-grid" id="skillGrid"></div>
         </section>
+      </main>
 
+      <main class="tab-view" id="logTab">
         <section class="panel workout-panel" aria-labelledby="workoutTitle">
           <div class="section-heading">
             <div>
