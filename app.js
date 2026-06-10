@@ -6,6 +6,8 @@ const petDropRates = {
   discipline: 1 / 30000
 };
 
+const petBonusMultiplier = 1.1;
+
 const keyShopItems = [
   { id: "bronze", name: "Bronze Key", cost: 50 },
   { id: "iron", name: "Iron Key", cost: 150 },
@@ -409,8 +411,34 @@ function workoutHint(skillId) {
   return "Complete runs to progress";
 }
 
+function workoutForSkill(skillId) {
+  return Object.values(workoutMap).find((workout) => workout.skillId === skillId);
+}
+
+function petBonusForSkill(skillId) {
+  return state.pets[skillId] ? petBonusMultiplier : 1;
+}
+
+function xpForWorkout(selected, amount) {
+  return Math.round(amount * selected.xpPerUnit * petBonusForSkill(selected.skillId));
+}
+
+function disciplineXPForWorkout() {
+  return Math.round(50 * petBonusForSkill("discipline"));
+}
+
 function goldForWorkout(selected, amount) {
-  return Math.floor(amount * selected.goldPerUnit);
+  return Math.floor(amount * selected.goldPerUnit * petBonusForSkill(selected.skillId));
+}
+
+function skillGoldRule(skill) {
+  const workout = workoutForSkill(skill.id);
+  if (!workout) return "Gold: none";
+
+  const baseRate = `${formatAmount(workout.goldPerUnit)} gold per ${workout.unitSingular}`;
+  if (!state.pets[skill.id]) return `Gold: ${baseRate}`;
+
+  return `Gold: ${formatAmount(workout.goldPerUnit * petBonusMultiplier)} gold per ${workout.unitSingular} with pet`;
 }
 
 function clearCount(dungeonId) {
@@ -481,6 +509,7 @@ function renderSkills() {
       </div>
       <div class="skill-footer">
         <span>${skill.rule}</span>
+        <span>${skillGoldRule(skill)}</span>
       </div>
     `;
 
@@ -507,6 +536,7 @@ function renderPets() {
       <div class="pet-name">${skill.petName}</div>
       <div class="pet-source">${skill.name} pet</div>
       <div class="pet-source">${dropRateText(skill.id)}</div>
+      <div class="pet-source">${skill.id === "discipline" ? "Bonus: +10% Discipline XP" : "Bonus: +10% XP and gold"}</div>
       <div class="pet-status">${unlocked ? "Unlocked" : "Not found yet"}</div>
     `;
     petGrid.appendChild(card);
@@ -668,7 +698,7 @@ function updateWorkoutFields() {
 function updatePreviews() {
   const selected = workoutMap[workoutType.value];
   const amount = Math.max(0, Number(amountInput.value) || 0);
-  xpPreview.textContent = formatNumber(amount * selected.xpPerUnit);
+  xpPreview.textContent = formatNumber(xpForWorkout(selected, amount));
   goldPreview.textContent = formatNumber(goldForWorkout(selected, amount));
 }
 
@@ -702,7 +732,7 @@ function renderLog() {
         ${dropText}
       </div>
       <div class="log-actions">
-        <div class="log-xp">+${formatNumber(entry.mainXP)} ${entry.skillName}<br>+50 Discipline</div>
+        <div class="log-xp">+${formatNumber(entry.mainXP)} ${entry.skillName}<br>+${formatNumber(entry.disciplineXP ?? 50)} Discipline</div>
         <button class="delete-workout-button" type="button" data-log-index="${index}">Delete</button>
       </div>
     `;
@@ -766,7 +796,8 @@ function addWorkout(event) {
   const amount = Math.max(0, Number(amountInput.value) || 0);
   if (amount <= 0) return;
 
-  const mainXP = Math.round(amount * selected.xpPerUnit);
+  const mainXP = xpForWorkout(selected, amount);
+  const disciplineXP = disciplineXPForWorkout();
   const goldEarned = goldForWorkout(selected, amount);
   const skill = skills.find((item) => item.id === selected.skillId);
   const amountText = selected.unit === "Miles"
@@ -777,7 +808,7 @@ function addWorkout(event) {
   const petDrops = [];
 
   state.xp[selected.skillId] += mainXP;
-  state.xp.discipline += 50;
+  state.xp.discipline += disciplineXP;
   state.gold += goldEarned;
 
   const dungeonResult = progressActiveDungeon(selected, amount);
@@ -794,6 +825,7 @@ function addWorkout(event) {
     skillId: selected.skillId,
     skillName: skill.name,
     mainXP,
+    disciplineXP,
     goldEarned,
     mainPetRolls,
     disciplinePetRolls,
@@ -827,7 +859,7 @@ function deleteWorkout(index) {
   if (skillId) {
     state.xp[skillId] = Math.max(0, (state.xp[skillId] ?? 0) - (entry.mainXP ?? 0));
   }
-  state.xp.discipline = Math.max(0, (state.xp.discipline ?? 0) - 50);
+  state.xp.discipline = Math.max(0, (state.xp.discipline ?? 0) - (entry.disciplineXP ?? 50));
   state.gold = Math.max(0, (state.gold ?? 0) - (entry.goldEarned ?? 0));
 
   if (entry.dungeonContribution && state.activeDungeon?.dungeonId === entry.dungeonContribution.dungeonId) {
