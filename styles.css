@@ -1,12 +1,18 @@
 :root {
-  --bg: #f4f1ea;
-  --panel: #fffaf0;
-  --panel-strong: #efe4cd;
-  --ink: #1f241d;
-  --muted: #6d6a5f;
-  --line: #d1c2a7;
-  --gold: #bf8f2f;
-  --shadow: 0 18px 45px rgba(53, 42, 25, 0.12);
+  color-scheme: dark;
+  --bg: #090b0f;
+  --surface: #10141b;
+  --surface-2: #161b24;
+  --surface-3: #1f2632;
+  --ink: #f4f7fb;
+  --muted: #9aa5b5;
+  --soft: #6f7c8f;
+  --line: rgba(255, 255, 255, 0.11);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --accent: #35d19f;
+  --accent-2: #f2b84b;
+  --danger: #e55b5b;
+  --shadow: 0 22px 55px rgba(0, 0, 0, 0.36);
 }
 
 * {
@@ -19,9 +25,11 @@ body {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--ink);
   background:
-    linear-gradient(135deg, rgba(191, 143, 47, 0.16), transparent 38%),
-    linear-gradient(315deg, rgba(56, 111, 164, 0.14), transparent 34%),
+    linear-gradient(180deg, rgba(53, 209, 159, 0.08), transparent 34%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     var(--bg);
+  background-size: auto, 42px 42px, 42px 42px, auto;
 }
 
 button,
@@ -33,7 +41,7 @@ select {
 .app-shell {
   width: min(1180px, 100%);
   margin: 0 auto;
-  padding: 22px;
+  padding: 24px;
 }
 
 .topbar,
@@ -44,7 +52,7 @@ select {
 .workout-log li {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  gap: 14px;
 }
 
 .topbar,
@@ -54,15 +62,27 @@ select {
 }
 
 .topbar {
-  margin-bottom: 18px;
+  position: relative;
+  margin-bottom: 22px;
+  padding: 20px 0 4px;
+}
+
+.topbar::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -10px;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
 }
 
 .eyebrow {
-  margin: 0 0 4px;
-  color: var(--gold);
-  font-size: 0.73rem;
-  font-weight: 800;
-  letter-spacing: 0;
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -73,8 +93,9 @@ h2 {
 }
 
 h1 {
-  font-size: clamp(2rem, 7vw, 3.5rem);
-  line-height: 0.95;
+  font-size: clamp(2.4rem, 8vw, 4.8rem);
+  line-height: 0.9;
+  text-transform: uppercase;
 }
 
 h2 {
@@ -82,40 +103,39 @@ h2 {
 }
 
 .total-panel,
-.panel,
 .skill-card,
 .pet-card,
 .rules-list div,
 .workout-log li,
 select,
-input {
+input,
+.xp-preview,
+.empty-state {
   border: 1px solid var(--line);
   border-radius: 8px;
 }
 
-.total-panel,
-.panel {
-  background: rgba(255, 250, 240, 0.92);
-  box-shadow: var(--shadow);
-}
-
 .total-panel {
-  min-width: 132px;
-  padding: 12px 16px;
+  min-width: 144px;
+  padding: 13px 16px;
   text-align: right;
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  box-shadow: var(--shadow);
 }
 
 .total-panel span,
 .xp-preview span {
   display: block;
   color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 .total-panel strong {
   display: block;
-  font-size: 2rem;
+  color: var(--accent-2);
+  font-size: 2.15rem;
   line-height: 1;
 }
 
@@ -123,7 +143,11 @@ input {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
-  margin-bottom: 16px;
+  margin: 26px 0 22px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(16, 20, 27, 0.86);
 }
 
 .tab-button,
@@ -136,16 +160,31 @@ input {
   font-weight: 900;
 }
 
-.tab-button,
-.icon-button {
-  color: var(--ink);
-  background: var(--panel-strong);
+.tab-button {
+  color: var(--muted);
+  background: transparent;
 }
 
-.tab-button.active,
+.tab-button:hover,
+.tab-button.active {
+  color: var(--ink);
+  background: var(--surface-3);
+}
+
+.tab-button.active {
+  box-shadow: inset 0 0 0 1px rgba(53, 209, 159, 0.34);
+}
+
+.icon-button {
+  color: #ffcfcf;
+  background: rgba(229, 91, 91, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(229, 91, 91, 0.26);
+}
+
 .primary-button {
-  color: #fff;
-  background: #2f5d50;
+  color: #06120e;
+  background: linear-gradient(180deg, #5de6bb, var(--accent));
+  box-shadow: 0 14px 34px rgba(53, 209, 159, 0.2);
 }
 
 .tab-view {
@@ -159,22 +198,35 @@ input {
 .layout.active {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.8fr);
-  gap: 16px;
+  gap: 18px;
   align-items: start;
 }
 
 .panel {
-  padding: 16px;
+  padding: 4px 0 24px;
 }
 
 .section-heading {
-  margin-bottom: 14px;
+  margin-bottom: 16px;
+}
+
+.section-heading h2 {
+  color: var(--ink);
+}
+
+.drop-rate {
+  align-self: center;
+  padding: 8px 10px;
+  border: 1px solid rgba(242, 184, 75, 0.24);
+  border-radius: 8px;
+  color: var(--accent-2);
+  background: rgba(242, 184, 75, 0.08);
 }
 
 .skill-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 14px;
 }
 
 .skills-panel {
@@ -183,8 +235,24 @@ input {
 
 .skill-card,
 .pet-card {
-  background: #fffdf7;
-  padding: 14px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(31, 38, 50, 0.96), rgba(16, 20, 27, 0.96));
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28);
+}
+
+.skill-card {
+  min-height: 218px;
+  padding: 16px;
+}
+
+.skill-card::before,
+.pet-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .skill-card.discipline {
@@ -197,25 +265,26 @@ input {
 }
 
 .skill-icon {
-  width: 74px;
-  height: 74px;
+  width: 78px;
+  height: 78px;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.48));
 }
 
 .asset-icon.locked {
-  filter: grayscale(1) brightness(0.72);
-  opacity: 0.52;
+  filter: grayscale(1) brightness(0.56);
+  opacity: 0.5;
 }
 
 .skill-name,
 .pet-name,
 .log-title,
 .log-xp {
-  font-weight: 900;
+  font-weight: 950;
 }
 
 .skill-name {
   margin: 10px 0 2px;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
 }
 
 .skill-method,
@@ -223,13 +292,12 @@ input {
 .rules-list span,
 .log-meta,
 .pet-source,
-.pet-status,
-.drop-rate {
+.pet-status {
   color: var(--muted);
 }
 
 .skill-method {
-  font-size: 0.88rem;
+  font-size: 0.9rem;
 }
 
 .level-block {
@@ -238,36 +306,38 @@ input {
 
 .level-block span {
   display: block;
-  color: var(--muted);
-  font-size: 0.72rem;
-  font-weight: 800;
+  color: var(--soft);
+  font-size: 0.7rem;
+  font-weight: 900;
   text-transform: uppercase;
 }
 
 .level-block strong {
   display: block;
-  font-size: 2.2rem;
+  color: var(--ink);
+  font-size: 2.35rem;
   line-height: 0.95;
 }
 
 .progress-track {
   width: 100%;
-  height: 11px;
+  height: 10px;
   overflow: hidden;
-  border: 1px solid rgba(31, 36, 29, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
-  background: #e2d7c2;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .progress-fill {
   height: 100%;
   border-radius: 999px;
+  box-shadow: 0 0 20px currentColor;
 }
 
 .skill-footer {
-  margin-top: 10px;
-  font-size: 0.78rem;
-  font-weight: 700;
+  margin-top: 11px;
+  font-size: 0.8rem;
+  font-weight: 800;
 }
 
 .workout-form,
@@ -278,51 +348,67 @@ input {
   gap: 12px;
 }
 
+.workout-form {
+  max-width: 680px;
+}
+
 label {
   color: var(--muted);
-  font-size: 0.8rem;
-  font-weight: 800;
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 select,
 input {
   width: 100%;
-  min-height: 46px;
-  margin-top: 6px;
-  padding: 0 12px;
+  min-height: 48px;
+  margin-top: 7px;
+  padding: 0 13px;
   color: var(--ink);
-  background: #fffdf7;
+  background: var(--surface);
+  outline: none;
+}
+
+select:focus,
+input:focus {
+  border-color: rgba(53, 209, 159, 0.8);
+  box-shadow: 0 0 0 3px rgba(53, 209, 159, 0.12);
 }
 
 .number-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 124px;
+  grid-template-columns: minmax(0, 1fr) 132px;
   gap: 12px;
   align-items: end;
 }
 
 .xp-preview {
-  min-height: 46px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 8px 10px;
-  background: var(--panel-strong);
+  min-height: 48px;
+  padding: 9px 11px;
+  background: rgba(53, 209, 159, 0.1);
 }
 
 .xp-preview strong {
   display: block;
+  color: var(--accent);
   font-size: 1.2rem;
   line-height: 1;
 }
 
 .rules-list {
-  margin-top: 16px;
+  max-width: 680px;
+  margin-top: 18px;
 }
 
 .rules-list div,
 .workout-log li {
-  background: #fffdf7;
-  padding: 10px;
+  background: rgba(16, 20, 27, 0.78);
+  padding: 12px;
+}
+
+.rules-list strong {
+  color: var(--ink);
 }
 
 .workout-log {
@@ -332,11 +418,10 @@ input {
 }
 
 .empty-state {
-  border: 1px dashed var(--line);
-  border-radius: 8px;
-  padding: 18px;
+  padding: 20px;
   color: var(--muted);
   text-align: center;
+  background: rgba(16, 20, 27, 0.62);
 }
 
 .pet-grid {
@@ -344,7 +429,8 @@ input {
 }
 
 .pet-card {
-  min-height: 230px;
+  min-height: 232px;
+  padding: 14px;
 }
 
 .pet-card .pet-icon {
@@ -352,6 +438,7 @@ input {
   max-width: 150px;
   height: 150px;
   margin: 0 auto 12px;
+  filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.44));
 }
 
 .pet-name,
@@ -364,22 +451,22 @@ input {
 .pet-status,
 .drop-rate {
   font-size: 0.82rem;
-  font-weight: 800;
+  font-weight: 850;
 }
 
 .pet-card.unlocked {
-  border-color: rgba(191, 143, 47, 0.72);
-  background: #fff7df;
+  border-color: rgba(242, 184, 75, 0.5);
+  background: linear-gradient(180deg, rgba(46, 38, 24, 0.98), rgba(16, 20, 27, 0.98));
 }
 
 .pet-card.unlocked .pet-status {
-  color: #2f5d50;
+  color: var(--accent);
 }
 
 .pet-drop {
   margin-top: 4px;
-  color: var(--gold);
-  font-weight: 900;
+  color: var(--accent-2);
+  font-weight: 950;
 }
 
 @media (max-width: 860px) {
@@ -398,7 +485,7 @@ input {
 
 @media (max-width: 560px) {
   .app-shell {
-    padding: 14px;
+    padding: 15px;
   }
 
   .topbar,
