@@ -291,6 +291,7 @@ input,
 .skill-footer,
 .rules-list span,
 .log-meta,
+.log-date,
 .pet-source,
 .pet-status {
   color: var(--muted);
@@ -407,6 +408,34 @@ input:focus {
   padding: 12px;
 }
 
+.log-date {
+  margin-top: 4px;
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.log-actions {
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+  text-align: right;
+}
+
+.delete-workout-button {
+  min-height: 34px;
+  border: 1px solid rgba(229, 91, 91, 0.34);
+  border-radius: 8px;
+  padding: 0 12px;
+  color: #ffcfcf;
+  background: rgba(229, 91, 91, 0.1);
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.delete-workout-button:hover {
+  background: rgba(229, 91, 91, 0.18);
+}
+
 .rules-list strong {
   color: var(--ink);
 }
@@ -502,7 +531,9 @@ input:focus {
   }
 
   .total-panel,
+  .log-actions,
   .log-xp {
+    justify-items: start;
     text-align: left;
   }
 }
