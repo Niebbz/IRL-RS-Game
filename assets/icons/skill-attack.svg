@@ -1,13 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <g fill="none" stroke="#21140f" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
-    <path fill="#8f1d18" d="M45 33l-11 10-8 24 7 33 22 12 26-4 16-20-2-33-15-18z"/>
-    <path fill="#e03428" d="M38 47l10-18 14 4-5 27z"/>
-    <path fill="#f04b33" d="M57 37l11-14 14 9-7 29z"/>
-    <path fill="#cf2b24" d="M75 43l13-8 13 15-9 24-18-8z"/>
-    <path fill="#f2623e" d="M27 62l14-17 17 15-4 23-24 1z"/>
-    <path fill="#b7231d" d="M53 59l23 4 2 31-23 8-10-18z"/>
-    <path fill="#7e1a16" d="M76 64l22 9-1 17-18 15z"/>
-    <path stroke="#f1b23d" stroke-width="4" d="M36 93l22 12 25-4"/>
-    <path stroke="#ffad5b" stroke-width="3" d="M41 52l8-14M63 42l8-11M82 50l8-8"/>
+  <defs>
+    <linearGradient id="metal" x1="24" x2="94" y1="18" y2="110" gradientUnits="userSpaceOnUse"><stop stop-color="#ff6b45"/><stop offset=".45" stop-color="#d72f25"/><stop offset="1" stop-color="#78150f"/></linearGradient>
+    <linearGradient id="shine" x1="43" x2="71" y1="22" y2="71" gradientUnits="userSpaceOnUse"><stop stop-color="#ffd0b9"/><stop offset=".55" stop-color="#ff5b43" stop-opacity=".75"/><stop offset="1" stop-color="#8d140f" stop-opacity=".2"/></linearGradient>
+    <filter id="s" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="3" flood-color="#1b0c08" flood-opacity=".45"/></filter>
+  </defs>
+  <g filter="url(#s)" stroke="#24110c" stroke-linejoin="round" stroke-linecap="round">
+    <path fill="url(#metal)" stroke-width="5" d="M40 34c6-15 16-19 24-10 5-9 17-8 22 2 13-2 22 10 17 22 9 8 9 23-2 31l-6 23c-18 12-41 10-59-3L25 65c-4-14 2-26 15-31z"/>
+    <path fill="#f24832" stroke-width="4" d="M37 38l12-17 15 4-6 36-19-1zM58 33l12-17 16 8-10 40-19-5zM78 35l17-5 10 15-12 31-17-12zM28 61l16-24 18 23-3 24-27 3z"/>
+    <path fill="#9d1b16" stroke-width="4" d="M58 61l20 4 4 34-23 9-13-23zM80 65l22 10-7 25-16-1z"/>
+    <path fill="url(#shine)" opacity=".85" d="M45 34l8-9 8 3-6 25-14 1zM67 34l7-9 7 4-7 26-13-3z"/>
+    <path fill="none" stroke="#ffba53" stroke-width="4" d="M35 92c14 10 36 13 57 4"/>
+    <path fill="none" stroke="#ff9671" stroke-width="3" d="M44 45l8-16M68 43l8-15M88 47l8-10"/>
   </g>
 </svg>

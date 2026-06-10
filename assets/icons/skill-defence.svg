@@ -1,11 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <g fill="none" stroke="#1a201a" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
-    <path fill="#2e7d45" d="M31 21h66v41c0 27-18 43-33 52-15-9-33-25-33-52z"/>
-    <path fill="#d7d9d3" d="M45 30h38v32c0 17-9 28-19 36-10-8-19-19-19-36z"/>
-    <path fill="#969a93" d="M64 32h19v30c0 17-9 28-19 36z"/>
-    <path fill="#827261" d="M22 84h26v27H18z"/>
-    <path fill="#827261" d="M80 84h26l4 27H80z"/>
-    <path fill="#b4a189" d="M26 76h20l4 12H22zM82 76h20l4 12H78z"/>
-    <path stroke="#ffffff" stroke-width="3" d="M51 38v28M39 88h-17M106 88H89"/>
+  <defs>
+    <linearGradient id="shield" x1="36" x2="91" y1="20" y2="102"><stop stop-color="#f8f9f2"/><stop offset=".5" stop-color="#9fa5a0"/><stop offset="1" stop-color="#4f5755"/></linearGradient>
+    <linearGradient id="boot" x1="23" x2="106" y1="77" y2="113"><stop stop-color="#d1b38a"/><stop offset="1" stop-color="#5f4b38"/></linearGradient>
+    <filter id="s" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="3" flood-color="#0d140f" flood-opacity=".4"/></filter>
+  </defs>
+  <g filter="url(#s)" stroke="#172015" stroke-linejoin="round" stroke-linecap="round">
+    <path fill="#1f7a42" stroke-width="5" d="M29 20h70v42c0 29-19 44-35 54-16-10-35-25-35-54z"/>
+    <path fill="url(#shield)" stroke-width="5" d="M45 30h38v32c0 17-9 29-19 37-10-8-19-20-19-37z"/>
+    <path fill="#59615e" opacity=".45" d="M64 33h19v29c0 17-9 29-19 37z"/>
+    <path fill="url(#boot)" stroke-width="5" d="M19 84h28l6 27H15zM81 84h28l5 27H78z"/>
+    <path fill="#bfa37c" stroke-width="4" d="M25 75h21l5 12H21zM83 75h21l5 12H79z"/>
+    <path fill="none" stroke="#ffffff" stroke-width="3" d="M52 39v29M38 88H20M107 88H90"/>
   </g>
 </svg>

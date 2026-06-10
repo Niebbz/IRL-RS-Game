@@ -1,11 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <g fill="none" stroke="#26170d" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
-    <path fill="#eadab5" d="M33 60c5-24 31-36 58-25 26 11 30 39 15 58-14 17-51 18-70 3-10-8-10-21-3-36z"/>
-    <path fill="#c08b45" d="M41 48c-20-3-31 13-25 28 6 14 26 13 31-2-13 2-20-7-14-16 3-5 8-7 15-7z"/>
-    <path fill="#c08b45" d="M84 42c17-12 35-2 36 15 1 16-15 25-28 16 12-5 14-17 4-24-4-3-8-4-14-2z"/>
-    <path fill="#b98543" d="M54 59l15-14 21 8 5 20-17 18-22-4z"/>
+  <defs>
+    <linearGradient id="wool" x1="30" x2="106" y1="31" y2="104"><stop stop-color="#fff1ca"/><stop offset=".6" stop-color="#d8bd88"/><stop offset="1" stop-color="#947044"/></linearGradient>
+    <filter id="s" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="3" flood-color="#21150d" flood-opacity=".38"/></filter>
+  </defs>
+  <g filter="url(#s)" stroke="#26170d" stroke-linejoin="round" stroke-linecap="round">
+    <path fill="url(#wool)" stroke-width="5" d="M32 61c5-24 32-37 59-25 27 12 30 40 15 59-15 17-52 18-71 3-10-9-10-22-3-37z"/>
+    <path fill="#c08a45" stroke-width="5" d="M42 48c-21-3-32 13-26 28 6 15 27 14 31-2-13 2-20-7-14-16 3-5 8-7 15-7zM84 42c18-12 36-2 37 15 1 17-16 26-29 16 12-5 14-17 4-24-4-3-8-4-14-2z"/>
+    <path fill="#b98543" stroke-width="5" d="M54 59l15-14 22 8 5 21-18 18-23-4z"/>
     <circle cx="76" cy="64" r="4" fill="#111"/>
-    <path stroke="#53331c" stroke-width="5" d="M43 97v17M90 97v17"/>
-    <path stroke="#fff3d2" stroke-width="4" d="M41 62c9-9 23-11 37-5"/>
+    <path fill="none" stroke="#53331c" stroke-width="5" d="M43 98v18M90 98v18"/>
+    <path fill="none" stroke="#fff3d2" stroke-width="4" d="M40 62c10-9 24-11 38-5"/>
   </g>
 </svg>

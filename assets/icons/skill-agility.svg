@@ -1,11 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <g fill="none" stroke="#2b1608" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
-    <path fill="#b96c20" d="M30 79l24-29 27-1 18 17-23 16-19 26-14-7 11-22-11-5z"/>
-    <path fill="#d98b2e" d="M74 48l11-20 7 23z"/>
-    <path fill="#d98b2e" d="M84 48l21-14-4 24z"/>
-    <path fill="#e6a63b" d="M88 45l19 7 6 13-21 5z"/>
-    <path fill="#6b3d17" d="M47 76l-26 18 16 4 25-17zM78 81l24 24-5-22z"/>
-    <path stroke="#f3b23c" stroke-width="4" d="M16 43h31M9 60h28M13 76h22"/>
-    <circle cx="96" cy="55" r="3" fill="#111"/>
+  <defs>
+    <linearGradient id="fur" x1="35" x2="104" y1="38" y2="100"><stop stop-color="#f0a23a"/><stop offset=".55" stop-color="#b9651d"/><stop offset="1" stop-color="#673312"/></linearGradient>
+    <filter id="s" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="3" flood-color="#1e1007" flood-opacity=".4"/></filter>
+  </defs>
+  <g filter="url(#s)" stroke="#2a1608" stroke-linejoin="round" stroke-linecap="round">
+    <path fill="url(#fur)" stroke-width="5" d="M31 78l24-30 30-1 18 18-24 17-20 27-15-8 12-22-13-6z"/>
+    <path fill="#d88b2d" stroke-width="4" d="M76 47l9-21 8 24zM86 48l22-14-6 25zM91 46l20 7 5 13-23 5z"/>
+    <path fill="#6b3d17" stroke-width="5" d="M47 76L20 94l16 5 26-18zM79 81l24 24-5-22z"/>
+    <path fill="none" stroke="#f6b12f" stroke-width="4" d="M15 42h33M8 59h31M13 76h23"/>
+    <circle cx="98" cy="55" r="3.5" fill="#111"/>
+    <path fill="#ffd58d" d="M104 62l12 3-9 6z"/>
   </g>
 </svg>
