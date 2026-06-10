@@ -48,7 +48,8 @@ select {
 .section-heading,
 .skill-top,
 .skill-footer,
-.rules-list div,
+.dungeon-card-top,
+.shop-row,
 .workout-log li {
   display: flex;
   justify-content: space-between;
@@ -57,6 +58,8 @@ select {
 
 .topbar,
 .section-heading,
+.dungeon-card-top,
+.shop-row,
 .workout-log li {
   align-items: center;
 }
@@ -105,7 +108,10 @@ h2 {
 .total-panel,
 .skill-card,
 .pet-card,
-.rules-list div,
+.dungeon-panel,
+.dungeon-card,
+.inventory-grid div,
+.shop-row,
 .workout-log li,
 select,
 input,
@@ -123,8 +129,21 @@ input,
   box-shadow: var(--shadow);
 }
 
+.top-stats {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+  justify-content: flex-end;
+}
+
+.gold-panel strong {
+  color: var(--accent);
+}
+
 .total-panel span,
-.xp-preview span {
+.xp-preview span,
+.inventory-grid span,
+.shop-row span {
   display: block;
   color: var(--muted);
   font-size: 0.75rem;
@@ -141,7 +160,7 @@ input,
 
 .tabbar {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
   margin: 26px 0 22px;
   padding: 6px;
@@ -152,7 +171,9 @@ input,
 
 .tab-button,
 .icon-button,
-.primary-button {
+.primary-button,
+.secondary-button,
+.danger-button {
   min-height: 44px;
   border: 0;
   border-radius: 8px;
@@ -187,6 +208,27 @@ input,
   box-shadow: 0 14px 34px rgba(53, 209, 159, 0.2);
 }
 
+.secondary-button {
+  min-height: 38px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+
+.danger-button {
+  min-height: 38px;
+  padding: 0 12px;
+  color: #ffcfcf;
+  background: rgba(229, 91, 91, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(229, 91, 91, 0.28);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
 .tab-view {
   display: none;
 }
@@ -208,6 +250,10 @@ input,
 
 .section-heading {
   margin-bottom: 16px;
+}
+
+.compact-heading {
+  margin-bottom: 10px;
 }
 
 .section-heading h2 {
@@ -234,7 +280,9 @@ input,
 }
 
 .skill-card,
-.pet-card {
+.pet-card,
+.dungeon-panel,
+.dungeon-card {
   position: relative;
   overflow: hidden;
   background: linear-gradient(180deg, rgba(31, 38, 50, 0.96), rgba(16, 20, 27, 0.96));
@@ -247,7 +295,9 @@ input,
 }
 
 .skill-card::before,
-.pet-card::before {
+.pet-card::before,
+.dungeon-panel::before,
+.dungeon-card::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -277,6 +327,7 @@ input,
 
 .skill-name,
 .pet-name,
+.dungeon-name,
 .log-title,
 .log-xp {
   font-weight: 950;
@@ -289,11 +340,15 @@ input,
 
 .skill-method,
 .skill-footer,
-.rules-list span,
 .log-meta,
 .log-date,
 .pet-source,
-.pet-status {
+.pet-rate,
+.pet-status,
+.dungeon-meta,
+.dungeon-detail,
+.dungeon-status,
+.dungeon-hint {
   color: var(--muted);
 }
 
@@ -342,7 +397,6 @@ input,
 }
 
 .workout-form,
-.rules-list,
 .workout-log,
 .pet-grid {
   display: grid;
@@ -379,7 +433,7 @@ input:focus {
 
 .number-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 132px;
+  grid-template-columns: minmax(0, 1fr) 132px 132px;
   gap: 12px;
   align-items: end;
 }
@@ -397,12 +451,115 @@ input:focus {
   line-height: 1;
 }
 
-.rules-list {
-  max-width: 680px;
-  margin-top: 18px;
+.gold-preview {
+  background: rgba(242, 184, 75, 0.1);
 }
 
-.rules-list div,
+.gold-preview strong {
+  color: var(--accent-2);
+}
+
+.dungeon-layout,
+.inventory-grid,
+.shop-list,
+.dungeon-selection,
+.dungeon-tier-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.dungeon-layout {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dungeon-panel {
+  padding: 14px;
+}
+
+.wide-panel {
+  grid-column: 1 / -1;
+}
+
+.inventory-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.inventory-grid div {
+  padding: 12px;
+  background: rgba(16, 20, 27, 0.78);
+}
+
+.inventory-grid strong {
+  display: block;
+  color: var(--accent-2);
+  font-size: 1.35rem;
+}
+
+.shop-row {
+  padding: 12px;
+  background: rgba(16, 20, 27, 0.78);
+}
+
+.shop-row strong {
+  display: block;
+}
+
+.active-dungeon-card,
+.dungeon-card {
+  padding: 14px;
+}
+
+.dungeon-name {
+  font-size: 1.05rem;
+}
+
+.dungeon-meta,
+.dungeon-detail,
+.dungeon-status,
+.dungeon-hint {
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.dungeon-hint {
+  margin: 10px 0;
+}
+
+.dungeon-skill-group {
+  display: grid;
+  gap: 10px;
+}
+
+.dungeon-group-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.dungeon-group-heading h3 {
+  margin: 0;
+}
+
+.dungeon-group-heading span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.dungeon-tier-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dungeon-card.locked {
+  opacity: 0.72;
+}
+
+.dungeon-card .secondary-button {
+  width: 100%;
+  margin-top: 10px;
+}
+
 .workout-log li {
   background: rgba(16, 20, 27, 0.78);
   padding: 12px;
@@ -436,10 +593,6 @@ input:focus {
   background: rgba(229, 91, 91, 0.18);
 }
 
-.rules-list strong {
-  color: var(--ink);
-}
-
 .workout-log {
   margin: 0;
   padding: 0;
@@ -470,13 +623,32 @@ input:focus {
   filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.44));
 }
 
+.pet-placeholder {
+  display: grid;
+  width: 150px;
+  height: 150px;
+  max-width: 100%;
+  margin: 0 auto 12px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  color: rgba(244, 247, 251, 0.72);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  box-shadow: inset 0 0 34px rgba(0, 0, 0, 0.28);
+  font-size: 4rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
 .pet-name,
 .pet-source,
+.pet-rate,
 .pet-status {
   text-align: center;
 }
 
 .pet-source,
+.pet-rate,
 .pet-status,
 .drop-rate {
   font-size: 0.82rem;
@@ -498,10 +670,28 @@ input:focus {
   font-weight: 950;
 }
 
+.gold-drop,
+.dungeon-note {
+  margin-top: 4px;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.gold-drop {
+  color: var(--accent-2);
+}
+
+.dungeon-note {
+  color: var(--accent);
+}
+
 @media (max-width: 860px) {
   .layout.active,
   .skill-grid,
-  .pet-grid {
+  .pet-grid,
+  .dungeon-layout,
+  .inventory-grid,
+  .dungeon-tier-grid {
     grid-template-columns: 1fr;
   }
 
@@ -519,10 +709,21 @@ input:focus {
 
   .topbar,
   .skill-footer,
-  .rules-list div,
+  .dungeon-card-top,
+  .shop-row,
+  .dungeon-group-heading,
   .workout-log li {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .top-stats {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .top-stats .total-panel {
+    flex: 1;
   }
 
   .tabbar,
