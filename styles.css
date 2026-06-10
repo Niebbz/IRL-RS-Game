@@ -271,7 +271,7 @@ input {
 }
 
 .workout-form,
-rules-list,
+.rules-list,
 .workout-log,
 .pet-grid {
   display: grid;
