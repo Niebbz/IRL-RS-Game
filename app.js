@@ -297,8 +297,12 @@ function renderPets() {
     const unlocked = state.pets[skill.id];
     const card = document.createElement("article");
     card.className = `pet-card ${unlocked ? "unlocked" : "locked"}`;
+    const petVisual = unlocked
+      ? `<img class="asset-icon pet-icon" src="${skill.petImage}" alt="${skill.petName}">`
+      : `<div class="pet-placeholder" style="display:grid;width:150px;height:150px;max-width:100%;margin:0 auto 12px;place-items:center;border:1px solid rgba(255,255,255,0.14);border-radius:8px;color:rgba(244,247,251,0.72);background:linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03));box-shadow:inset 0 0 34px rgba(0,0,0,0.28);font-size:4rem;font-weight:950;line-height:1;" aria-label="${skill.petName} locked">?</div>`;
+
     card.innerHTML = `
-      <img class="asset-icon pet-icon ${unlocked ? "" : "locked"}" src="${skill.petImage}" alt="${skill.petName}">
+      ${petVisual}
       <div class="pet-name">${skill.petName}</div>
       <div class="pet-source">${skill.name} pet</div>
       <div class="pet-source">Drop rate: 1 / ${formatDropRate(skill.id)} per ${dropRateUnit(skill.id)}</div>
