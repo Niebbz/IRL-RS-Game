@@ -6,8 +6,8 @@ const skills = [
     name: "Attack",
     method: "Push day",
     rule: "10 XP per minute",
-    skillSprite: [0, 0],
-    petSprite: [0, 1],
+    skillImage: "assets/icons/skill-attack.svg",
+    petImage: "assets/icons/pet-cyclops.svg",
     petName: "Cyclops",
     color: "#b84b43"
   },
@@ -16,8 +16,8 @@ const skills = [
     name: "Strength",
     method: "Pull day",
     rule: "10 XP per minute",
-    skillSprite: [1, 0],
-    petSprite: [1, 1],
+    skillImage: "assets/icons/skill-strength.svg",
+    petImage: "assets/icons/pet-ram.svg",
     petName: "Ram",
     color: "#386fa4"
   },
@@ -26,8 +26,8 @@ const skills = [
     name: "Defence",
     method: "Leg day",
     rule: "10 XP per minute",
-    skillSprite: [2, 0],
-    petSprite: [2, 1],
+    skillImage: "assets/icons/skill-defence.svg",
+    petImage: "assets/icons/pet-armadillo.svg",
     petName: "Armadillo",
     color: "#4f7d50"
   },
@@ -36,8 +36,8 @@ const skills = [
     name: "Agility",
     method: "Running",
     rule: "100 XP per mile",
-    skillSprite: [3, 0],
-    petSprite: [3, 1],
+    skillImage: "assets/icons/skill-agility.svg",
+    petImage: "assets/icons/pet-deer.svg",
     petName: "Deer",
     color: "#c8742a"
   },
@@ -46,8 +46,8 @@ const skills = [
     name: "Discipline",
     method: "Completed workouts",
     rule: "50 XP per workout",
-    skillSprite: [4, 0],
-    petSprite: [4, 1],
+    skillImage: "assets/icons/skill-discipline.svg",
+    petImage: "assets/icons/pet-eagle.svg",
     petName: "Eagle",
     color: "#7351a6"
   }
@@ -189,10 +189,6 @@ function formatNumber(value) {
   return Math.round(value).toLocaleString();
 }
 
-function spriteStyle([column, row]) {
-  return `background-position: ${column * 25}% ${row * 100}%;`;
-}
-
 function rollPet(skillId) {
   if (state.pets[skillId]) return null;
   if (Math.random() >= petDropRate) return null;
@@ -217,7 +213,7 @@ function renderSkills() {
     card.innerHTML = `
       <div class="skill-top">
         <div>
-          <div class="sprite-icon" style="${spriteStyle(skill.skillSprite)}" role="img" aria-label="${skill.name}"></div>
+          <img class="asset-icon skill-icon" src="${skill.skillImage}" alt="${skill.name}">
           <div class="skill-name">${skill.name}</div>
           <div class="skill-method">${skill.method}</div>
         </div>
@@ -253,7 +249,7 @@ function renderPets() {
     const card = document.createElement("article");
     card.className = `pet-card ${unlocked ? "unlocked" : "locked"}`;
     card.innerHTML = `
-      <div class="sprite-icon ${unlocked ? "" : "locked"}" style="${spriteStyle(skill.petSprite)}" role="img" aria-label="${skill.petName}"></div>
+      <img class="asset-icon pet-icon ${unlocked ? "" : "locked"}" src="${skill.petImage}" alt="${skill.petName}">
       <div class="pet-name">${skill.petName}</div>
       <div class="pet-source">${skill.name} pet</div>
       <div class="pet-status">${unlocked ? "Unlocked" : "Not found yet"}</div>
