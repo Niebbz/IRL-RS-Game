@@ -6,8 +6,8 @@ const skills = [
     name: "Attack",
     method: "Push day",
     rule: "10 XP per minute",
-    skillImage: "assets/icons/skill-attack.svg",
-    petImage: "assets/icons/pet-cyclops.svg",
+    skillImage: "Image%20Upload%20for%20GitHub/skill-attack.png",
+    petImage: "Image%20Upload%20for%20GitHub/pet-cyclops.png",
     petName: "Cyclops",
     color: "#b84b43"
   },
@@ -16,8 +16,8 @@ const skills = [
     name: "Strength",
     method: "Pull day",
     rule: "10 XP per minute",
-    skillImage: "assets/icons/skill-strength.svg",
-    petImage: "assets/icons/pet-ram.svg",
+    skillImage: "Image%20Upload%20for%20GitHub/skill-strength.png",
+    petImage: "Image%20Upload%20for%20GitHub/pet-ram.png",
     petName: "Ram",
     color: "#386fa4"
   },
@@ -26,8 +26,8 @@ const skills = [
     name: "Defence",
     method: "Leg day",
     rule: "10 XP per minute",
-    skillImage: "assets/icons/skill-defence.svg",
-    petImage: "assets/icons/pet-armadillo.svg",
+    skillImage: "Image%20Upload%20for%20GitHub/skill-defence.png",
+    petImage: "Image%20Upload%20for%20GitHub/pet-armadillo.png",
     petName: "Armadillo",
     color: "#4f7d50"
   },
@@ -36,8 +36,8 @@ const skills = [
     name: "Agility",
     method: "Running",
     rule: "100 XP per mile",
-    skillImage: "assets/icons/skill-agility.svg",
-    petImage: "assets/icons/pet-deer.svg",
+    skillImage: "Image%20Upload%20for%20GitHub/skill-agility.png",
+    petImage: "Image%20Upload%20for%20GitHub/pet-deer.png",
     petName: "Deer",
     color: "#c8742a"
   },
@@ -46,8 +46,8 @@ const skills = [
     name: "Discipline",
     method: "Completed workouts",
     rule: "50 XP per workout",
-    skillImage: "assets/icons/skill-discipline.svg",
-    petImage: "assets/icons/pet-eagle.svg",
+    skillImage: "Image%20Upload%20for%20GitHub/skill-discipline.png",
+    petImage: "Image%20Upload%20for%20GitHub/pet-eagle.png",
     petName: "Eagle",
     color: "#7351a6"
   }
