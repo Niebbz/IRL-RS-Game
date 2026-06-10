@@ -122,7 +122,6 @@ const emptyLog = document.querySelector("#emptyLog");
 const resetButton = document.querySelector("#resetButton");
 const tabButtons = document.querySelectorAll(".tab-button");
 const tabViews = document.querySelectorAll(".tab-view");
-const cleanedAssetCache = new Map();
 
 function xpForLevel(level) {
   if (level <= 1) return 0;
@@ -190,141 +189,6 @@ function formatNumber(value) {
   return Math.round(value).toLocaleString();
 }
 
-function isCheckerPixel(data, index) {
-  const red = data[index];
-  const green = data[index + 1];
-  const blue = data[index + 2];
-  const alpha = data[index + 3];
-  const max = Math.max(red, green, blue);
-  const min = Math.min(red, green, blue);
-
-  return alpha === 0 || (max >= 218 && max - min <= 18);
-}
-
-function buildCleanAssetURL(sourceImage) {
-  const maxSize = 600;
-  const scale = Math.min(1, maxSize / Math.max(sourceImage.naturalWidth, sourceImage.naturalHeight));
-  const width = Math.max(1, Math.round(sourceImage.naturalWidth * scale));
-  const height = Math.max(1, Math.round(sourceImage.naturalHeight * scale));
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-
-  const context = canvas.getContext("2d", { willReadFrequently: true });
-  context.drawImage(sourceImage, 0, 0, width, height);
-
-  const imageData = context.getImageData(0, 0, width, height);
-  const { data } = imageData;
-  const totalPixels = width * height;
-  const visited = new Uint8Array(totalPixels);
-  const queue = new Int32Array(totalPixels);
-  let head = 0;
-  let tail = 0;
-
-  function addPixel(x, y) {
-    if (x < 0 || y < 0 || x >= width || y >= height) return;
-
-    const pixelIndex = y * width + x;
-    if (visited[pixelIndex]) return;
-
-    const dataIndex = pixelIndex * 4;
-    if (!isCheckerPixel(data, dataIndex)) return;
-
-    visited[pixelIndex] = 1;
-    queue[tail] = pixelIndex;
-    tail += 1;
-  }
-
-  for (let x = 0; x < width; x += 1) {
-    addPixel(x, 0);
-    addPixel(x, height - 1);
-  }
-
-  for (let y = 0; y < height; y += 1) {
-    addPixel(0, y);
-    addPixel(width - 1, y);
-  }
-
-  while (head < tail) {
-    const pixelIndex = queue[head];
-    head += 1;
-
-    const x = pixelIndex % width;
-    const y = Math.floor(pixelIndex / width);
-    addPixel(x + 1, y);
-    addPixel(x - 1, y);
-    addPixel(x, y + 1);
-    addPixel(x, y - 1);
-  }
-
-  const transparentPixels = new Uint8Array(visited);
-
-  for (let y = 0; y < height; y += 1) {
-    for (let x = 0; x < width; x += 1) {
-      const pixelIndex = y * width + x;
-      if (visited[pixelIndex]) continue;
-
-      const dataIndex = pixelIndex * 4;
-      if (!isCheckerPixel(data, dataIndex)) continue;
-
-      const touchesBackground =
-        (x > 0 && visited[pixelIndex - 1]) ||
-        (x < width - 1 && visited[pixelIndex + 1]) ||
-        (y > 0 && visited[pixelIndex - width]) ||
-        (y < height - 1 && visited[pixelIndex + width]);
-
-      if (touchesBackground) transparentPixels[pixelIndex] = 1;
-    }
-  }
-
-  for (let index = 0; index < totalPixels; index += 1) {
-    if (transparentPixels[index]) {
-      data[index * 4 + 3] = 0;
-    }
-  }
-
-  context.putImageData(imageData, 0, 0);
-  return canvas.toDataURL("image/png");
-}
-
-function cleanAssetBackground(img) {
-  const rawSource = img.getAttribute("src");
-  const cached = cleanedAssetCache.get(rawSource);
-  img.dataset.rawSource = rawSource;
-
-  if (typeof cached === "string") {
-    img.src = cached;
-    return;
-  }
-
-  if (cached) {
-    cached.then((cleanSource) => {
-      if (img.dataset.rawSource === rawSource) img.src = cleanSource;
-    });
-    return;
-  }
-
-  const loader = new Image();
-  const cleanPromise = new Promise((resolve) => {
-    loader.onload = () => {
-      try {
-        resolve(buildCleanAssetURL(loader));
-      } catch {
-        resolve(rawSource);
-      }
-    };
-    loader.onerror = () => resolve(rawSource);
-  });
-
-  cleanedAssetCache.set(rawSource, cleanPromise);
-  cleanPromise.then((cleanSource) => {
-    cleanedAssetCache.set(rawSource, cleanSource);
-    if (img.dataset.rawSource === rawSource) img.src = cleanSource;
-  });
-
-  loader.src = rawSource;
-}
-
 function rollPet(skillId, rollCount = 1) {
   if (state.pets[skillId]) return null;
 
@@ -373,7 +237,6 @@ function renderSkills() {
       </div>
     `;
 
-    cleanAssetBackground(card.querySelector(".asset-icon"));
     skillGrid.appendChild(card);
   }
 
@@ -393,7 +256,6 @@ function renderPets() {
       <div class="pet-source">${skill.name} pet</div>
       <div class="pet-status">${unlocked ? "Unlocked" : "Not found yet"}</div>
     `;
-    cleanAssetBackground(card.querySelector(".asset-icon"));
     petGrid.appendChild(card);
   }
 }
