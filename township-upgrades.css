@@ -87,7 +87,7 @@
 
 .map-dungeon-summary {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   margin-bottom: 14px;
 }
@@ -128,6 +128,25 @@
 
 .map-dungeon-card.locked {
   opacity: 0.66;
+}
+
+.map-dungeon-reward-details {
+  margin-top: 12px;
+}
+
+.map-dungeon-reward-toggle {
+  display: inline-flex;
+  cursor: pointer;
+  list-style: none;
+}
+
+.map-dungeon-reward-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.map-dungeon-reward-details[open] .map-dungeon-reward-toggle {
+  border-color: rgba(22, 241, 176, 0.42);
+  color: #16f1b0;
 }
 
 .map-dungeon-rewards {
@@ -178,6 +197,10 @@
 }
 
 @media (max-width: 640px) {
+  .map-dungeon-summary {
+    grid-template-columns: 1fr;
+  }
+
   .map-dungeon-actions,
   .township-upgrade-top,
   .map-dungeon-top {

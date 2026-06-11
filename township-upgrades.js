@@ -313,7 +313,6 @@
         <div class="map-dungeon-summary">
           <div class="map-dungeon-stat"><span>Active Map</span><strong>${activeDungeon ? activeDungeon.name : "None"}</strong></div>
           <div class="map-dungeon-stat"><span>Total Map Clears</span><strong>${fmt(clears)}</strong></div>
-          <div class="map-dungeon-stat"><span>Rule</span><strong>No XP buff. Rewards are gold, materials, and keys.</strong></div>
         </div>
         ${activeDungeon ? activeCard(active, activeDungeon) : ""}
         <div class="map-dungeon-grid">${mapDungeons.map(mapCard).join("")}</div>
@@ -338,7 +337,10 @@
     const clears = upgrades().mapDungeons.clears[dungeon.id] || 0;
     return `<article class="map-dungeon-card ${ready ? "" : "locked"}">
       <div class="map-dungeon-top"><div><h3 class="map-dungeon-name">${dungeon.name}</h3><p class="map-dungeon-copy">${dungeon.description}</p></div><span class="map-dungeon-tier">${tierNames2[dungeon.tier]}</span></div>
-      <div class="map-dungeon-rewards"><div>${skillName(dungeon.skillId)}: ${fmtAmount(dungeon.requirement)} ${unit(dungeon.skillId)}</div><div>Cost: ${keyNames2[dungeon.keyTier]}</div><div>Rewards: ${rewardText(dungeon)}</div><div>Clears: ${fmt(clears)}</div></div>
+      <details class="map-dungeon-reward-details">
+        <summary class="secondary-button map-dungeon-reward-toggle">View Rewards</summary>
+        <div class="map-dungeon-rewards"><div>${skillName(dungeon.skillId)}: ${fmtAmount(dungeon.requirement)} ${unit(dungeon.skillId)}</div><div>Cost: ${keyNames2[dungeon.keyTier]}</div><div>Rewards: ${rewardText(dungeon)}</div><div>Clears: ${fmt(clears)}</div></div>
+      </details>
       <div class="map-dungeon-actions"><button class="secondary-button" type="button" data-start-map-dungeon="${dungeon.id}" ${ready ? "" : "disabled"}>Enter Map</button><span class="map-dungeon-status">${status}</span></div>
     </article>`;
   }
