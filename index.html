@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Level Forge</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="distance-picker.css">
   </head>
   <body>
     <div class="app-shell">
@@ -90,20 +91,22 @@
               </div>
             </div>
 
-            <div class="mile-picker-row" id="milePickerRow" hidden>
+            <div class="mile-picker-row" id="mileSliderRow" hidden>
               <div class="range-heading">
                 <span>Run distance</span>
-                <strong id="milePickerValue">3.0 mi</strong>
+                <strong id="mileSliderValue">3.0 mi</strong>
               </div>
               <div class="distance-picker-grid" aria-label="Run distance picker">
                 <div class="distance-wheel" id="wholeMileWheel" data-distance-control="whole" role="spinbutton" tabindex="0" aria-label="Whole miles" aria-valuemin="0" aria-valuemax="26" aria-valuenow="3">
                   <span>Whole miles</span>
+                  <input class="distance-hidden-input" id="wholeMileSlider" name="wholeMileSlider" type="range" min="0" max="26" step="1" value="3" tabindex="-1" aria-hidden="true">
                   <button class="wheel-button" type="button" data-mile-adjust="whole" data-step="1" aria-label="Increase whole miles">+</button>
                   <strong class="wheel-readout whole-mile-readout" id="wholeMileValue">3</strong>
                   <button class="wheel-button" type="button" data-mile-adjust="whole" data-step="-1" aria-label="Decrease whole miles">-</button>
                 </div>
                 <div class="distance-wheel" id="tenthMileWheel" data-distance-control="tenth" role="spinbutton" tabindex="0" aria-label="Tenths of a mile" aria-valuemin="0" aria-valuemax="9" aria-valuenow="0">
                   <span>Tenths</span>
+                  <input class="distance-hidden-input" id="tenthMileSlider" name="tenthMileSlider" type="range" min="0" max="9" step="1" value="0" tabindex="-1" aria-hidden="true">
                   <button class="wheel-button" type="button" data-mile-adjust="tenth" data-step="1" aria-label="Increase tenths">+</button>
                   <strong class="wheel-readout tenth-mile-readout" id="tenthMileValue">.0</strong>
                   <button class="wheel-button" type="button" data-mile-adjust="tenth" data-step="-1" aria-label="Decrease tenths">-</button>
@@ -272,5 +275,6 @@
 
     <script src="app.js"></script>
     <script src="township.js"></script>
+    <script src="distance-picker.js"></script>
   </body>
 </html>
