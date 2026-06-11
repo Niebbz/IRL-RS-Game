@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="workout-history-groups.css?v=4">
     <link rel="stylesheet" href="dungeon-rewards-panel.css?v=1">
     <link rel="stylesheet" href="dungeon-dropdowns.css?v=1">
+    <link rel="stylesheet" href="shop.css?v=1">
     <link rel="stylesheet" href="quests.css?v=3">
   </head>
   <body>
@@ -41,6 +42,7 @@
             <button type="button" data-menu-tab="quests">Quests</button>
             <button type="button" data-menu-tab="pets">Pets</button>
             <button type="button" data-menu-tab="dungeons">Dungeons</button>
+            <button type="button" data-menu-tab="shop">Shop</button>
             <button type="button" data-menu-tab="township">Township</button>
             <button type="button" data-menu-tab="history">Workouts</button>
           </div>
@@ -211,6 +213,54 @@
         </section>
       </main>
 
+      <main class="tab-view" id="shopTab">
+        <section class="panel market-panel" aria-labelledby="marketTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Shop</p>
+              <h2 id="marketTitle">Market</h2>
+            </div>
+          </div>
+
+          <div class="market-summary-grid">
+            <div>
+              <span>Gold</span>
+              <strong id="marketGoldBalance">0</strong>
+            </div>
+            <div>
+              <span>Keys</span>
+              <strong id="marketKeySummary">0</strong>
+            </div>
+            <div>
+              <span>Materials</span>
+              <strong id="marketMaterialSummary">Storehouse locked</strong>
+            </div>
+          </div>
+
+          <div class="market-layout">
+            <section class="market-section" aria-labelledby="marketKeysTitle">
+              <div class="section-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Keys</p>
+                  <h2 id="marketKeysTitle">Dungeon Keys</h2>
+                </div>
+              </div>
+              <div class="market-stock-grid" id="marketKeyShop"></div>
+            </section>
+
+            <section class="market-section" aria-labelledby="marketMaterialsTitle">
+              <div class="section-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Township</p>
+                  <h2 id="marketMaterialsTitle">Supplies and Materials</h2>
+                </div>
+              </div>
+              <div class="market-stock-grid" id="marketMaterialShop"></div>
+            </section>
+          </div>
+        </section>
+      </main>
+
       <main class="tab-view" id="townshipTab">
         <section class="panel" aria-labelledby="townshipTitle">
           <div class="section-heading">
@@ -295,6 +345,7 @@
     <script src="workout-history-groups.js?v=4"></script>
     <script src="dungeon-rewards-panel.js?v=1"></script>
     <script src="dungeon-dropdowns.js?v=1"></script>
+    <script src="shop.js?v=1"></script>
     <script src="quests.js?v=4"></script>
   </body>
 </html>
