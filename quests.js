@@ -39,6 +39,20 @@
     iron: 0,
     rune: 0
   };
+  const buildingMaterialCosts = {
+    storehouse: {},
+    palisade: { timber: 12, stone: 6 },
+    "trade-post": { timber: 10, supplies: 8 },
+    blacksmith: { timber: 6, stone: 12, iron: 8 },
+    watchtower: { timber: 18, stone: 12, supplies: 8 },
+    barracks: { timber: 24, stone: 14, iron: 8 },
+    stables: { timber: 20, stone: 6, supplies: 16 },
+    marketplace: { timber: 24, stone: 10, iron: 6, supplies: 18 },
+    "stone-walls": { timber: 16, stone: 40, iron: 18 },
+    "guild-hall": { timber: 32, stone: 28, iron: 14, supplies: 18 },
+    "cartographers-lodge": { timber: 28, stone: 12, iron: 6, supplies: 24 },
+    "town-hall": { timber: 50, stone: 45, iron: 24, supplies: 30 }
+  };
   const tierOrder = ["Novice", "Apprentice", "Adept", "Veteran", "Master"];
   const tierUnlockPoints = {
     Novice: 0,
@@ -513,12 +527,10 @@
   }
 
   function spentMaterials(current) {
-    if (typeof townshipBuildings === "undefined") return 0;
-
     let total = 0;
-    for (const building of townshipBuildings) {
-      if (!current.township.fundedProjects?.[building.id] && !current.township.completedBuildings?.[building.id]) continue;
-      total += materialSum(building.funding?.materials);
+    for (const [buildingId, costs] of Object.entries(buildingMaterialCosts)) {
+      if (!current.township.fundedProjects?.[buildingId] && !current.township.completedBuildings?.[buildingId]) continue;
+      total += materialSum(costs);
     }
 
     return total;
