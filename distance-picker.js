@@ -10,6 +10,7 @@
   const wheels = Array.from(document.querySelectorAll("[data-distance-control]"));
 
   if (!amountInput || !workoutType || !row || !wholeInput || !tenthInput || wheels.length === 0) return;
+  // The main app still owns XP math; this helper only removes the old UI cap for runs.
   if (typeof workoutMap !== "undefined" && workoutMap.run) delete workoutMap.run.maxAmount;
 
   function numberFrom(value, fallback) {
@@ -55,6 +56,7 @@
     const normalized = normalizeAmount(amount);
     amountInput.value = String(normalized);
     setHiddenInputs(normalized);
+    // The main app listens to the hidden inputs, so dispatch once to reuse its preview logic.
     wholeInput.dispatchEvent(new Event("input", { bubbles: true }));
     requestAnimationFrame(renderPicker);
   }
@@ -117,6 +119,7 @@
     if (!dragState || dragState.pointerId !== event.pointerId) return;
 
     const delta = dragState.y - event.clientY;
+    // Require a little movement per step so touch/drag input feels deliberate.
     const steps = Math.trunc(delta / 28);
     if (steps === 0) return;
 
