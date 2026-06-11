@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="distance-picker.css">
     <link rel="stylesheet" href="workout-history-groups.css?v=4">
     <link rel="stylesheet" href="dungeon-rewards-panel.css?v=1">
+    <link rel="stylesheet" href="quests.css?v=1">
   </head>
   <body>
     <div class="app-shell">
@@ -37,6 +38,7 @@
           <div class="page-menu-list" id="pageMenu" hidden>
             <button type="button" data-menu-tab="skills">Skills</button>
             <button type="button" data-menu-tab="log">Log Workout</button>
+            <button type="button" data-menu-tab="quests">Quests</button>
             <button type="button" data-menu-tab="pets">Pets</button>
             <button type="button" data-menu-tab="dungeons">Dungeons</button>
             <button type="button" data-menu-tab="township">Township</button>
@@ -118,6 +120,18 @@
 
             <button class="primary-button" type="submit">Add Workout</button>
           </form>
+        </section>
+      </main>
+
+      <main class="tab-view" id="questsTab">
+        <section class="panel" aria-labelledby="questsTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Quests</p>
+              <h2 id="questsTitle">Quest Board</h2>
+            </div>
+          </div>
+          <div class="quest-grid" id="questGrid"></div>
         </section>
       </main>
 
@@ -280,5 +294,6 @@
     <script src="distance-picker.js?v=4"></script>
     <script src="workout-history-groups.js?v=4"></script>
     <script src="dungeon-rewards-panel.js?v=1"></script>
+    <script src="quests.js?v=1"></script>
   </body>
 </html>
