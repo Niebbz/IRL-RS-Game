@@ -1,0 +1,144 @@
+.quest-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.quest-card {
+  display: grid;
+  gap: 14px;
+  min-height: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: linear-gradient(180deg, rgba(22, 27, 36, 0.92), rgba(12, 16, 22, 0.92));
+  box-shadow: var(--shadow);
+}
+
+.quest-card.ready {
+  border-color: rgba(53, 209, 159, 0.42);
+}
+
+.quest-card.completed {
+  border-color: rgba(242, 184, 75, 0.46);
+  background: linear-gradient(180deg, rgba(42, 33, 18, 0.88), rgba(12, 16, 22, 0.94));
+}
+
+.quest-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.quest-card h3 {
+  margin: 0;
+  font-size: 1.08rem;
+}
+
+.quest-tag {
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 9px;
+  color: var(--accent);
+  background: rgba(53, 209, 159, 0.08);
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.quest-description,
+.quest-status,
+.quest-row span {
+  color: var(--muted);
+}
+
+.quest-description {
+  margin: -6px 0 0;
+  line-height: 1.45;
+}
+
+.quest-block {
+  display: grid;
+  gap: 8px;
+}
+
+.quest-block-title {
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.quest-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+  font-size: 0.9rem;
+}
+
+.quest-row strong {
+  color: var(--ink);
+  text-align: right;
+}
+
+.quest-reward-row strong {
+  color: var(--accent-2);
+}
+
+.quest-card-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-top: auto;
+}
+
+.quest-status {
+  font-size: 0.86rem;
+  font-weight: 850;
+}
+
+.quest-card.ready .quest-status,
+.quest-card.completed .quest-status {
+  color: var(--accent);
+}
+
+.quest-card .secondary-button,
+.quest-card .primary-button {
+  min-width: 138px;
+  padding: 0 14px;
+}
+
+.quest-card button:disabled {
+  cursor: default;
+  opacity: 0.64;
+}
+
+@media (max-width: 860px) {
+  .quest-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .quest-card-footer,
+  .quest-card-header,
+  .quest-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .quest-row strong {
+    text-align: left;
+  }
+
+  .quest-card .secondary-button,
+  .quest-card .primary-button {
+    width: 100%;
+  }
+}
