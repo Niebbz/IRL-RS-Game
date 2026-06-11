@@ -18,4 +18,17 @@
       state.township.materials[materialId] += amount;
     }
   };
+
+  if (!document.querySelector('link[href^="township-upgrades.css"]')) {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "township-upgrades.css?v=1";
+    document.head.appendChild(link);
+  }
+
+  if (!document.querySelector('script[src^="township-upgrades.js"]')) {
+    const script = document.createElement("script");
+    script.src = "township-upgrades.js?v=1";
+    document.body.appendChild(script);
+  }
 })();
