@@ -169,15 +169,7 @@
               <div class="inventory-grid" id="keyInventory"></div>
             </section>
 
-            <section class="dungeon-panel" aria-labelledby="shopTitle">
-              <div class="section-heading compact-heading">
-                <div>
-                  <p class="eyebrow">Shop</p>
-                  <h2 id="shopTitle">Key Shop</h2>
-                </div>
-              </div>
-              <div class="shop-list" id="keyShop"></div>
-            </section>
+            <div class="shop-list" id="keyShop" hidden></div>
 
             <section class="dungeon-panel wide-panel" aria-labelledby="activeDungeonTitle">
               <div class="section-heading compact-heading">
@@ -340,12 +332,14 @@
     </div>
 
     <script src="app.js?v=5"></script>
-    <script src="township.js"></script>
+    <script src="township.js?v=2"></script>
+    <script src="township-loader-fix.js?v=1"></script>
     <script src="distance-picker.js?v=4"></script>
     <script src="workout-history-groups.js?v=4"></script>
     <script src="dungeon-rewards-panel.js?v=1"></script>
     <script src="dungeon-dropdowns.js?v=1"></script>
-    <script src="shop.js?v=1"></script>
+    <script src="shop-compat.js?v=1"></script>
+    <script src="shop.js?v=2"></script>
     <script src="quests.js?v=4"></script>
   </body>
 </html>
