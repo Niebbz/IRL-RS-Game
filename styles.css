@@ -469,7 +469,7 @@ input:focus {
   box-shadow: 0 0 0 3px rgba(53, 209, 159, 0.12);
 }
 
-.mile-slider-row {
+.mile-picker-row {
   display: grid;
   gap: 10px;
   border: 1px solid var(--line);
@@ -490,51 +490,83 @@ input:focus {
 }
 
 .range-heading span,
-.distance-slider span {
+.distance-wheel span {
   color: var(--muted);
   font-size: 0.78rem;
   font-weight: 900;
   text-transform: uppercase;
 }
 
-input[type="range"] {
-  min-height: 28px;
-  border: 0;
-  margin: 0;
-  padding: 0;
-  accent-color: var(--accent);
-  background: transparent;
-}
-
-.distance-slider-grid {
+.distance-picker-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(120px, 1fr));
   gap: 12px;
 }
 
-.distance-slider {
+.distance-wheel {
   display: grid;
-  min-height: 244px;
-  gap: 10px;
+  gap: 8px;
   justify-items: center;
   align-items: center;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 12px;
   background: rgba(255, 255, 255, 0.04);
+  touch-action: none;
+  user-select: none;
 }
 
-.distance-slider input[type="range"] {
-  width: 34px;
-  height: 160px;
-  writing-mode: vertical-lr;
-  direction: rtl;
-  -webkit-appearance: slider-vertical;
+.distance-wheel:focus {
+  border-color: rgba(53, 209, 159, 0.8);
+  box-shadow: 0 0 0 3px rgba(53, 209, 159, 0.12);
+  outline: none;
 }
 
-.distance-slider strong {
+.wheel-button {
+  width: 44px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 1.1rem;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.wheel-button:hover,
+.wheel-button:focus {
+  border-color: rgba(53, 209, 159, 0.75);
+  background: rgba(53, 209, 159, 0.16);
+  outline: none;
+}
+
+.wheel-readout {
+  display: grid;
+  min-width: 3ch;
+  min-height: 64px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 8px;
   color: var(--accent-2);
-  font-size: 1rem;
+  background: rgba(0, 0, 0, 0.18);
+  font-size: 2rem;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.whole-mile-readout {
+  width: 3.2ch;
+}
+
+.tenth-mile-readout {
+  width: 2.4ch;
+}
+
+.distance-wheel strong {
+  color: var(--accent-2);
 }
 
 .number-row {
@@ -567,7 +599,7 @@ input[type="range"] {
 
 .dungeon-layout,
 .township-layout,
-.inventory-grid,
+inventory-grid,
 .township-summary-grid,
 .material-grid,
 .building-grid,
