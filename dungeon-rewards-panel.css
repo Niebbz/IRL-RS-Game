@@ -1,0 +1,30 @@
+.dungeon-card {
+  display: grid;
+  gap: 7px;
+}
+
+.dungeon-rewards-button {
+  margin-top: 6px;
+}
+
+.dungeon-reward-panel {
+  display: grid;
+  gap: 7px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 9px 0;
+}
+
+.dungeon-reward-panel[hidden] {
+  display: none;
+}
+
+.dungeon-reward-row {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+.dungeon-card .dungeon-status {
+  margin-top: 2px;
+}
