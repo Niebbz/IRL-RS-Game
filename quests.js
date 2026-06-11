@@ -770,6 +770,63 @@
     return card;
   }
 
+  function completedQuestList() {
+    return quests
+      .filter((quest) => questState.completed[quest.id])
+      .sort((left, right) => {
+        const leftDate = new Date(questState.completed[left.id]?.completedAt ?? 0).getTime();
+        const rightDate = new Date(questState.completed[right.id]?.completedAt ?? 0).getTime();
+        return rightDate - leftDate;
+      });
+  }
+
+  function renderCompletedQuestCard(quest) {
+    const completedAt = formatQuestDate(questState.completed[quest.id]?.completedAt);
+    const card = document.createElement("article");
+
+    card.className = "quest-card completed completed-quest-card";
+    card.innerHTML = `
+      <div class="quest-card-header">
+        <div>
+          <h3>${quest.name}</h3>
+          <p class="quest-description">${completedAt ? `Completed ${completedAt}` : "Completed"}</p>
+        </div>
+        <span class="quest-tag">${quest.tier}</span>
+      </div>
+      <div class="quest-block">
+        <div class="quest-block-title">Rewards</div>
+        ${rewardRows(quest.rewards)}
+      </div>
+    `;
+
+    return card;
+  }
+
+  function renderCompletedQuestSection() {
+    const completed = completedQuestList();
+    const section = document.createElement("section");
+
+    section.className = "completed-quest-section";
+    section.innerHTML = `
+      <details class="completed-quest-details">
+        <summary>
+          <span>Completed Quests</span>
+          <strong>${numberText(completed.length)} / ${numberText(quests.length)}</strong>
+        </summary>
+        <div class="completed-quest-grid"></div>
+      </details>
+    `;
+
+    const grid = section.querySelector(".completed-quest-grid");
+    if (completed.length === 0) {
+      grid.innerHTML = `<div class="empty-state">No completed quests yet.</div>`;
+      return section;
+    }
+
+    for (const quest of completed) grid.appendChild(renderCompletedQuestCard(quest));
+    return section;
+  }
+
   function renderQuests() {
     const questGrid = document.querySelector("#questGrid");
     if (!questGrid) return;
@@ -779,7 +836,7 @@
     questGrid.innerHTML = renderQuestSummary(current);
 
     for (const tier of tierOrder) {
-      const tierQuests = quests.filter((quest) => quest.tier === tier);
+      const tierQuests = quests.filter((quest) => quest.tier === tier && !questState.completed[quest.id]);
       if (tierQuests.length === 0) continue;
 
       const tierSection = document.createElement("section");
@@ -799,6 +856,8 @@
       for (const quest of tierQuests) tierGrid.appendChild(renderQuestCard(quest, current));
       questGrid.appendChild(tierSection);
     }
+
+    questGrid.appendChild(renderCompletedQuestSection());
   }
 
   function lowestSkillId(current) {
