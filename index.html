@@ -80,11 +80,18 @@
               <option value="pull">Pull day - Strength</option>
               <option value="legs">Leg day - Defense</option>
               <option value="run">Run - Agility</option>
-              <option value="pushups">Push-ups - HP</option>
-              <option value="bodyweightSquats">Bodyweight squats - HP</option>
-              <option value="pullups">Pull-ups - HP</option>
-              <option value="plank">Plank - HP</option>
+              <option value="hp">HP - Bodyweight</option>
             </select>
+
+            <div class="hp-exercise-row" id="hpExerciseRow" hidden>
+              <label for="hpExercise">HP exercise</label>
+              <select id="hpExercise" name="hpExercise">
+                <option value="pushups">Push-ups</option>
+                <option value="bodyweightSquats">Bodyweight squats</option>
+                <option value="pullups">Pull-ups</option>
+                <option value="plank">Plank</option>
+              </select>
+            </div>
 
             <div class="number-row">
               <div id="amountField">
@@ -353,7 +360,7 @@
     </div>
 
     <script src="app.js?v=7"></script>
-    <script src="hp-skill.js?v=1"></script>
+    <script src="hp-skill.js?v=2"></script>
     <script src="township.js?v=2"></script>
     <script src="township-loader-fix.js?v=1"></script>
     <script src="distance-picker.js?v=4"></script>
