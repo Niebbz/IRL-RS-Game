@@ -10,15 +10,17 @@
   const wheels = Array.from(document.querySelectorAll("[data-distance-control]"));
 
   if (!amountInput || !workoutType || !row || !wholeInput || !tenthInput || wheels.length === 0) return;
+  if (typeof workoutMap !== "undefined" && workoutMap.run) delete workoutMap.run.maxAmount;
 
   function numberFrom(value, fallback) {
+    if (value === "" || value === null || value === undefined) return fallback;
     const parsed = Number(value);
     return Number.isFinite(parsed) ? parsed : fallback;
   }
 
   function normalizeAmount(value) {
     const min = numberFrom(amountInput.min, 0.1);
-    const max = numberFrom(amountInput.max, 26.2);
+    const max = numberFrom(amountInput.max, Number.POSITIVE_INFINITY);
     const clamped = Math.min(max, Math.max(min, numberFrom(value, min)));
     return Math.round(clamped * 10) / 10;
   }
