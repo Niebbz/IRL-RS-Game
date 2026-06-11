@@ -53,6 +53,7 @@ select {
 .skill-top,
 .skill-footer,
 .dungeon-card-top,
+.building-heading,
 .shop-row,
 .workout-log li {
   display: flex;
@@ -63,6 +64,7 @@ select {
 .topbar,
 .section-heading,
 .dungeon-card-top,
+.building-heading,
 .shop-row,
 .workout-log li {
   align-items: center;
@@ -114,6 +116,12 @@ h2 {
 .pet-card,
 .dungeon-panel,
 .dungeon-card,
+.township-panel,
+.building-card,
+.township-project-card,
+.township-summary-grid div,
+.material-card,
+.building-costs div,
 .inventory-grid div,
 .shop-row,
 .workout-log li,
@@ -312,7 +320,10 @@ button:disabled {
 .skill-card,
 .pet-card,
 .dungeon-panel,
-.dungeon-card {
+.dungeon-card,
+.township-panel,
+.building-card,
+.township-project-card {
   position: relative;
   overflow: hidden;
   background: linear-gradient(180deg, rgba(31, 38, 50, 0.96), rgba(16, 20, 27, 0.96));
@@ -327,7 +338,10 @@ button:disabled {
 .skill-card::before,
 .pet-card::before,
 .dungeon-panel::before,
-.dungeon-card::before {
+.dungeon-card::before,
+.township-panel::before,
+.building-card::before,
+.township-project-card::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -552,7 +566,14 @@ input[type="range"] {
 }
 
 .dungeon-layout,
+.township-layout,
 .inventory-grid,
+.township-summary-grid,
+.material-grid,
+.building-grid,
+.building-stage-group,
+.project-progress-list,
+.requirement-list,
 .shop-list,
 .dungeon-selection,
 .dungeon-tier-grid {
@@ -560,11 +581,13 @@ input[type="range"] {
   gap: 12px;
 }
 
-.dungeon-layout {
+.dungeon-layout,
+.township-layout {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.dungeon-panel {
+.dungeon-panel,
+.township-panel {
   padding: 14px;
 }
 
@@ -650,6 +673,132 @@ input[type="range"] {
 .dungeon-card .secondary-button {
   width: 100%;
   margin-top: 10px;
+}
+
+.township-summary-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.township-summary-grid div,
+.material-card,
+.building-costs div {
+  padding: 12px;
+  background: rgba(16, 20, 27, 0.78);
+}
+
+.township-summary-grid span,
+.material-card span,
+.building-costs span,
+.requirement-list span,
+.project-progress-row span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 850;
+}
+
+.township-summary-grid strong,
+.material-card strong,
+.building-costs strong {
+  display: block;
+  color: var(--accent-2);
+  font-size: 1.15rem;
+}
+
+.material-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.building-stage-group {
+  margin-bottom: 16px;
+}
+
+.building-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.building-card,
+.township-project-card {
+  padding: 14px;
+}
+
+.building-card.completed {
+  border-color: rgba(53, 209, 159, 0.42);
+}
+
+.building-card.locked {
+  opacity: 0.66;
+}
+
+.building-heading {
+  justify-content: flex-start;
+}
+
+.building-image,
+.history-building-image {
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.42));
+}
+
+.building-image {
+  width: 76px;
+  height: 76px;
+  flex: 0 0 76px;
+}
+
+.history-building-image {
+  width: 58px;
+  height: 58px;
+}
+
+.building-name {
+  font-size: 1.05rem;
+  font-weight: 950;
+}
+
+.building-stage,
+.building-role,
+.building-status {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.building-role {
+  margin: 10px 0;
+}
+
+.building-costs {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.requirement-list div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 0;
+  border-top: 1px solid var(--line);
+}
+
+.requirement-list strong,
+.project-progress-row strong {
+  color: var(--ink);
+  font-size: 0.84rem;
+}
+
+.building-card .secondary-button,
+.township-project-card .secondary-button {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.project-progress-row {
+  display: grid;
+  gap: 7px;
 }
 
 .workout-log li {
@@ -760,7 +909,8 @@ input[type="range"] {
 }
 
 .gold-drop,
-.dungeon-note {
+.dungeon-note,
+.township-note {
   margin-top: 4px;
   font-size: 0.82rem;
   font-weight: 900;
@@ -770,7 +920,8 @@ input[type="range"] {
   color: var(--accent-2);
 }
 
-.dungeon-note {
+.dungeon-note,
+.township-note {
   color: var(--accent);
 }
 
@@ -778,7 +929,11 @@ input[type="range"] {
   .skill-grid,
   .pet-grid,
   .dungeon-layout,
+  .township-layout,
   .inventory-grid,
+  .township-summary-grid,
+  .material-grid,
+  .building-grid,
   .dungeon-tier-grid {
     grid-template-columns: 1fr;
   }
@@ -798,6 +953,7 @@ input[type="range"] {
   .topbar,
   .skill-footer,
   .dungeon-card-top,
+  .building-heading,
   .shop-row,
   .dungeon-group-heading,
   .workout-log li {
@@ -815,6 +971,10 @@ input[type="range"] {
   }
 
   .number-row {
+    grid-template-columns: 1fr;
+  }
+
+  .building-costs {
     grid-template-columns: 1fr;
   }
 

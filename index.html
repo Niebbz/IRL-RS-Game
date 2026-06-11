@@ -36,6 +36,7 @@
             <button type="button" data-menu-tab="log">Log Workout</button>
             <button type="button" data-menu-tab="pets">Pets</button>
             <button type="button" data-menu-tab="dungeons">Dungeons</button>
+            <button type="button" data-menu-tab="township">Township</button>
             <button type="button" data-menu-tab="history">Workouts</button>
           </div>
         </div>
@@ -189,6 +190,70 @@
         </section>
       </main>
 
+      <main class="tab-view" id="townshipTab">
+        <section class="panel" aria-labelledby="townshipTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Township</p>
+              <h2 id="townshipTitle">Forgehold</h2>
+            </div>
+          </div>
+
+          <div class="township-layout">
+            <section class="township-panel wide-panel" aria-labelledby="townshipSummaryTitle">
+              <div class="section-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Settlement</p>
+                  <h2 id="townshipSummaryTitle">Town Status</h2>
+                </div>
+              </div>
+              <div id="townshipSummary"></div>
+            </section>
+
+            <section class="township-panel" aria-labelledby="storehouseTitle">
+              <div class="section-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Inventory</p>
+                  <h2 id="storehouseTitle">Storehouse</h2>
+                </div>
+              </div>
+              <div id="storehouseInventory"></div>
+            </section>
+
+            <section class="township-panel" aria-labelledby="activeProjectTitle">
+              <div class="section-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Active</p>
+                  <h2 id="activeProjectTitle">Current Project</h2>
+                </div>
+              </div>
+              <div id="activeTownshipProject"></div>
+            </section>
+
+            <section class="township-panel wide-panel" aria-labelledby="buildingsTitle">
+              <div class="section-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Build</p>
+                  <h2 id="buildingsTitle">Buildings</h2>
+                </div>
+              </div>
+              <div id="townshipBuildings"></div>
+            </section>
+
+            <section class="township-panel wide-panel" aria-labelledby="townshipHistoryTitle">
+              <div class="section-heading compact-heading">
+                <div>
+                  <p class="eyebrow">History</p>
+                  <h2 id="townshipHistoryTitle">Township History</h2>
+                </div>
+              </div>
+              <div class="empty-state" id="emptyTownshipHistory">No buildings completed yet.</div>
+              <ol class="workout-log township-history" id="townshipHistory"></ol>
+            </section>
+          </div>
+        </section>
+      </main>
+
       <main class="tab-view" id="historyTab">
         <section class="panel log-panel" aria-labelledby="logTitle">
           <div class="section-heading">
@@ -204,5 +269,6 @@
     </div>
 
     <script src="app.js"></script>
+    <script src="township.js"></script>
   </body>
 </html>
