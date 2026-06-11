@@ -57,14 +57,16 @@
   }
 
   function sortGroups(root) {
-    const groups = Array.from(root.querySelectorAll(":scope > .dungeon-skill-group"));
-    groups
+    const sortedGroups = Array.from(root.querySelectorAll(":scope > .dungeon-skill-group"))
       .sort((left, right) => {
         const leftTitle = left.querySelector("h3")?.textContent.trim() ?? "";
         const rightTitle = right.querySelector("h3")?.textContent.trim() ?? "";
         return skillOrder.indexOf(leftTitle) - skillOrder.indexOf(rightTitle);
-      })
-      .forEach((group) => root.appendChild(group));
+      });
+
+    sortedGroups.forEach((group, index) => {
+      if (root.children[index] !== group) root.insertBefore(group, root.children[index] ?? null);
+    });
   }
 
   function enhanceDungeonDropdowns() {
