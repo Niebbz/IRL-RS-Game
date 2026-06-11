@@ -1,11 +1,50 @@
 (function () {
-  if (
-    typeof renderLog !== "function" ||
-    typeof workoutLog === "undefined" ||
-    typeof emptyLog === "undefined" ||
-    typeof state === "undefined"
-  ) {
-    return;
+  const storageKeys = ["irl-rs-game-state-v2", "irl-rs-game-state-v1"];
+  const materialNames = { timber: "Timber", stone: "Stone", iron: "Iron", supplies: "Supplies" };
+  const skillUnits = {
+    attack: "minute",
+    strength: "minute",
+    defense: "minute",
+    agility: "mile",
+    discipline: "workout"
+  };
+
+  function readSavedState() {
+    for (const key of storageKeys) {
+      const saved = localStorage.getItem(key);
+      if (!saved) continue;
+
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return { log: [] };
+      }
+    }
+
+    return { log: [] };
+  }
+
+  function formatNumber(value) {
+    return Math.round(value ?? 0).toLocaleString();
+  }
+
+  function formatAmount(value) {
+    return Number(value ?? 0).toLocaleString(undefined, {
+      maximumFractionDigits: 1
+    });
+  }
+
+  function formatLoggedDate(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "Date unknown";
+
+    return date.toLocaleString([], {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit"
+    });
   }
 
   function logMonthKey(value) {
@@ -29,6 +68,21 @@
     return `${count.toLocaleString()} workout${count === 1 ? "" : "s"}`;
   }
 
+  function materialEntries(materials) {
+    return Object.entries(materials ?? {}).filter(([, amount]) => amount > 0);
+  }
+
+  function formatMaterials(materials) {
+    return materialEntries(materials)
+      .map(([materialId, amount]) => `+${formatNumber(amount)} ${materialNames[materialId] ?? materialId}`)
+      .join(", ");
+  }
+
+  function workoutRequirementText(skillId, amount) {
+    const unit = skillUnits[skillId] ?? "unit";
+    return `${formatAmount(amount)} ${unit}${amount === 1 ? "" : "s"}`;
+  }
+
   function createWorkoutLogItem(entry, index) {
     const item = document.createElement("li");
     const dropText = entry.petDrops?.length
@@ -40,8 +94,9 @@
     const dungeonProgressText = entry.dungeonContribution
       ? `<div class="dungeon-note">+${formatAmount(entry.dungeonContribution.amount)} ${entry.dungeonContribution.unit} toward ${entry.dungeonContribution.dungeonName}</div>`
       : "";
+    const dungeonMaterials = formatMaterials(entry.dungeonCompleted?.materialRewards);
     const dungeonCompleteText = entry.dungeonCompleted
-      ? `<div class="dungeon-note">Dungeon Cleared: ${entry.dungeonCompleted.dungeonName}<br>+${formatNumber(entry.dungeonCompleted.bonusXP)} bonus ${entry.dungeonCompleted.skillName} XP${materialEntries(entry.dungeonCompleted.materialRewards).length > 0 ? `<br>Materials: ${formatMaterials(entry.dungeonCompleted.materialRewards)}` : ""}</div>`
+      ? `<div class="dungeon-note">Dungeon Cleared: ${entry.dungeonCompleted.dungeonName}<br>+${formatNumber(entry.dungeonCompleted.bonusXP)} bonus ${entry.dungeonCompleted.skillName} XP${dungeonMaterials ? `<br>Materials: ${dungeonMaterials}` : ""}</div>`
       : "";
     const townshipText = entry.townshipContribution
       ? `<div class="township-note">Township: ${Object.entries(entry.townshipContribution.contributions ?? {}).map(([skillId, value]) => workoutRequirementText(skillId, value)).join(", ")} toward ${entry.townshipContribution.buildingName}${entry.townshipContribution.completedBuilding ? `<br>Building Completed: ${entry.townshipContribution.completedBuilding.buildingName}` : ""}</div>`
@@ -67,14 +122,21 @@
     return item;
   }
 
-  renderLog = function renderGroupedLog() {
+  function renderGroupedLog() {
+    const workoutLog = document.querySelector("#workoutLog");
+    const emptyLog = document.querySelector("#emptyLog");
+    if (!workoutLog || !emptyLog) return;
+
+    const savedState = readSavedState();
+    const log = Array.isArray(savedState.log) ? savedState.log : [];
+
     workoutLog.innerHTML = "";
-    emptyLog.hidden = state.log.length > 0;
+    emptyLog.hidden = log.length > 0;
 
     const groups = [];
     const groupsByMonth = new Map();
 
-    for (const [index, entry] of state.log.entries()) {
+    for (const [index, entry] of log.entries()) {
       const key = logMonthKey(entry.createdAt);
       if (!groupsByMonth.has(key)) {
         const group = {
@@ -114,7 +176,8 @@
       groupItem.appendChild(details);
       workoutLog.appendChild(groupItem);
     }
-  };
+  }
 
-  render();
+  renderLog = renderGroupedLog;
+  renderGroupedLog();
 })();
