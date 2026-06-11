@@ -25,6 +25,7 @@
     skillImage: hpIconDataUri(),
     color: "#18a0a8"
   };
+  const hpExerciseIds = ["pushups", "bodyweightSquats", "pullups", "plank"];
 
   function ensureHPStyles() {
     if (document.querySelector("#hp-skill-styles")) return;
@@ -39,6 +40,16 @@
         border-radius: 8px;
         padding: 13px;
         background: rgba(16, 20, 27, 0.78);
+      }
+
+      .hp-exercise-row {
+        display: grid;
+        gap: 7px;
+      }
+
+      .hp-exercise-row[hidden],
+      .plank-picker-row[hidden] {
+        display: none;
       }
 
       .plank-time-grid {
@@ -127,23 +138,73 @@
   const hpMileSliderRow = document.querySelector("#mileSliderRow");
   const hpAmountField = document.querySelector("#amountField") ?? hpAmountInput?.closest("div");
 
+  function ensureHPExercisePicker() {
+    let row = document.querySelector("#hpExerciseRow");
+    if (row) return row;
+
+    if (!hpWorkoutType) return null;
+
+    row = document.createElement("div");
+    row.className = "hp-exercise-row";
+    row.id = "hpExerciseRow";
+    row.hidden = true;
+    row.innerHTML = `
+      <label for="hpExercise">HP exercise</label>
+      <select id="hpExercise" name="hpExercise">
+        <option value="pushups">Push-ups</option>
+        <option value="bodyweightSquats">Bodyweight squats</option>
+        <option value="pullups">Pull-ups</option>
+        <option value="plank">Plank</option>
+      </select>
+    `;
+    hpWorkoutType.insertAdjacentElement("afterend", row);
+    return row;
+  }
+
+  const hpExerciseRow = ensureHPExercisePicker();
+  const hpExerciseSelect = document.querySelector("#hpExercise");
+
   function ensureWorkoutOptions() {
     if (!hpWorkoutType) return;
 
-    const options = [
+    const priorValue = hpWorkoutType.value;
+    const exerciseOptions = [
       ["pushups", "Push-ups - HP"],
       ["bodyweightSquats", "Bodyweight squats - HP"],
       ["pullups", "Pull-ups - HP"],
       ["plank", "Plank - HP"]
     ];
 
-    for (const [value, label] of options) {
-      if (hpWorkoutType.querySelector(`option[value="${value}"]`)) continue;
-      const option = document.createElement("option");
-      option.value = value;
-      option.textContent = label;
-      hpWorkoutType.appendChild(option);
+    if (hpExerciseIds.includes(priorValue) && hpExerciseSelect) hpExerciseSelect.value = priorValue;
+
+    for (const [value] of exerciseOptions) {
+      hpWorkoutType.querySelector(`option[value="${value}"]`)?.remove();
     }
+
+    let hpOption = hpWorkoutType.querySelector('option[value="hp"]');
+    if (!hpOption) {
+      const option = document.createElement("option");
+      option.value = "hp";
+      option.textContent = "HP - Bodyweight";
+      const runOption = hpWorkoutType.querySelector('option[value="run"]');
+      if (runOption) {
+        runOption.insertAdjacentElement("afterend", option);
+      } else {
+        hpWorkoutType.appendChild(option);
+      }
+      hpOption = option;
+    }
+
+    hpOption.textContent = "HP - Bodyweight";
+    if (hpExerciseIds.includes(priorValue)) hpWorkoutType.value = "hp";
+  }
+
+  function selectedWorkout() {
+    if (hpWorkoutType?.value !== "hp") return workoutMap[hpWorkoutType?.value];
+
+    const exercise = workoutMap[hpExerciseSelect?.value] ?? workoutMap.pushups;
+    workoutMap.hp = exercise;
+    return exercise;
   }
 
   function ensurePlankPicker() {
@@ -215,7 +276,7 @@
   }
 
   function syncPlankInputsFromAmount() {
-    const selected = workoutMap[hpWorkoutType?.value];
+    const selected = selectedWorkout();
     if (!isPlankWorkout(selected) || !hpPlankMinutesInput || !hpPlankSecondsInput || !hpPlankTimeValue) return;
 
     const amount = normalizeAmount(selected, hpAmountInput.value);
@@ -263,9 +324,10 @@
   if (typeof updateWorkoutFields === "function" && hpWorkoutType && hpAmountInput) {
     hpWorkoutType.removeEventListener("change", updateWorkoutFields);
     updateWorkoutFields = function () {
-      const selected = workoutMap[hpWorkoutType.value];
+      const selected = selectedWorkout();
       if (!selected) return;
 
+      if (hpExerciseRow) hpExerciseRow.hidden = hpWorkoutType.value !== "hp";
       hpAmountLabel.textContent = selected.unit;
       hpAmountInput.min = selected.minAmount;
       if (selected.maxAmount) {
@@ -285,10 +347,21 @@
     hpWorkoutType.addEventListener("change", updateWorkoutFields);
   }
 
+  if (typeof updatePreviews === "function" && hpAmountInput) {
+    updatePreviews = function () {
+      const selected = selectedWorkout();
+      if (!selected) return;
+
+      const amount = normalizeAmount(selected, hpAmountInput.value);
+      xpPreview.textContent = formatNumber(xpForWorkout(selected, amount));
+      goldPreview.textContent = formatNumber(goldForWorkout(selected, amount));
+    };
+  }
+
   if (typeof updateAmountFromInput === "function" && hpAmountInput) {
     hpAmountInput.removeEventListener("input", updateAmountFromInput);
     updateAmountFromInput = function () {
-      const selected = workoutMap[hpWorkoutType.value];
+      const selected = selectedWorkout();
       const parsed = Number(hpAmountInput.value);
       if (selected.skillId === "agility" && Number.isFinite(parsed) && parsed >= selected.minAmount) {
         const amount = normalizeAmount(selected, parsed);
@@ -313,13 +386,16 @@
 
   hpPlankMinutesInput?.addEventListener("input", updateAmountFromPlankInputs);
   hpPlankSecondsInput?.addEventListener("input", updateAmountFromPlankInputs);
+  hpExerciseSelect?.addEventListener("change", () => {
+    if (hpWorkoutType?.value === "hp" && typeof updateWorkoutFields === "function") updateWorkoutFields();
+  });
 
   if (typeof addWorkout === "function" && typeof workoutForm !== "undefined") {
     workoutForm.removeEventListener("submit", addWorkout);
     addWorkout = function (event) {
       event.preventDefault();
 
-      const selected = workoutMap[hpWorkoutType.value];
+      const selected = selectedWorkout();
       const amount = normalizeAmount(selected, hpAmountInput.value);
       if (amount <= 0) return;
 
