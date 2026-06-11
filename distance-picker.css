@@ -1,3 +1,4 @@
+/* The visible picker is custom, but these inputs keep the original app listeners in sync. */
 .distance-hidden-input {
   position: absolute;
   width: 1px;
