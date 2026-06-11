@@ -132,6 +132,21 @@
     if (dragState?.pointerId === event.pointerId) dragState = null;
   }
 
+  function loadWorkoutHistoryGroups() {
+    if (!document.querySelector('link[href="workout-history-groups.css"]')) {
+      const stylesheet = document.createElement("link");
+      stylesheet.rel = "stylesheet";
+      stylesheet.href = "workout-history-groups.css";
+      document.head.appendChild(stylesheet);
+    }
+
+    if (!document.querySelector('script[src="workout-history-groups.js"]')) {
+      const script = document.createElement("script");
+      script.src = "workout-history-groups.js";
+      document.body.appendChild(script);
+    }
+  }
+
   for (const wheel of wheels) {
     wheel.addEventListener("click", handleClick);
     wheel.addEventListener("wheel", handleWheel, { passive: false });
@@ -147,5 +162,6 @@
   tenthInput.addEventListener("input", () => requestAnimationFrame(renderPicker));
   workoutType.addEventListener("change", () => requestAnimationFrame(renderPicker));
 
+  loadWorkoutHistoryGroups();
   requestAnimationFrame(renderPicker);
 })();
