@@ -1,9 +1,12 @@
+// Load the original Township engine, then patch small UX gaps without rewriting the whole feature.
 (function(){if(typeof currentTownStageName==='function'||document.body.dataset.townshipEngineLoader)return;document.body.dataset.townshipEngineLoader='true';const engineUrl='https://raw.githubusercontent.com/Niebbz/IRL-RS-Game/f03e3201f0b7a11bdd3a1798be24a45bb44ec37a/township.js';function polishTownship(){const storehouse=document.querySelector('#storehouseInventory .empty-state');if(storehouse&&storehouse.textContent.trim()==='Build the Storehouse to unlock materials.')storehouse.textContent='Build the Storehouse to unlock materials. Starter stockpile: 10 Timber, 5 Stone, 2 Iron, 5 Supplies.';const active=document.querySelector('#activeTownshipProject .empty-state');if(active&&active.textContent.trim()==='No active project.')active.textContent='No active project. Choose a building below to fund and start.';document.querySelectorAll('#townshipBuildings .building-card').forEach((card)=>{const button=card.querySelector('[data-start-building]');const status=card.querySelector('.building-status');if(!button||!status)return;if(button.disabled&&/Needs gold or materials/i.test(status.textContent)){button.disabled=false;button.textContent='View Cost';button.dataset.viewCostOnly='true';}});}document.addEventListener('click',(event)=>{const button=event.target.closest('#townshipBuildings [data-view-cost-only]');if(!button)return;event.preventDefault();event.stopImmediatePropagation();const card=button.closest('.building-card');const name=card?.querySelector('.building-name')?.textContent??'this building';const status=card?.querySelector('.building-status')?.textContent??'Need more gold or materials';window.alert(status+' to fund '+name+'.');},true);fetch(engineUrl).then((response)=>{if(!response.ok)throw new Error('Township engine failed to load: '+response.status);return response.text();}).then((source)=>{source=source.replace('if (typeof townshipBuildings !== \"undefined\") return;','if (false) return;');eval(source);const engineRender=render;render=function(){engineRender();polishTownship();};render();}).catch((error)=>{console.error(error);townshipSummary.textContent='Township could not load. Refresh the page and try again.';});})();
+// Dungeon chests are layered on top of the base dungeon system so older saves still work.
 (function(){
   const materialNames = { timber: "Timber", stone: "Stone", iron: "Iron", supplies: "Supplies" };
   const keyNames = { bronze: "Bronze Key", iron: "Iron Key", rune: "Gold Key" };
   const keyOrder = ["bronze", "iron", "rune"];
   const legacySupplyByTier = { bronze: 5, iron: 15, rune: 40 };
+  // Higher-tier chests give more rolls, but rare keys stay unlikely enough to protect the key shop.
   const chestTables = {
     bronze: {
       supplies: [2, 5],
@@ -77,6 +80,7 @@
   function rollKeyDrop(keyDrops) {
     const roll = Math.random();
     let threshold = 0;
+    // Check rarest keys first so one chest can only award one key.
     for (const id of ["rune", "iron", "bronze"]) {
       threshold += keyDrops[id] ?? 0;
       if (roll < threshold) return id;
@@ -119,6 +123,7 @@
     }
 
     const materials = {};
+    // Older chests were saved as flat material maps; keep them readable and reversible.
     for (const [id, amount] of Object.entries(chest)) {
       if (id in materialNames) materials[id] = amount;
     }
@@ -227,6 +232,7 @@
       progressActiveDungeon = function (selected, amount) {
         const result = baseProgressActiveDungeon(selected, amount);
         if (result?.completed && !result.completed.supplyChest) {
+          // Attach the exact rolled chest to the completion record so history and deletes match.
           const chest = rollSupplyChest(result.completed.tier);
           result.completed.supplyChest = chest;
           applyChestRewards(chest, 1);
@@ -266,6 +272,7 @@
 
   patchDungeonSystems();
   let passes = 0;
+  // The Township engine loads asynchronously, so retry patching briefly until its functions exist.
   const timer = window.setInterval(() => {
     patchDungeonSystems();
     passes += 1;
