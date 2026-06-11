@@ -133,16 +133,16 @@
   }
 
   function loadWorkoutHistoryGroups() {
-    if (!document.querySelector('link[href="workout-history-groups.css"]')) {
+    if (!document.querySelector('link[href*="workout-history-groups.css?v=3"]')) {
       const stylesheet = document.createElement("link");
       stylesheet.rel = "stylesheet";
-      stylesheet.href = "workout-history-groups.css";
+      stylesheet.href = "workout-history-groups.css?v=3";
       document.head.appendChild(stylesheet);
     }
 
-    if (!document.querySelector('script[src="workout-history-groups.js"]')) {
+    if (!document.querySelector('script[src*="workout-history-groups.js?v=3"]')) {
       const script = document.createElement("script");
-      script.src = "workout-history-groups.js";
+      script.src = "workout-history-groups.js?v=3";
       document.body.appendChild(script);
     }
   }
