@@ -178,6 +178,39 @@
     }
   }
 
-  renderLog = renderGroupedLog;
-  renderGroupedLog();
+  function installGroupedHistoryRender() {
+    if (typeof render === "function" && !render.__workoutHistoryGroups) {
+      const baseRender = render;
+      render = function renderWithGroupedHistory() {
+        baseRender();
+        renderGroupedLog();
+      };
+      render.__workoutHistoryGroups = true;
+    }
+
+    renderGroupedLog();
+
+    const workoutLog = document.querySelector("#workoutLog");
+    if (!workoutLog || workoutLog.__workoutHistoryObserver) return;
+
+    let regroupQueued = false;
+    const observer = new MutationObserver(() => {
+      if (regroupQueued || workoutLog.firstElementChild?.classList.contains("workout-month-group")) return;
+
+      regroupQueued = true;
+      requestAnimationFrame(() => {
+        regroupQueued = false;
+        renderGroupedLog();
+      });
+    });
+
+    observer.observe(workoutLog, { childList: true });
+    workoutLog.__workoutHistoryObserver = observer;
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", installGroupedHistoryRender);
+  } else {
+    installGroupedHistoryRender();
+  }
 })();
