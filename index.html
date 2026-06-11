@@ -80,10 +80,14 @@
               <option value="pull">Pull day - Strength</option>
               <option value="legs">Leg day - Defense</option>
               <option value="run">Run - Agility</option>
+              <option value="pushups">Push-ups - HP</option>
+              <option value="bodyweightSquats">Bodyweight squats - HP</option>
+              <option value="pullups">Pull-ups - HP</option>
+              <option value="plank">Plank - HP</option>
             </select>
 
             <div class="number-row">
-              <div>
+              <div id="amountField">
                 <label for="amount" id="amountLabel">Minutes</label>
                 <input id="amount" name="amount" type="number" min="1" step="1" value="45" inputmode="decimal">
               </div>
@@ -94,6 +98,23 @@
               <div class="xp-preview gold-preview">
                 <span>Gold</span>
                 <strong id="goldPreview">45</strong>
+              </div>
+            </div>
+
+            <div class="plank-picker-row" id="plankTimeRow" hidden>
+              <div class="range-heading">
+                <span>Plank time</span>
+                <strong id="plankTimeValue">1:00</strong>
+              </div>
+              <div class="plank-time-grid">
+                <div>
+                  <label for="plankMinutes">Minutes</label>
+                  <input id="plankMinutes" name="plankMinutes" type="number" min="0" step="1" value="1" inputmode="numeric">
+                </div>
+                <div>
+                  <label for="plankSeconds">Seconds</label>
+                  <input id="plankSeconds" name="plankSeconds" type="number" min="0" max="59" step="1" value="0" inputmode="numeric">
+                </div>
               </div>
             </div>
 
@@ -331,7 +352,8 @@
       </main>
     </div>
 
-    <script src="app.js?v=5"></script>
+    <script src="app.js?v=7"></script>
+    <script src="hp-skill.js?v=1"></script>
     <script src="township.js?v=2"></script>
     <script src="township-loader-fix.js?v=1"></script>
     <script src="distance-picker.js?v=4"></script>
