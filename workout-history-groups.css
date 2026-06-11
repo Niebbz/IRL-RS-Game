@@ -1,0 +1,64 @@
+.workout-log > .workout-month-group {
+  display: block;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.workout-month {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(16, 20, 27, 0.62);
+}
+
+.workout-month summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 16px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.workout-month summary::-webkit-details-marker {
+  display: none;
+}
+
+.workout-month summary::after {
+  content: "v";
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 900;
+  transition: transform 0.18s ease;
+}
+
+.workout-month[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.workout-month-title {
+  font-weight: 950;
+}
+
+.workout-month-count {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+.month-workout-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0 12px 12px;
+  list-style: none;
+}
+
+@media (max-width: 560px) {
+  .workout-month summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
