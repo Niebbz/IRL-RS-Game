@@ -1,0 +1,63 @@
+.dungeon-skill-group {
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 8px;
+  background: rgba(13, 18, 25, 0.72);
+}
+
+.dungeon-group-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  min-height: 56px;
+  padding: 12px 44px 12px 14px;
+  position: relative;
+  cursor: pointer;
+  list-style: none;
+}
+
+.dungeon-group-heading::-webkit-details-marker {
+  display: none;
+}
+
+.dungeon-group-heading::after {
+  content: "v";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent-2);
+  font-weight: 900;
+  transition: transform 160ms ease;
+}
+
+.dungeon-skill-group[open] .dungeon-group-heading::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.dungeon-heading-copy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.dungeon-group-heading h3 {
+  margin: 0;
+}
+
+.dungeon-summary-hint,
+.dungeon-summary-status {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.dungeon-summary-status {
+  flex: 0 0 auto;
+  color: var(--accent);
+}
+
+.dungeon-skill-group .dungeon-tier-grid {
+  padding: 0 14px 14px;
+}
