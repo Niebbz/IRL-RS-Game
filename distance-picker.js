@@ -39,7 +39,7 @@
   function renderPicker() {
     const amount = normalizeAmount(amountInput.value);
     const { whole, tenths } = splitMiles(amount);
-    totalValue.textContent = `${amount.toLocaleString(undefined, { maximumFractionDigits: 1 })} mi`;
+    totalValue.textContent = `${amount.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} mi`;
     wholeValue.textContent = String(whole);
     tenthValue.textContent = `.${tenths}`;
 
