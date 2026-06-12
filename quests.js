@@ -898,10 +898,10 @@
 
   function renderQuestCategorySection(category, categoryQuests, current, categoryIndex) {
     const section = document.createElement("section");
-    const readyCount = categoryQuests.filter((quest) => {
-      const evaluation = evaluateQuest(quest, current);
-      return questIsUnlocked(quest) && evaluation.complete;
-    }).length;
+    const lockedCount = categoryQuests.filter((quest) => !questIsUnlocked(quest)).length;
+    const inProgressCount = categoryQuests.length - lockedCount;
+    const progressText = `${numberText(inProgressCount)} in progress`;
+    const lockedText = lockedCount ? ` | ${numberText(lockedCount)} locked` : "";
 
     section.className = "quest-category-section";
     section.innerHTML = `
@@ -911,7 +911,7 @@
             <strong>${category.name}</strong>
             <small>${category.description}</small>
           </span>
-          <em>${numberText(categoryQuests.length)} active${readyCount ? ` | ${numberText(readyCount)} ready` : ""}</em>
+          <em>${progressText}${lockedText}</em>
         </summary>
         <div class="quest-category-grid"></div>
       </details>
