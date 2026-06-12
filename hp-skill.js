@@ -1,29 +1,15 @@
 (function () {
   if (typeof skills === "undefined" || typeof workoutMap === "undefined" || typeof state === "undefined") return;
 
-  function hpIconDataUri() {
-    const svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
-        <defs>
-          <linearGradient id="hpGradient" x1="12" y1="8" x2="84" y2="88" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#35d19f"/>
-            <stop offset="1" stop-color="#18a0a8"/>
-          </linearGradient>
-        </defs>
-        <rect x="8" y="8" width="80" height="80" rx="10" fill="url(#hpGradient)"/>
-        <text x="48" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="900" fill="#06110e">HP</text>
-      </svg>
-    `;
-    return `data:image/svg+xml,${encodeURIComponent(svg)}`;
-  }
-
   const hpSkill = {
     id: "hp",
     name: "HP",
     method: "Bodyweight exercises",
     rule: "Push-ups, squats, pull-ups, and planks",
-    skillImage: hpIconDataUri(),
-    color: "#18a0a8"
+    skillImage: "HP%20Skill%20Icons/hp-skill-symbol.png",
+    petImage: "HP%20Skill%20Icons/hp-phoenix-pet.png",
+    petName: "Phoenix",
+    color: "#d93c2e"
   };
   const hpExerciseIds = ["pushups", "bodyweightSquats", "pullups", "plank"];
 
@@ -130,7 +116,7 @@
   state.xp.hp = Number.isFinite(state.xp.hp) ? state.xp.hp : 0;
   if (!state.pets) state.pets = {};
   if (!("hp" in state.pets)) state.pets.hp = false;
-  if (typeof petDropRates !== "undefined") petDropRates.hp = 0;
+  if (typeof petDropRates !== "undefined") petDropRates.hp = 1 / 30000;
 
   const hpAmountInput = document.querySelector("#amount");
   const hpWorkoutType = document.querySelector("#workoutType");
@@ -302,7 +288,7 @@
           ${petVisual}
           <div class="pet-name">${skill.petName}</div>
           <div class="pet-source">${skill.name} pet</div>
-          <div class="pet-source">${dropRateText(skill.id)}</div>
+          <div class="pet-source">${skill.id === "hp" ? "Drop rate: 1 / 30,000 per rep or plank minute" : dropRateText(skill.id)}</div>
           <div class="pet-source">${skill.id === "discipline" ? "Bonus: +10% Discipline XP" : "Bonus: +10% XP and gold"}</div>
           <div class="pet-status">${unlocked ? "Unlocked" : "Not found yet"}</div>
         `;
@@ -405,7 +391,7 @@
       const disciplineXP = disciplineXPForWorkout();
       const goldEarned = goldForWorkout(selected, amount);
       const skill = skills.find((item) => item.id === selected.skillId);
-      const mainPetRolls = amount;
+      const mainPetRolls = selected.skillId === "hp" && isPlankWorkout(selected) ? amount / 60 : amount;
       const disciplinePetRolls = isPlankWorkout(selected) ? amount / 60 : amount;
       const petDrops = [];
 
