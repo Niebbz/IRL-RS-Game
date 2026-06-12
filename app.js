@@ -1127,12 +1127,20 @@ function switchTab(tabId) {
 
 function openPageMenu() {
   pageMenu.hidden = false;
-  pageMenuButton.setAttribute("aria-expanded", "true");
+  requestAnimationFrame(() => {
+    document.body.classList.add("page-menu-open");
+    pageMenuButton.setAttribute("aria-expanded", "true");
+    pageMenuButton.setAttribute("aria-label", "Close page menu");
+  });
 }
 
 function closePageMenu() {
-  pageMenu.hidden = true;
+  document.body.classList.remove("page-menu-open");
   pageMenuButton.setAttribute("aria-expanded", "false");
+  pageMenuButton.setAttribute("aria-label", "Open page menu");
+  window.setTimeout(() => {
+    if (!document.body.classList.contains("page-menu-open")) pageMenu.hidden = true;
+  }, 190);
 }
 
 function togglePageMenu() {

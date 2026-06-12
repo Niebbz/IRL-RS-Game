@@ -13,6 +13,9 @@
   --accent-2: #f2b84b;
   --danger: #e55b5b;
   --shadow: 0 22px 55px rgba(0, 0, 0, 0.36);
+  --menu-drawer-width: min(284px, 74vw);
+  --menu-button-left: max(15px, calc((100vw - 1180px) / 2 + 24px));
+  --menu-button-top: clamp(20px, 3vw, 32px);
 }
 
 * {
@@ -47,6 +50,10 @@ body {
   background-size: auto, 42px 42px, 42px 42px, auto;
   background-attachment: fixed;
   overflow-x: hidden;
+}
+
+body.page-menu-open .app-shell {
+  transform: translateX(var(--menu-drawer-width));
 }
 
 body::before,
@@ -197,6 +204,8 @@ select {
   width: min(1180px, 100%);
   margin: 0 auto;
   padding: 24px;
+  transition: transform 180ms ease;
+  will-change: transform;
 }
 
 .topbar,
@@ -304,6 +313,7 @@ input,
   min-width: 0;
   align-items: center;
   gap: 14px;
+  padding-left: 62px;
 }
 
 .gold-panel strong {
@@ -329,12 +339,15 @@ input,
 }
 
 .page-menu {
-  position: relative;
-  z-index: 30;
-  justify-self: start;
+  position: fixed;
+  z-index: 60;
+  top: var(--menu-button-top);
+  left: var(--menu-button-left);
 }
 
 .page-menu-button {
+  position: relative;
+  z-index: 65;
   display: inline-flex;
   width: 48px;
   min-width: 48px;
@@ -385,18 +398,29 @@ input,
 }
 
 .page-menu-list {
-  position: absolute;
-  z-index: 20;
-  top: calc(100% + 8px);
+  position: fixed;
+  z-index: 55;
+  top: 0;
+  bottom: 0;
   left: 0;
   display: grid;
-  min-width: 220px;
+  width: var(--menu-drawer-width);
+  min-width: 0;
+  align-content: start;
   gap: 4px;
   border: 1px solid var(--line-strong);
-  border-radius: 8px;
-  padding: 6px;
+  border-left: 0;
+  border-radius: 0 10px 10px 0;
+  padding: calc(var(--menu-button-top) + 64px) 14px 14px;
   background: rgba(16, 20, 27, 0.98);
   box-shadow: var(--shadow);
+  transform: translateX(-100%);
+  transition: transform 180ms ease;
+  overflow-y: auto;
+}
+
+body.page-menu-open .page-menu-list {
+  transform: translateX(0);
 }
 
 .page-menu-list button {
@@ -1381,8 +1405,11 @@ inventory-grid,
   body::before,
   body::after,
   .pet-card.unlocked::after,
-  .pet-card.unlocked .pet-icon {
+  .pet-card.unlocked .pet-icon,
+  .app-shell,
+  .page-menu-list {
     animation: none !important;
+    transition: none !important;
   }
 }
 
@@ -1502,6 +1529,7 @@ inventory-grid,
   .brand-area {
     width: 100%;
     gap: 10px;
+    padding-left: 58px;
   }
 
   .brand-area h1 {
@@ -1521,8 +1549,8 @@ inventory-grid,
   }
 
   .page-menu-list {
-    width: 100%;
-    min-width: min(280px, calc(100vw - 30px));
+    width: var(--menu-drawer-width);
+    min-width: 0;
   }
 
   .total-panel,
