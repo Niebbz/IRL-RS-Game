@@ -1,6 +1,8 @@
 .brand-area h1 {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 0.01em;
   font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
   font-size: clamp(2.75rem, 8vw, 5.4rem);
   font-weight: 900;
@@ -15,14 +17,46 @@
   text-shadow: 0 2px 0 rgba(61, 34, 11, 0.75), 0 0 22px rgba(255, 184, 77, 0.28), 0 10px 22px rgba(0, 0, 0, 0.48);
 }
 
-.brand-area h1::after {
+.title-anvil-o {
+  position: relative;
+  display: inline-block;
+  width: 0.62em;
+  height: 0.68em;
+  flex: 0 0 0.62em;
+  margin: 0 -0.02em 0.02em;
+  -webkit-text-fill-color: initial;
+  filter: drop-shadow(0 2px 0 rgba(61, 34, 11, 0.82)) drop-shadow(0 0 12px rgba(255, 184, 77, 0.24));
+}
+
+.title-anvil-o::before,
+.title-anvil-o::after {
   content: "";
-  display: block;
-  height: 3px;
-  margin-top: 10px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(255, 191, 76, 0.86), rgba(22, 241, 176, 0.55), transparent);
-  box-shadow: 0 0 18px rgba(255, 191, 76, 0.24);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.title-anvil-o::before {
+  top: 0.2em;
+  width: 0.56em;
+  height: 0.28em;
+  border-radius: 0.08em 0.18em 0.1em 0.08em;
+  background:
+    linear-gradient(135deg, transparent 0 18%, #6d7783 19% 38%, #f6f0d5 39% 48%, #87929e 49% 72%, transparent 73%) right center / 44% 100% no-repeat,
+    linear-gradient(180deg, #fff0bd 0%, #b8c0c8 28%, #58616d 62%, #252b35 100%);
+  box-shadow: inset 0 0.05em 0 rgba(255, 255, 255, 0.42), inset 0 -0.05em 0 rgba(0, 0, 0, 0.45);
+}
+
+.title-anvil-o::after {
+  bottom: 0.05em;
+  width: 0.38em;
+  height: 0.25em;
+  background:
+    linear-gradient(180deg, #bfc8d0 0%, #5d6671 58%, #252b35 100%) center top / 54% 62% no-repeat,
+    linear-gradient(180deg, #d9e0e6 0%, #606a75 58%, #242a33 100%) center bottom / 100% 38% no-repeat;
+  border-radius: 0.05em 0.05em 0.08em 0.08em;
+  box-shadow: inset 0 0.04em 0 rgba(255, 255, 255, 0.35), inset 0 -0.04em 0 rgba(0, 0, 0, 0.5);
 }
 
 .township-upgrade-panel,
@@ -228,8 +262,8 @@
     font-size: clamp(2.2rem, 13vw, 3.25rem);
   }
 
-  .brand-area h1::after {
-    margin-top: 7px;
+  .title-anvil-o {
+    margin-bottom: 0.01em;
   }
 
   .map-dungeon-summary {
