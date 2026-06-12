@@ -124,9 +124,7 @@
 
     gold.textContent = formatNumber(state.gold ?? 0);
     keys.textContent = `${formatNumber(keyCount)} owned`;
-    materials.textContent = storehouseUnlocked()
-      ? `${formatNumber(materialCount())} stored | ${Math.round(materialSellRate() * 100)}% sellback`
-      : "Storehouse locked";
+    materials.textContent = storehouseUnlocked() ? `${formatNumber(materialCount())} stored` : "Storehouse locked";
   }
 
   function keyCard(item) {
