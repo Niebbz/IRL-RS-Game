@@ -1,30 +1,28 @@
-#townshipTitle {
+.brand-area h1 {
   position: relative;
   display: inline-block;
-  margin-top: 2px;
   font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
-  font-size: clamp(2.1rem, 5vw, 3.35rem);
+  font-size: clamp(2.75rem, 8vw, 5.4rem);
   font-weight: 900;
   font-variant: small-caps;
-  line-height: 0.95;
+  line-height: 0.88;
   letter-spacing: 0;
-  text-transform: uppercase;
   color: #ffd36a;
-  background: linear-gradient(180deg, #fff5c7 0%, #ffcf66 30%, #b26a27 68%, #ffe2a0 100%);
+  background: linear-gradient(180deg, #fff7cc 0%, #ffcf66 32%, #b46a2a 68%, #f6dd9a 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 2px 0 rgba(61, 34, 11, 0.72), 0 0 20px rgba(255, 184, 77, 0.24), 0 8px 18px rgba(0, 0, 0, 0.45);
+  text-shadow: 0 2px 0 rgba(61, 34, 11, 0.75), 0 0 22px rgba(255, 184, 77, 0.28), 0 10px 22px rgba(0, 0, 0, 0.48);
 }
 
-#townshipTitle::after {
+.brand-area h1::after {
   content: "";
   display: block;
-  height: 2px;
-  margin-top: 8px;
+  height: 3px;
+  margin-top: 10px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(255, 191, 76, 0.78), rgba(22, 241, 176, 0.55), transparent);
-  box-shadow: 0 0 16px rgba(255, 191, 76, 0.22);
+  background: linear-gradient(90deg, transparent, rgba(255, 191, 76, 0.86), rgba(22, 241, 176, 0.55), transparent);
+  box-shadow: 0 0 18px rgba(255, 191, 76, 0.24);
 }
 
 .township-upgrade-panel,
@@ -226,8 +224,12 @@
 }
 
 @media (max-width: 640px) {
-  #townshipTitle {
-    font-size: clamp(1.85rem, 11vw, 2.7rem);
+  .brand-area h1 {
+    font-size: clamp(2.2rem, 13vw, 3.25rem);
+  }
+
+  .brand-area h1::after {
+    margin-top: 7px;
   }
 
   .map-dungeon-summary {
