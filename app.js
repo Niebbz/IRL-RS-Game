@@ -246,6 +246,10 @@ const startingState = {
   activeDungeon: null,
   dungeonClears: {},
   dungeonHistory: [],
+  cosmetics: {
+    unlockedBackgrounds: ["default-forge"],
+    activeBackground: "default-forge"
+  },
   log: []
 };
 
@@ -330,6 +334,22 @@ function migrateLogEntry(entry) {
   };
 }
 
+function migrateCosmetics(savedCosmetics) {
+  const unlocked = new Set(
+    Array.isArray(savedCosmetics?.unlockedBackgrounds) ? savedCosmetics.unlockedBackgrounds : []
+  );
+  unlocked.add("default-forge");
+
+  const active = typeof savedCosmetics?.activeBackground === "string"
+    ? savedCosmetics.activeBackground
+    : "default-forge";
+
+  return {
+    unlockedBackgrounds: [...unlocked],
+    activeBackground: unlocked.has(active) ? active : "default-forge"
+  };
+}
+
 function xpForLevel(level) {
   if (level <= 1) return 0;
 
@@ -390,6 +410,7 @@ function loadState() {
       dungeonHistory: Array.isArray(parsed.dungeonHistory)
         ? parsed.dungeonHistory.map(migrateDungeonRecord)
         : [],
+      cosmetics: migrateCosmetics(parsed.cosmetics),
       log: Array.isArray(parsed.log) ? parsed.log.map(migrateLogEntry) : []
     };
   } catch {

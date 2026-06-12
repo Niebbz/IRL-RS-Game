@@ -48,7 +48,79 @@
     }
   ];
 
+  const cosmeticBackgrounds = [
+    {
+      id: "default-forge",
+      name: "Default Forge",
+      cost: 0,
+      description: "The standard Level Forge background."
+    },
+    {
+      id: "dungeon-stone",
+      name: "Dungeon Stone",
+      cost: 50000,
+      description: "Cold stone walls and torchlit dungeon shadows."
+    },
+    {
+      id: "forest-trail",
+      name: "Forest Trail",
+      cost: 100000,
+      description: "A dark woodland route for agility training."
+    },
+    {
+      id: "golden-city",
+      name: "Golden City",
+      cost: 250000,
+      description: "A wealthy city glow for late-game progress."
+    },
+    {
+      id: "infernal-forge",
+      name: "Infernal Forge",
+      cost: 500000,
+      description: "A heated forge with ember-lit shadows."
+    },
+    {
+      id: "night-sky",
+      name: "Night Sky",
+      cost: 1000000,
+      description: "A quiet starfield for long-term grinding."
+    }
+  ];
+
   let materialMode = "buy";
+
+  function ensureCosmetics() {
+    state.cosmetics ||= {};
+    const knownBackgrounds = new Set(cosmeticBackgrounds.map((background) => background.id));
+    const unlocked = Array.isArray(state.cosmetics.unlockedBackgrounds)
+      ? state.cosmetics.unlockedBackgrounds.filter((backgroundId) => knownBackgrounds.has(backgroundId))
+      : [];
+
+    if (!unlocked.includes("default-forge")) unlocked.unshift("default-forge");
+    state.cosmetics.unlockedBackgrounds = [...new Set(unlocked)];
+
+    if (!knownBackgrounds.has(state.cosmetics.activeBackground)) {
+      state.cosmetics.activeBackground = "default-forge";
+    }
+
+    if (!state.cosmetics.unlockedBackgrounds.includes(state.cosmetics.activeBackground)) {
+      state.cosmetics.activeBackground = "default-forge";
+    }
+
+    return state.cosmetics;
+  }
+
+  function activeBackgroundId() {
+    return ensureCosmetics().activeBackground;
+  }
+
+  function isBackgroundUnlocked(backgroundId) {
+    return ensureCosmetics().unlockedBackgrounds.includes(backgroundId);
+  }
+
+  function applyActiveBackground() {
+    document.body.dataset.background = activeBackgroundId();
+  }
 
   function materialCount() {
     if (!state?.township?.materials) return 0;
@@ -241,10 +313,54 @@
     marketMaterialItems.forEach((item) => root.appendChild(materialCard(item)));
   }
 
+  function backgroundCard(item) {
+    const card = document.createElement("article");
+    const unlocked = isBackgroundUnlocked(item.id);
+    const active = activeBackgroundId() === item.id;
+    const affordable = canAfford(item.cost);
+    const costText = item.cost > 0 ? `${formatNumber(item.cost)} gold` : "Free";
+    const buttonText = active ? "Equipped" : unlocked ? "Equip" : "Buy & Equip";
+    const buttonAttributes = active
+      ? "disabled"
+      : unlocked
+        ? `data-market-equip-background="${item.id}"`
+        : `data-market-buy-background="${item.id}" ${affordable ? "" : "disabled"}`;
+
+    card.className = `market-item-card cosmetic-card ${active ? "active" : ""} ${unlocked ? "" : "locked"}`;
+    card.innerHTML = `
+      <div class="cosmetic-preview" data-background-preview="${item.id}" aria-hidden="true"></div>
+      <div class="market-item-top">
+        <div>
+          <h3>${item.name}</h3>
+          <p>${item.description}</p>
+        </div>
+        <span class="market-item-owned">${active ? "Active" : unlocked ? "Owned" : "Locked"}</span>
+      </div>
+      <div class="market-item-meta">
+        <span>Cost</span>
+        <strong>${costText}</strong>
+      </div>
+      <button class="secondary-button" type="button" ${buttonAttributes}>${buttonText}</button>
+      <div class="market-item-status">${active ? "Currently equipped" : unlocked ? "Unlocked permanently" : affordable ? "Available" : "Need more gold"}</div>
+    `;
+
+    return card;
+  }
+
+  function renderMarketCosmetics() {
+    const root = document.querySelector("#marketCosmeticShop");
+    if (!root) return;
+
+    root.innerHTML = "";
+    cosmeticBackgrounds.forEach((item) => root.appendChild(backgroundCard(item)));
+  }
+
   function renderMarket() {
+    applyActiveBackground();
     renderMarketSummary();
     renderMarketKeys();
     renderMarketMaterials();
+    renderMarketCosmetics();
   }
 
   function buyMarketKey(tier) {
@@ -288,6 +404,33 @@
     render();
   }
 
+  function buyBackground(backgroundId) {
+    const item = cosmeticBackgrounds.find((candidate) => candidate.id === backgroundId);
+    if (!item) return;
+
+    const cosmetics = ensureCosmetics();
+    if (!cosmetics.unlockedBackgrounds.includes(backgroundId)) {
+      if (!canAfford(item.cost)) return;
+      state.gold -= item.cost;
+      cosmetics.unlockedBackgrounds.push(backgroundId);
+    }
+
+    cosmetics.activeBackground = backgroundId;
+    applyActiveBackground();
+    saveState();
+    render();
+  }
+
+  function equipBackground(backgroundId) {
+    const cosmetics = ensureCosmetics();
+    if (!cosmetics.unlockedBackgrounds.includes(backgroundId)) return;
+
+    cosmetics.activeBackground = backgroundId;
+    applyActiveBackground();
+    saveState();
+    render();
+  }
+
   function installRenderPatch() {
     if (typeof render === "function" && !render.__marketShopPatch) {
       const baseRender = render;
@@ -322,7 +465,19 @@
     }
 
     const sellButton = event.target.closest("[data-market-sell-material]");
-    if (sellButton) sellMaterial(sellButton.dataset.marketSellMaterial, parseQuantity(sellButton.dataset.marketQuantity));
+    if (sellButton) {
+      sellMaterial(sellButton.dataset.marketSellMaterial, parseQuantity(sellButton.dataset.marketQuantity));
+      return;
+    }
+
+    const buyBackgroundButton = event.target.closest("[data-market-buy-background]");
+    if (buyBackgroundButton) {
+      buyBackground(buyBackgroundButton.dataset.marketBuyBackground);
+      return;
+    }
+
+    const equipBackgroundButton = event.target.closest("[data-market-equip-background]");
+    if (equipBackgroundButton) equipBackground(equipBackgroundButton.dataset.marketEquipBackground);
   });
 
   if (document.readyState === "loading") {

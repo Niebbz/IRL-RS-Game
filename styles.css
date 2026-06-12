@@ -34,6 +34,62 @@ body {
     linear-gradient(180deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     var(--bg);
   background-size: auto, 42px 42px, 42px 42px, auto;
+  background-attachment: fixed;
+}
+
+body[data-background="dungeon-stone"] {
+  background:
+    linear-gradient(180deg, rgba(6, 8, 12, 0.82), rgba(6, 8, 12, 0.94)),
+    radial-gradient(circle at 18% 20%, rgba(148, 163, 184, 0.24), transparent 18%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.055) 25%, transparent 25%),
+    linear-gradient(315deg, rgba(255, 255, 255, 0.04) 25%, transparent 25%),
+    #111827;
+  background-size: auto, auto, 88px 88px, 88px 88px, auto;
+  background-attachment: fixed;
+}
+
+body[data-background="forest-trail"] {
+  background:
+    linear-gradient(180deg, rgba(4, 12, 10, 0.84), rgba(5, 10, 8, 0.95)),
+    radial-gradient(circle at 16% 24%, rgba(53, 209, 159, 0.2), transparent 20%),
+    radial-gradient(circle at 80% 18%, rgba(101, 163, 13, 0.16), transparent 24%),
+    linear-gradient(115deg, transparent 0 42%, rgba(78, 58, 34, 0.26) 43% 50%, transparent 51%),
+    #07110d;
+  background-size: auto, auto, auto, 210px 210px, auto;
+  background-attachment: fixed;
+}
+
+body[data-background="golden-city"] {
+  background:
+    linear-gradient(180deg, rgba(13, 10, 7, 0.84), rgba(8, 9, 12, 0.95)),
+    radial-gradient(circle at 82% 16%, rgba(242, 184, 75, 0.28), transparent 18%),
+    linear-gradient(90deg, rgba(242, 184, 75, 0.12) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    #141006;
+  background-size: auto, auto, 54px 54px, 54px 54px, auto;
+  background-attachment: fixed;
+}
+
+body[data-background="infernal-forge"] {
+  background:
+    linear-gradient(180deg, rgba(12, 6, 6, 0.84), rgba(7, 8, 11, 0.95)),
+    radial-gradient(circle at 18% 18%, rgba(229, 91, 91, 0.26), transparent 20%),
+    radial-gradient(circle at 78% 78%, rgba(242, 184, 75, 0.16), transparent 22%),
+    linear-gradient(135deg, rgba(229, 91, 91, 0.08) 0 12%, transparent 12% 24%),
+    #120707;
+  background-size: auto, auto, auto, 96px 96px, auto;
+  background-attachment: fixed;
+}
+
+body[data-background="night-sky"] {
+  background:
+    linear-gradient(180deg, rgba(5, 7, 13, 0.82), rgba(4, 6, 10, 0.96)),
+    radial-gradient(circle at 20% 22%, rgba(255, 255, 255, 0.7) 0 1px, transparent 2px),
+    radial-gradient(circle at 70% 34%, rgba(255, 255, 255, 0.55) 0 1px, transparent 2px),
+    radial-gradient(circle at 82% 12%, rgba(115, 81, 166, 0.26), transparent 20%),
+    #05070d;
+  background-size: auto, 130px 130px, 180px 180px, auto, auto;
+  background-attachment: fixed;
 }
 
 button,
