@@ -1,36 +1,12 @@
 .brand-area h1 {
-  position: relative;
-  display: inline-flex;
-  align-items: flex-end;
-  gap: 0;
-  font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
-  font-size: clamp(2.75rem, 8vw, 5.4rem);
-  font-weight: 900;
-  font-variant: small-caps;
-  line-height: 0.88;
-  letter-spacing: 0;
-  color: #ffd36a;
-  background: linear-gradient(180deg, #fff7cc 0%, #ffcf66 32%, #b46a2a 68%, #f6dd9a 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 2px 0 rgba(61, 34, 11, 0.75), 0 0 22px rgba(255, 184, 77, 0.28), 0 10px 22px rgba(0, 0, 0, 0.48);
+  margin: 0;
+  line-height: 0;
 }
 
-.title-anvil-o {
-  display: inline-block;
-  width: 0.58em;
-  height: 0.78em;
-  flex: 0 0 0.58em;
-  margin: 0 -0.1em 0.01em -0.07em;
-  background: url("assets/level-forge-title-anvil-v3.png") center bottom / contain no-repeat;
-  -webkit-text-fill-color: initial;
-  filter: drop-shadow(0 2px 0 rgba(61, 34, 11, 0.82)) drop-shadow(0 0 12px rgba(255, 184, 77, 0.24));
-}
-
-.title-anvil-o::before,
-.title-anvil-o::after {
-  content: none;
+.brand-logo-title img {
+  display: block;
+  width: min(100%, clamp(280px, 50vw, 620px));
+  height: auto;
 }
 
 .township-upgrade-panel,
@@ -232,14 +208,8 @@
 }
 
 @media (max-width: 640px) {
-  .brand-area h1 {
-    font-size: clamp(2.2rem, 13vw, 3.25rem);
-  }
-
-  .title-anvil-o {
-    width: 0.58em;
-    flex-basis: 0.58em;
-    margin: 0 -0.09em 0.01em -0.06em;
+  .brand-logo-title img {
+    width: min(100%, clamp(250px, 78vw, 390px));
   }
 
   .map-dungeon-summary {
