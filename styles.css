@@ -349,10 +349,6 @@ button:disabled {
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.skill-card.discipline {
-  grid-column: 1 / -1;
-}
-
 .asset-icon {
   display: block;
   object-fit: contain;
@@ -970,8 +966,7 @@ inventory-grid,
     grid-template-columns: 1fr;
   }
 
-  .skills-panel,
-  .skill-card.discipline {
+  .skills-panel {
     grid-row: auto;
     grid-column: auto;
   }
