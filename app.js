@@ -12,14 +12,14 @@ const petBonusMultiplier = 1.1;
 const keyShopItems = [
   { id: "bronze", name: "Bronze Key", cost: 50 },
   { id: "iron", name: "Iron Key", cost: 150 },
-  { id: "rune", name: "Rune Key", cost: 350 }
+  { id: "rune", name: "Gold Key", cost: 350 }
 ];
 
 const tierOrder = ["bronze", "iron", "rune"];
 const tierNames = {
   bronze: "Bronze",
   iron: "Iron",
-  rune: "Rune"
+  rune: "Gold"
 };
 
 const skills = [
@@ -664,7 +664,7 @@ function renderKeyInventory() {
     <div><span>Gold</span><strong>${formatNumber(state.gold)}</strong></div>
     <div><span>Bronze Keys</span><strong>${state.keys.bronze}</strong></div>
     <div><span>Iron Keys</span><strong>${state.keys.iron}</strong></div>
-    <div><span>Rune Keys</span><strong>${state.keys.rune}</strong></div>
+    <div><span>Gold Keys</span><strong>${state.keys.rune}</strong></div>
   `;
 }
 

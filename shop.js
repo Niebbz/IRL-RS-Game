@@ -14,7 +14,7 @@
     },
     {
       id: "rune",
-      name: "Rune Key",
+      name: "Gold Key",
       cost: 350,
       description: "Starts the highest dungeon tier."
     }
