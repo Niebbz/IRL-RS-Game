@@ -53,7 +53,6 @@
     "cartographers-lodge": { timber: 28, stone: 12, iron: 6, supplies: 24 },
     "town-hall": { timber: 50, stone: 45, iron: 24, supplies: 30 }
   };
-  const tierOrder = ["Novice", "Apprentice", "Adept", "Veteran", "Master"];
   const tierUnlockPoints = {
     Novice: 0,
     Apprentice: 1,
@@ -61,6 +60,13 @@
     Veteran: 8,
     Master: 15
   };
+  const questCategories = [
+    { id: "starter", name: "Starter", description: "First steps and account setup." },
+    { id: "training", name: "Training", description: "Workout, skill, and consistency goals." },
+    { id: "account", name: "Account", description: "Broad milestones across the full game." },
+    { id: "dungeons", name: "Dungeons", description: "Keys, clears, chests, and dungeon rewards." },
+    { id: "township", name: "Township", description: "Forgehold building and material goals." }
+  ];
 
   const quests = [
     {
@@ -695,6 +701,42 @@
     return "In Progress";
   }
 
+  function questCategoryId(quest) {
+    if (quest.type === "Starter") return "starter";
+    if (quest.type === "Dungeon") return "dungeons";
+    if (quest.type === "Township") return "township";
+    if (quest.type === "Account") return "account";
+    return "training";
+  }
+
+  function questCategoryMeta(categoryId) {
+    return questCategories.find((category) => category.id === categoryId) ?? {
+      id: categoryId,
+      name: categoryId,
+      description: ""
+    };
+  }
+
+  function renderRewardPanel(quest) {
+    return `
+      <div class="quest-block quest-rewards-panel" hidden>
+        <div class="quest-block-title">Rewards</div>
+        ${rewardRows(quest.rewards)}
+      </div>
+    `;
+  }
+
+  function toggleQuestRewards(button) {
+    const card = button.closest(".quest-card");
+    const panel = card?.querySelector(".quest-rewards-panel");
+    if (!panel) return;
+
+    const expanded = panel.hidden;
+    panel.hidden = !expanded;
+    button.setAttribute("aria-expanded", String(expanded));
+    button.textContent = expanded ? "Hide Rewards" : "View Rewards";
+  }
+
   function appLooksFresh(current) {
     return totalXP(current) === 0
       && current.log.length === 0
@@ -751,25 +793,33 @@
           <h3>${quest.name}</h3>
           <p class="quest-description">${quest.description}</p>
         </div>
-        <span class="quest-tag">${quest.type}</span>
+        <div class="quest-tags" aria-label="Quest tags">
+          <span class="quest-tag">${quest.type}</span>
+          <span class="quest-tier-tag">${quest.tier}</span>
+        </div>
       </div>
       <div class="quest-block">
         <div class="quest-block-title">Objectives</div>
         ${requirementRows(evaluation.requirements)}
       </div>
-      <div class="quest-block">
-        <div class="quest-block-title">Rewards</div>
-        ${rewardRows(quest.rewards)}
-      </div>
       <div class="quest-card-footer">
         <span class="quest-status">${questStatusText(quest, isCompleted, isReady, isUnlocked)}</span>
-        <button
-          class="${isReady ? "primary-button" : "secondary-button"}"
-          type="button"
-          data-claim-quest="${quest.id}"
-          ${isReady ? "" : "disabled"}
-        >${questButtonText(isCompleted, isReady, isUnlocked)}</button>
+        <div class="quest-button-row">
+          <button
+            class="secondary-button quest-reward-toggle"
+            type="button"
+            data-toggle-quest-rewards
+            aria-expanded="false"
+          >View Rewards</button>
+          <button
+            class="${isReady ? "primary-button" : "secondary-button"}"
+            type="button"
+            data-claim-quest="${quest.id}"
+            ${isReady ? "" : "disabled"}
+          >${questButtonText(isCompleted, isReady, isUnlocked)}</button>
+        </div>
       </div>
+      ${renderRewardPanel(quest)}
     `;
 
     return card;
@@ -796,12 +846,23 @@
           <h3>${quest.name}</h3>
           <p class="quest-description">${completedAt ? `Completed ${completedAt}` : "Completed"}</p>
         </div>
-        <span class="quest-tag">${quest.tier}</span>
+        <div class="quest-tags" aria-label="Quest tags">
+          <span class="quest-tag">${questCategoryMeta(questCategoryId(quest)).name}</span>
+          <span class="quest-tier-tag">${quest.tier}</span>
+        </div>
       </div>
-      <div class="quest-block">
-        <div class="quest-block-title">Rewards</div>
-        ${rewardRows(quest.rewards)}
+      <div class="quest-card-footer">
+        <span class="quest-status">${completedAt ? `Completed ${completedAt}` : "Completed"}</span>
+        <div class="quest-button-row">
+          <button
+            class="secondary-button quest-reward-toggle"
+            type="button"
+            data-toggle-quest-rewards
+            aria-expanded="false"
+          >View Rewards</button>
+        </div>
       </div>
+      ${renderRewardPanel(quest)}
     `;
 
     return card;
@@ -815,8 +876,11 @@
     section.innerHTML = `
       <details class="completed-quest-details">
         <summary>
-          <span>Completed Quests</span>
-          <strong>${numberText(completed.length)} / ${numberText(quests.length)}</strong>
+          <span>
+            <strong>Completed Quests</strong>
+            <small>Quests leave their category once claimed.</small>
+          </span>
+          <em>${numberText(completed.length)} / ${numberText(quests.length)}</em>
         </summary>
         <div class="completed-quest-grid"></div>
       </details>
@@ -832,6 +896,33 @@
     return section;
   }
 
+  function renderQuestCategorySection(category, categoryQuests, current, categoryIndex) {
+    const section = document.createElement("section");
+    const readyCount = categoryQuests.filter((quest) => {
+      const evaluation = evaluateQuest(quest, current);
+      return questIsUnlocked(quest) && evaluation.complete;
+    }).length;
+
+    section.className = "quest-category-section";
+    section.innerHTML = `
+      <details class="quest-category-details" ${categoryIndex === 0 ? "open" : ""}>
+        <summary>
+          <span>
+            <strong>${category.name}</strong>
+            <small>${category.description}</small>
+          </span>
+          <em>${numberText(categoryQuests.length)} active${readyCount ? ` | ${numberText(readyCount)} ready` : ""}</em>
+        </summary>
+        <div class="quest-category-grid"></div>
+      </details>
+    `;
+
+    const grid = section.querySelector(".quest-category-grid");
+    for (const quest of categoryQuests) grid.appendChild(renderQuestCard(quest, current));
+
+    return section;
+  }
+
   function renderQuests() {
     const questGrid = document.querySelector("#questGrid");
     if (!questGrid) return;
@@ -840,26 +931,14 @@
     syncQuestReset(current);
     questGrid.innerHTML = renderQuestSummary(current);
 
-    for (const tier of tierOrder) {
-      const tierQuests = quests.filter((quest) => quest.tier === tier && !questState.completed[quest.id]);
-      if (tierQuests.length === 0) continue;
+    const activeQuests = quests.filter((quest) => !questState.completed[quest.id]);
+    let renderedCategoryCount = 0;
+    for (const category of questCategories) {
+      const categoryQuests = activeQuests.filter((quest) => questCategoryId(quest) === category.id);
+      if (categoryQuests.length === 0) continue;
 
-      const tierSection = document.createElement("section");
-      tierSection.className = "quest-tier-section";
-      tierSection.innerHTML = `
-        <div class="quest-tier-heading">
-          <div>
-            <p class="eyebrow">${tier}</p>
-            <h3>${tier} Quests</h3>
-          </div>
-          <span>${tierUnlockPoints[tier]} QP unlock</span>
-        </div>
-        <div class="quest-tier-grid"></div>
-      `;
-
-      const tierGrid = tierSection.querySelector(".quest-tier-grid");
-      for (const quest of tierQuests) tierGrid.appendChild(renderQuestCard(quest, current));
-      questGrid.appendChild(tierSection);
+      questGrid.appendChild(renderQuestCategorySection(category, categoryQuests, current, renderedCategoryCount));
+      renderedCategoryCount += 1;
     }
 
     questGrid.appendChild(renderCompletedQuestSection());
@@ -956,6 +1035,12 @@
     }
 
     questGrid.addEventListener("click", (event) => {
+      const rewardButton = event.target.closest("[data-toggle-quest-rewards]");
+      if (rewardButton) {
+        toggleQuestRewards(rewardButton);
+        return;
+      }
+
       const button = event.target.closest("[data-claim-quest]");
       if (!button) return;
 

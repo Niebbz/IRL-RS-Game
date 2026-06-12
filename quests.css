@@ -22,8 +22,7 @@
   padding: 14px;
 }
 
-.quest-summary span,
-.quest-tier-heading span {
+.quest-summary span {
   display: block;
   color: var(--muted);
   font-size: 0.75rem;
@@ -45,29 +44,84 @@
   line-height: 1.25;
 }
 
-.quest-tier-section {
+.quest-category-section {
   display: grid;
   gap: 12px;
 }
 
-.quest-tier-heading {
+.quest-category-details,
+.completed-quest-details {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(22, 27, 36, 0.92), rgba(12, 16, 22, 0.92));
+  box-shadow: var(--shadow);
+}
+
+.quest-category-details summary,
+.completed-quest-details summary {
   display: flex;
-  align-items: end;
+  min-height: 64px;
+  align-items: center;
   justify-content: space-between;
   gap: 14px;
-  border-top: 1px solid var(--line);
-  padding-top: 18px;
+  padding: 0 16px;
+  color: var(--ink);
+  cursor: pointer;
+  font-weight: 900;
+  list-style: none;
 }
 
-.quest-tier-heading h3 {
-  margin: 0;
-  font-size: 1.15rem;
+.quest-category-details summary::-webkit-details-marker,
+.completed-quest-details summary::-webkit-details-marker {
+  display: none;
 }
 
-.quest-tier-grid {
+.quest-category-details summary::after,
+.completed-quest-details summary::after {
+  content: "v";
+  color: var(--accent);
+  transition: transform 160ms ease;
+}
+
+.quest-category-details[open] summary::after,
+.completed-quest-details[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.quest-category-details summary span,
+.completed-quest-details summary span {
+  display: grid;
+  gap: 4px;
+}
+
+.quest-category-details summary strong,
+.completed-quest-details summary strong {
+  color: var(--ink);
+}
+
+.quest-category-details summary small,
+.completed-quest-details summary small {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.quest-category-details summary em,
+.completed-quest-details summary em {
+  color: var(--accent-2);
+  font-style: normal;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.quest-category-grid,
+.completed-quest-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
+  border-top: 1px solid var(--line);
+  padding: 14px;
 }
 
 .quest-card {
@@ -97,12 +151,21 @@
   align-items: flex-start;
 }
 
+.quest-tags {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+}
+
 .quest-card h3 {
   margin: 0 0 7px;
   font-size: 1.08rem;
 }
 
-.quest-tag {
+.quest-tag,
+.quest-tier-tag {
   flex: 0 0 auto;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -112,6 +175,11 @@
   font-size: 0.7rem;
   font-weight: 900;
   text-transform: uppercase;
+}
+
+.quest-tier-tag {
+  color: var(--accent-2);
+  background: rgba(242, 184, 75, 0.1);
 }
 
 .quest-description,
@@ -165,6 +233,13 @@
   margin-top: auto;
 }
 
+.quest-button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .quest-status {
   font-size: 0.86rem;
   font-weight: 850;
@@ -186,55 +261,18 @@
   opacity: 0.64;
 }
 
-.completed-quest-section {
+.quest-rewards-panel {
   border-top: 1px solid var(--line);
-  padding-top: 18px;
+  padding-top: 12px;
 }
 
-.completed-quest-details {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: linear-gradient(180deg, rgba(22, 27, 36, 0.92), rgba(12, 16, 22, 0.92));
-  box-shadow: var(--shadow);
-}
-
-.completed-quest-details summary {
-  display: flex;
-  min-height: 58px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 0 16px;
-  color: var(--ink);
-  cursor: pointer;
-  font-weight: 900;
-  list-style: none;
-}
-
-.completed-quest-details summary::-webkit-details-marker {
+.quest-rewards-panel[hidden] {
   display: none;
 }
 
-.completed-quest-details summary::after {
-  content: "v";
-  color: var(--accent);
-  transition: transform 160ms ease;
-}
-
-.completed-quest-details[open] summary::after {
-  transform: rotate(180deg);
-}
-
-.completed-quest-details summary strong {
-  color: var(--accent-2);
-}
-
-.completed-quest-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+.completed-quest-section {
   border-top: 1px solid var(--line);
-  padding: 14px;
+  padding-top: 18px;
 }
 
 .completed-quest-card {
@@ -243,7 +281,7 @@
 
 @media (max-width: 920px) {
   .quest-summary,
-  .quest-tier-grid,
+  .quest-category-grid,
   .completed-quest-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -251,17 +289,22 @@
 
 @media (max-width: 560px) {
   .quest-summary,
-  .quest-tier-grid,
+  .quest-category-grid,
   .completed-quest-grid {
     grid-template-columns: 1fr;
   }
 
   .quest-card-footer,
   .quest-card-header,
-  .quest-row,
-  .quest-tier-heading {
+  .quest-row {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .quest-tags {
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
   .quest-row strong {
@@ -273,6 +316,11 @@
     width: 100%;
   }
 
+  .quest-button-row {
+    width: 100%;
+  }
+
+  .quest-category-details summary,
   .completed-quest-details summary {
     align-items: flex-start;
     flex-direction: column;
