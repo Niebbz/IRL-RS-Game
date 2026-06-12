@@ -280,6 +280,7 @@
         const unlocked = state.pets[skill.id];
         const card = document.createElement("article");
         card.className = `pet-card ${unlocked ? "unlocked" : "locked"}`;
+        card.dataset.pet = skill.id;
         const petVisual = unlocked
           ? `<img class="asset-icon pet-icon" src="${skill.petImage}" alt="${skill.petName}">`
           : `<div class="pet-placeholder" aria-label="${skill.petName} locked">?</div>`;
