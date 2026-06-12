@@ -3,6 +3,7 @@ const petDropRates = {
   strength: 1 / 15000,
   defense: 1 / 15000,
   agility: 1 / 12000,
+  hp: 1 / 30000,
   discipline: 1 / 30000
 };
 
@@ -228,6 +229,7 @@ const startingState = {
     strength: 0,
     defense: 0,
     agility: 0,
+    hp: 0,
     discipline: 0
   },
   pets: {
@@ -235,6 +237,7 @@ const startingState = {
     strength: false,
     defense: false,
     agility: false,
+    hp: false,
     discipline: false
   },
   gold: 0,

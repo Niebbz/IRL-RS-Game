@@ -118,6 +118,18 @@
   if (!("hp" in state.pets)) state.pets.hp = false;
   if (typeof petDropRates !== "undefined") petDropRates.hp = 1 / 30000;
 
+  function restorePhoenixFromWorkoutLog() {
+    if (state.pets.hp || !Array.isArray(state.log)) return;
+
+    const phoenixWasDropped = state.log.some((entry) => entry.petDrops?.includes(hpSkill.petName));
+    if (!phoenixWasDropped) return;
+
+    state.pets.hp = true;
+    if (typeof saveState === "function") saveState();
+  }
+
+  restorePhoenixFromWorkoutLog();
+
   const hpAmountInput = document.querySelector("#amount");
   const hpWorkoutType = document.querySelector("#workoutType");
   const hpAmountLabel = document.querySelector("#amountLabel");
