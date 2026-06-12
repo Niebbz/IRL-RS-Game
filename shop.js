@@ -58,31 +58,31 @@
     {
       id: "dungeon-stone",
       name: "Dungeon Stone",
-      cost: 50000,
+      cost: 2500,
       description: "Cold stone walls and torchlit dungeon shadows."
     },
     {
       id: "forest-trail",
       name: "Forest Trail",
-      cost: 100000,
+      cost: 5000,
       description: "A dark woodland route for agility training."
     },
     {
       id: "golden-city",
       name: "Golden City",
-      cost: 250000,
+      cost: 10000,
       description: "A wealthy city glow for late-game progress."
     },
     {
       id: "infernal-forge",
       name: "Infernal Forge",
-      cost: 500000,
+      cost: 20000,
       description: "A heated forge with ember-lit shadows."
     },
     {
       id: "night-sky",
       name: "Night Sky",
-      cost: 1000000,
+      cost: 35000,
       description: "A quiet starfield for long-term grinding."
     }
   ];
