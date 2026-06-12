@@ -625,7 +625,7 @@
   if (typeof resetProgress === "function" && typeof resetButton !== "undefined" && !resetProgress.__townshipEngine) {
     resetButton.removeEventListener("click", resetProgress);
     resetProgress = function () {
-      if (!window.confirm("Reset all XP, pets, gold, keys, dungeons, Township, and workout history?")) return;
+      if (!window.confirm("Reset all XP, pets, gold, keys, dungeons, Township, quests, shop purchases, backgrounds, and workout history?")) return;
       state.xp = { ...startingState.xp };
       state.pets = { ...startingState.pets };
       state.gold = 0;
@@ -633,9 +633,11 @@
       state.activeDungeon = null;
       state.dungeonClears = {};
       state.dungeonHistory = [];
+      state.cosmetics = clone(startingState.cosmetics);
       state.township = clone(startingTownship);
       state.townshipUpgrades = {};
       state.log = [];
+      if (typeof resetSavedQuestProgress === "function") resetSavedQuestProgress();
       saveState();
       render();
     };

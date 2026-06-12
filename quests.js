@@ -325,6 +325,11 @@
     localStorage.setItem(questStorageKey, JSON.stringify(questState));
   }
 
+  window.resetLevelForgeQuests = function () {
+    questState = { completed: {}, titles: {} };
+    saveQuestState();
+  };
+
   function readSavedAppState() {
     for (const key of appStorageKeys) {
       const saved = localStorage.getItem(key);

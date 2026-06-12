@@ -426,6 +426,15 @@ function saveState() {
   localStorage.setItem(storageKey, JSON.stringify(state));
 }
 
+function resetSavedQuestProgress() {
+  if (typeof window.resetLevelForgeQuests === "function") {
+    window.resetLevelForgeQuests();
+    return;
+  }
+
+  localStorage.removeItem("level-forge-quests-v2");
+}
+
 function formatNumber(value) {
   return Math.round(value).toLocaleString();
 }
@@ -1085,7 +1094,7 @@ function abandonDungeon() {
 }
 
 function resetProgress() {
-  const confirmed = window.confirm("Reset all XP, pets, gold, keys, dungeons, and workout history?");
+  const confirmed = window.confirm("Reset all XP, pets, gold, keys, dungeons, quests, shop purchases, backgrounds, and workout history?");
   if (!confirmed) return;
 
   state.xp = { ...startingState.xp };
@@ -1095,7 +1104,9 @@ function resetProgress() {
   state.activeDungeon = null;
   state.dungeonClears = {};
   state.dungeonHistory = [];
+  state.cosmetics = structuredClone(startingState.cosmetics);
   state.log = [];
+  resetSavedQuestProgress();
   saveState();
   render();
 }
