@@ -5,13 +5,13 @@
     id: "hp",
     name: "HP",
     method: "Bodyweight exercises",
-    rule: "Push-ups, squats, pull-ups, and planks",
+    rule: "Push-ups, sit-ups, squats, pull-ups, and planks",
     skillImage: "HP%20Skill%20Icons/hp-skill-symbol.png",
     petImage: "HP%20Skill%20Icons/hp-phoenix-pet.png",
     petName: "Phoenix",
     color: "#d93c2e"
   };
-  const hpExerciseIds = ["pushups", "bodyweightSquats", "pullups", "plank"];
+  const hpExerciseIds = ["pushups", "situps", "bodyweightSquats", "pullups", "plank"];
 
   function ensureHPStyles() {
     if (document.querySelector("#hp-skill-styles")) return;
@@ -64,6 +64,17 @@
   Object.assign(workoutMap, {
     pushups: {
       label: "Push-ups",
+      skillId: "hp",
+      unit: "Reps",
+      unitSingular: "rep",
+      xpPerUnit: 2,
+      goldPerUnit: 0.2,
+      minAmount: 1,
+      amountStep: 1,
+      defaultAmount: 25
+    },
+    situps: {
+      label: "Sit-ups",
       skillId: "hp",
       unit: "Reps",
       unitSingular: "rep",
@@ -150,6 +161,7 @@
       <label for="hpExercise">HP exercise</label>
       <select id="hpExercise" name="hpExercise">
         <option value="pushups">Push-ups</option>
+        <option value="situps">Sit-ups</option>
         <option value="bodyweightSquats">Bodyweight squats</option>
         <option value="pullups">Pull-ups</option>
         <option value="plank">Plank</option>
@@ -162,12 +174,20 @@
   const hpExerciseRow = ensureHPExercisePicker();
   const hpExerciseSelect = document.querySelector("#hpExercise");
 
+  if (hpExerciseSelect && !hpExerciseSelect.querySelector('option[value="situps"]')) {
+    const situpsOption = document.createElement("option");
+    situpsOption.value = "situps";
+    situpsOption.textContent = "Sit-ups";
+    hpExerciseSelect.querySelector('option[value="bodyweightSquats"]')?.insertAdjacentElement("beforebegin", situpsOption);
+  }
+
   function ensureWorkoutOptions() {
     if (!hpWorkoutType) return;
 
     const priorValue = hpWorkoutType.value;
     const exerciseOptions = [
       ["pushups", "Push-ups - HP"],
+      ["situps", "Sit-ups - HP"],
       ["bodyweightSquats", "Bodyweight squats - HP"],
       ["pullups", "Pull-ups - HP"],
       ["plank", "Plank - HP"]
