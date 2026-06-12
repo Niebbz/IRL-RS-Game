@@ -515,6 +515,15 @@ button:disabled {
   gap: 14px;
 }
 
+.reset-action-row {
+  margin-top: 16px;
+}
+
+.reset-progress-button {
+  width: 100%;
+  min-height: 44px;
+}
+
 .skills-panel {
   grid-row: span 2;
 }

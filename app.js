@@ -1094,7 +1094,9 @@ function abandonDungeon() {
 }
 
 function resetProgress() {
-  const confirmed = window.confirm("Reset all XP, pets, gold, keys, dungeons, quests, shop purchases, backgrounds, and workout history?");
+  const confirmed = window.confirm(
+    "Reset all progress? This will permanently clear XP, pets, gold, keys, dungeons, quests, shop purchases, backgrounds, township progress, and workout history."
+  );
   if (!confirmed) return;
 
   state.xp = { ...startingState.xp };

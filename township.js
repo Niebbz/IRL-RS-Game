@@ -625,7 +625,10 @@
   if (typeof resetProgress === "function" && typeof resetButton !== "undefined" && !resetProgress.__townshipEngine) {
     resetButton.removeEventListener("click", resetProgress);
     resetProgress = function () {
-      if (!window.confirm("Reset all XP, pets, gold, keys, dungeons, Township, quests, shop purchases, backgrounds, and workout history?")) return;
+      const confirmed = window.confirm(
+        "Reset all progress? This will permanently clear XP, pets, gold, keys, dungeons, quests, shop purchases, backgrounds, township progress, and workout history."
+      );
+      if (!confirmed) return;
       state.xp = { ...startingState.xp };
       state.pets = { ...startingState.pets };
       state.gold = 0;

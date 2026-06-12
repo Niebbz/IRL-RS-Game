@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Level Forge</title>
-    <link rel="stylesheet" href="styles.css?v=9">
+    <link rel="stylesheet" href="styles.css?v=10">
     <link rel="stylesheet" href="distance-picker.css">
     <link rel="stylesheet" href="workout-history-groups.css?v=5">
     <link rel="stylesheet" href="dungeon-rewards-panel.css?v=1">
@@ -67,11 +67,13 @@
               <p class="eyebrow">Skills</p>
               <h2 id="skillsTitle">Progress</h2>
             </div>
-            <button class="icon-button" id="resetButton" type="button" title="Reset progress" aria-label="Reset progress">
-              <span aria-hidden="true">Reset</span>
-            </button>
           </div>
           <div class="skill-grid" id="skillGrid"></div>
+          <div class="reset-action-row">
+            <button class="danger-button reset-progress-button" id="resetButton" type="button">
+              Reset All Progress
+            </button>
+          </div>
         </section>
       </main>
 
@@ -397,9 +399,9 @@
       </main>
     </div>
 
-    <script src="app.js?v=14"></script>
+    <script src="app.js?v=15"></script>
     <script src="hp-skill.js?v=6"></script>
-    <script src="township.js?v=4"></script>
+    <script src="township.js?v=5"></script>
     <script src="distance-picker.js?v=5"></script>
     <script src="workout-history-groups.js?v=5"></script>
     <script src="dungeon-rewards-panel.js?v=1"></script>
