@@ -24,6 +24,8 @@
 
 .market-summary-grid span,
 .market-item-meta span,
+.market-material-toolbar span,
+.market-price-list span,
 .market-item-status {
   display: block;
   color: var(--muted);
@@ -48,6 +50,47 @@
 
 .market-stock-grid {
   grid-template-columns: 1fr;
+}
+
+.market-material-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 8px;
+  background: rgba(10, 15, 20, 0.78);
+}
+
+.market-material-toolbar strong {
+  color: var(--accent-2);
+  font-size: 0.9rem;
+}
+
+.market-mode-toggle {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(70px, 1fr));
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.market-mode-toggle button {
+  min-height: 34px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 7px;
+  background: rgba(15, 23, 32, 0.9);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 900;
+}
+
+.market-mode-toggle button.active {
+  border-color: rgba(20, 241, 174, 0.82);
+  background: rgba(20, 241, 174, 0.16);
+  color: var(--accent);
 }
 
 .market-item-card {
@@ -88,13 +131,52 @@
   margin: 12px 0;
 }
 
+.market-price-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.market-price-list div {
+  padding: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 7px;
+  background: rgba(6, 10, 14, 0.42);
+}
+
 .market-item-meta strong {
   color: var(--accent-2);
   font-size: 1.05rem;
 }
 
+.market-price-list strong {
+  color: var(--accent-2);
+  font-size: 0.98rem;
+}
+
+.market-quantity-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
 .market-item-card .secondary-button {
   width: 100%;
+}
+
+.market-quantity-grid .secondary-button {
+  display: grid;
+  gap: 2px;
+  min-height: 48px;
+  place-items: center;
+  padding: 8px 6px;
+}
+
+.market-quantity-grid small {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 850;
 }
 
 .market-item-status {
@@ -109,11 +191,24 @@
 }
 
 @media (max-width: 560px) {
+  .market-material-toolbar,
   .market-item-top {
     flex-direction: column;
   }
 
+  .market-material-toolbar {
+    align-items: stretch;
+  }
+
   .market-item-owned {
     text-align: left;
+  }
+
+  .market-price-list {
+    grid-template-columns: 1fr;
+  }
+
+  .market-quantity-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

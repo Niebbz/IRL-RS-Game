@@ -28,7 +28,7 @@
 
   if (!document.querySelector('script[src^="township-upgrades.js"]')) {
     const script = document.createElement("script");
-    script.src = "township-upgrades.js?v=2";
+    script.src = "township-upgrades.js?v=3";
     document.body.appendChild(script);
   }
 })();

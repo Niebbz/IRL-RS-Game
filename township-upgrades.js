@@ -6,12 +6,12 @@
   const buffs = [
     ["storehouse", "Storehouse", "Unlocks materials, dungeon material drops, and material purchases."],
     ["palisade", "Palisade", "10% chance to recover a small material bundle when funding a future building."],
-    ["trade-post", "Trade Post", "Shop prices are 5% cheaper."],
+    ["trade-post", "Trade Post", "Shop prices are 5% cheaper and material sellback improves to 30%."],
     ["blacksmith", "Blacksmith", "5% chance to preserve a key when starting a dungeon."],
     ["watchtower", "Watchtower", "Adds scouting notes to dungeon cards."],
     ["barracks", "Barracks", "12% chance for dungeon chests to include extra supplies."],
     ["stables", "Stables", "Agility dungeon chests gain a small route supply bundle."],
-    ["marketplace", "Marketplace", "Improves the shop discount to 10%."],
+    ["marketplace", "Marketplace", "Improves the shop discount to 10% and material sellback to 35%."],
     ["stone-walls", "Stone Walls", "Refunds 5% of the gold and materials spent funding later buildings."],
     ["guild-hall", "Guild Hall", "Unlocks a foundation for advanced questlines without repeatable quests yet."],
     ["cartographers-lodge", "Cartographer's Lodge", "Unlocks map dungeons with gold, material, and key rewards."]
@@ -35,14 +35,6 @@
     ["bronze", "Bronze Key", 50],
     ["iron", "Iron Key", 150],
     ["rune", "Gold Key", 350]
-  ];
-
-  const materialPacks = [
-    ["supplies-crate", 200, { supplies: 5 }],
-    ["timber-bundle", 400, { timber: 10 }],
-    ["stone-pallet", 500, { stone: 10 }],
-    ["iron-cache", 450, { iron: 5 }],
-    ["builder-cache", 1400, { timber: 8, stone: 8, iron: 4, supplies: 6 }]
   ];
 
   const mapDungeons = [
@@ -182,18 +174,6 @@
       if (price) price.innerHTML = rate ? `${fmt(cost)} gold <span class="market-upgrade-price">${label} from ${fmt(baseCost)}</span>` : `${fmt(baseCost)} gold`;
       button.disabled = (state.gold || 0) < cost;
     });
-    materialPacks.forEach(([id, baseCost]) => {
-      const button = document.querySelector(`[data-market-buy-materials="${id}"]`);
-      const card = button?.closest(".market-item-card");
-      if (!button || !card) return;
-      const cost = discounted(baseCost);
-      const price = card.querySelector(".market-item-meta strong");
-      const status = card.querySelector(".market-item-status");
-      const storehouse = built("storehouse");
-      if (price) price.innerHTML = rate ? `${fmt(cost)} gold <span class="market-upgrade-price">${label} from ${fmt(baseCost)}</span>` : `${fmt(baseCost)} gold`;
-      button.disabled = !storehouse || (state.gold || 0) < cost;
-      if (status) status.textContent = !storehouse ? "Build the Storehouse first" : button.disabled ? "Need more gold" : rate ? label : "Ready";
-    });
   }
 
   function buyKey(id) {
@@ -203,18 +183,6 @@
     if ((state.gold || 0) < cost) return;
     state.gold -= cost;
     state.keys[id] = (state.keys[id] || 0) + 1;
-    saveState();
-    render();
-  }
-
-  function buyPack(id) {
-    const item = materialPacks.find(([itemId]) => itemId === id);
-    if (!item) return;
-    if (!built("storehouse")) return window.alert("Build the Storehouse before buying Township materials.");
-    const cost = discounted(item[1]);
-    if ((state.gold || 0) < cost) return;
-    state.gold -= cost;
-    addMats(item[2]);
     saveState();
     render();
   }
@@ -498,12 +466,6 @@
         event.preventDefault();
         event.stopImmediatePropagation();
         return buyKey(keyButton.dataset.marketBuyKey);
-      }
-      const materialButton = event.target.closest("[data-market-buy-materials]");
-      if (materialButton) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        return buyPack(materialButton.dataset.marketBuyMaterials);
       }
       const buildingButton = event.target.closest("[data-start-building]");
       if (buildingButton) {
