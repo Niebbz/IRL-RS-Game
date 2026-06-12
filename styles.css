@@ -39,109 +39,41 @@ body {
 
 body[data-background="dungeon-stone"] {
   background:
-    linear-gradient(180deg, rgba(6, 8, 12, 0.86), rgba(6, 8, 12, 0.95)),
-    linear-gradient(
-      90deg,
-      transparent 0 10%,
-      rgba(242, 184, 75, 0.12) 11% 12%,
-      transparent 13% 87%,
-      rgba(242, 184, 75, 0.1) 88% 89%,
-      transparent 90%
-    ),
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.045) 0 2px, transparent 2px 58px),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0 2px, transparent 2px 92px),
-    linear-gradient(135deg, rgba(148, 163, 184, 0.14) 0 12%, transparent 12% 24%, rgba(15, 23, 42, 0.18) 24% 36%, transparent 36%),
-    #111827;
-  background-size: auto, auto, auto, auto, 150px 150px, auto;
+    linear-gradient(180deg, rgba(7, 9, 13, 0.32), rgba(7, 9, 13, 0.6)),
+    radial-gradient(circle at 50% 18%, rgba(242, 184, 75, 0.14), transparent 36%),
+    url("cosmetic-backgrounds/background-dungeon-stone.webp") center / cover no-repeat;
   background-attachment: fixed;
 }
 
 body[data-background="forest-trail"] {
   background:
-    linear-gradient(180deg, rgba(4, 12, 10, 0.84), rgba(5, 10, 8, 0.96)),
-    linear-gradient(
-      102deg,
-      transparent 0 33%,
-      rgba(93, 62, 35, 0.44) 34% 44%,
-      rgba(130, 88, 48, 0.28) 45% 54%,
-      transparent 55%
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(18, 74, 39, 0.56) 0 12px,
-      transparent 12px 44px,
-      rgba(8, 43, 24, 0.74) 44px 56px,
-      transparent 56px 88px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent 0 18px,
-      rgba(18, 85, 44, 0.34) 18px 52px,
-      transparent 52px 76px
-    ),
-    linear-gradient(180deg, rgba(39, 119, 58, 0.22), transparent 30%),
-    #07110d;
-  background-size: auto, auto, auto, auto, auto, auto;
+    linear-gradient(180deg, rgba(4, 11, 8, 0.2), rgba(4, 10, 7, 0.54)),
+    radial-gradient(circle at 46% 20%, rgba(255, 232, 120, 0.16), transparent 34%),
+    url("cosmetic-backgrounds/background-forest-trail.webp") center / cover no-repeat;
   background-attachment: fixed;
 }
 
 body[data-background="golden-city"] {
   background:
-    linear-gradient(180deg, rgba(13, 10, 7, 0.84), rgba(8, 9, 12, 0.95)),
-    linear-gradient(180deg, transparent 0 34%, rgba(102, 67, 20, 0.5) 35% 100%),
-    repeating-linear-gradient(
-      90deg,
-      transparent 0 14px,
-      rgba(190, 128, 35, 0.35) 14px 44px,
-      transparent 44px 58px,
-      rgba(92, 62, 23, 0.44) 58px 84px,
-      transparent 84px 104px
-    ),
-    repeating-linear-gradient(90deg, rgba(242, 184, 75, 0.34) 0 4px, transparent 4px 18px),
-    repeating-linear-gradient(0deg, transparent 0 24px, rgba(255, 230, 145, 0.16) 24px 28px, transparent 28px 42px),
-    #141006;
-  background-size: auto, auto, auto, 92px 92px, 92px 92px, auto;
+    linear-gradient(180deg, rgba(15, 10, 5, 0.22), rgba(8, 8, 10, 0.54)),
+    radial-gradient(circle at 72% 18%, rgba(255, 226, 122, 0.18), transparent 35%),
+    url("cosmetic-backgrounds/background-golden-city.webp") center / cover no-repeat;
   background-attachment: fixed;
 }
 
 body[data-background="infernal-forge"] {
   background:
-    linear-gradient(180deg, rgba(12, 6, 6, 0.84), rgba(7, 8, 11, 0.96)),
-    repeating-linear-gradient(
-      90deg,
-      transparent 0 28px,
-      rgba(65, 22, 20, 0.72) 28px 42px,
-      transparent 42px 84px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      transparent 0 32px,
-      rgba(242, 184, 75, 0.12) 32px 36px,
-      transparent 36px 64px
-    ),
-    linear-gradient(
-      115deg,
-      transparent 0 40%,
-      rgba(229, 91, 91, 0.24) 41% 48%,
-      rgba(242, 184, 75, 0.16) 49% 54%,
-      transparent 55%
-    ),
-    linear-gradient(245deg, transparent 0 36%, rgba(91, 24, 21, 0.36) 37% 46%, transparent 47%),
-    #120707;
-  background-size: auto, auto, auto, auto, auto, auto;
+    linear-gradient(180deg, rgba(15, 6, 4, 0.24), rgba(8, 5, 5, 0.58)),
+    radial-gradient(circle at 38% 54%, rgba(242, 184, 75, 0.14), transparent 34%),
+    url("cosmetic-backgrounds/background-infernal-forge.webp") center / cover no-repeat;
   background-attachment: fixed;
 }
 
 body[data-background="night-sky"] {
   background:
-    linear-gradient(180deg, rgba(5, 7, 13, 0.82), rgba(4, 6, 10, 0.96)),
-    radial-gradient(circle at 20% 22%, rgba(255, 255, 255, 0.78) 0 1px, transparent 2px),
-    radial-gradient(circle at 70% 34%, rgba(255, 255, 255, 0.58) 0 1px, transparent 2px),
-    radial-gradient(circle at 42% 18%, rgba(242, 184, 75, 0.72) 0 1px, transparent 2px),
-    repeating-linear-gradient(125deg, transparent 0 80px, rgba(115, 81, 166, 0.08) 80px 84px, transparent 84px 160px),
-    linear-gradient(180deg, transparent 0 58%, rgba(9, 16, 28, 0.68) 59% 100%),
-    #05070d;
-  background-size: auto, 130px 130px, 180px 180px, 220px 220px, auto, auto;
+    linear-gradient(180deg, rgba(5, 7, 13, 0.18), rgba(4, 6, 10, 0.56)),
+    radial-gradient(circle at 44% 18%, rgba(255, 255, 255, 0.12), transparent 28%),
+    url("cosmetic-backgrounds/background-night-sky.webp") center / cover no-repeat;
   background-attachment: fixed;
 }
 

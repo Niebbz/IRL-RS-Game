@@ -116,7 +116,7 @@
 }
 
 .cosmetic-preview {
-  min-height: 104px;
+  min-height: 132px;
   margin-bottom: 12px;
   border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 8px;
@@ -136,100 +136,32 @@
 
 .cosmetic-preview[data-background-preview="dungeon-stone"] {
   background:
-    linear-gradient(180deg, rgba(6, 8, 12, 0.5), rgba(6, 8, 12, 0.75)),
-    linear-gradient(
-      90deg,
-      transparent 0 10%,
-      rgba(242, 184, 75, 0.22) 11% 13%,
-      transparent 14% 86%,
-      rgba(242, 184, 75, 0.18) 87% 89%,
-      transparent 90%
-    ),
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.08) 0 2px, transparent 2px 30px),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0 2px, transparent 2px 46px),
-    #111827;
-  background-size: auto, auto, auto, auto, auto;
+    linear-gradient(180deg, rgba(7, 9, 13, 0.04), rgba(7, 9, 13, 0.18)),
+    url("cosmetic-backgrounds/background-dungeon-stone.webp") center / cover no-repeat;
 }
 
 .cosmetic-preview[data-background-preview="forest-trail"] {
   background:
-    linear-gradient(180deg, rgba(4, 12, 10, 0.52), rgba(5, 10, 8, 0.78)),
-    linear-gradient(
-      102deg,
-      transparent 0 33%,
-      rgba(93, 62, 35, 0.58) 34% 44%,
-      rgba(130, 88, 48, 0.36) 45% 54%,
-      transparent 55%
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(18, 74, 39, 0.72) 0 9px,
-      transparent 9px 30px,
-      rgba(8, 43, 24, 0.86) 30px 39px,
-      transparent 39px 58px
-    ),
-    linear-gradient(180deg, rgba(39, 119, 58, 0.3), transparent 42%),
-    #07110d;
-  background-size: auto, auto, auto, auto, auto;
+    linear-gradient(180deg, rgba(4, 12, 10, 0.03), rgba(5, 10, 8, 0.16)),
+    url("cosmetic-backgrounds/background-forest-trail.webp") center / cover no-repeat;
 }
 
 .cosmetic-preview[data-background-preview="golden-city"] {
   background:
-    linear-gradient(180deg, rgba(13, 10, 7, 0.5), rgba(8, 9, 12, 0.78)),
-    linear-gradient(180deg, transparent 0 32%, rgba(102, 67, 20, 0.62) 33% 100%),
-    repeating-linear-gradient(
-      90deg,
-      transparent 0 9px,
-      rgba(190, 128, 35, 0.44) 9px 28px,
-      transparent 28px 38px,
-      rgba(92, 62, 23, 0.55) 38px 54px,
-      transparent 54px 68px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      transparent 0 18px,
-      rgba(255, 230, 145, 0.24) 18px 21px,
-      transparent 21px 30px
-    ),
-    #141006;
-  background-size: auto, auto, auto, 58px 58px, auto;
+    linear-gradient(180deg, rgba(13, 10, 7, 0.04), rgba(8, 9, 12, 0.16)),
+    url("cosmetic-backgrounds/background-golden-city.webp") center / cover no-repeat;
 }
 
 .cosmetic-preview[data-background-preview="infernal-forge"] {
   background:
-    linear-gradient(180deg, rgba(12, 6, 6, 0.52), rgba(7, 8, 11, 0.8)),
-    repeating-linear-gradient(
-      90deg,
-      transparent 0 18px,
-      rgba(65, 22, 20, 0.82) 18px 28px,
-      transparent 28px 52px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      transparent 0 20px,
-      rgba(242, 184, 75, 0.18) 20px 24px,
-      transparent 24px 40px
-    ),
-    linear-gradient(
-      115deg,
-      transparent 0 40%,
-      rgba(229, 91, 91, 0.34) 41% 48%,
-      rgba(242, 184, 75, 0.22) 49% 54%,
-      transparent 55%
-    ),
-    #120707;
-  background-size: auto, auto, auto, auto, auto;
+    linear-gradient(180deg, rgba(12, 6, 6, 0.04), rgba(7, 8, 11, 0.18)),
+    url("cosmetic-backgrounds/background-infernal-forge.webp") center / cover no-repeat;
 }
 
 .cosmetic-preview[data-background-preview="night-sky"] {
   background:
-    linear-gradient(180deg, rgba(5, 7, 13, 0.48), rgba(4, 6, 10, 0.78)),
-    radial-gradient(circle at 20% 22%, rgba(255, 255, 255, 0.86) 0 1px, transparent 2px),
-    radial-gradient(circle at 70% 34%, rgba(255, 255, 255, 0.68) 0 1px, transparent 2px),
-    radial-gradient(circle at 42% 18%, rgba(242, 184, 75, 0.8) 0 1px, transparent 2px),
-    repeating-linear-gradient(125deg, transparent 0 52px, rgba(115, 81, 166, 0.14) 52px 56px, transparent 56px 104px),
-    #05070d;
-  background-size: auto, 58px 58px, 82px 82px, 92px 92px, auto, auto;
+    linear-gradient(180deg, rgba(5, 7, 13, 0.04), rgba(4, 6, 10, 0.16)),
+    url("cosmetic-backgrounds/background-night-sky.webp") center / cover no-repeat;
 }
 
 .market-item-top {
