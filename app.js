@@ -278,7 +278,6 @@ const workoutLog = document.querySelector("#workoutLog");
 const emptyLog = document.querySelector("#emptyLog");
 const resetButton = document.querySelector("#resetButton");
 const keyInventory = document.querySelector("#keyInventory");
-const keyShop = document.querySelector("#keyShop");
 const activeDungeon = document.querySelector("#activeDungeon");
 const dungeonSelection = document.querySelector("#dungeonSelection");
 const dungeonHistory = document.querySelector("#dungeonHistory");
@@ -414,6 +413,8 @@ function loadState() {
         ? parsed.dungeonHistory.map(migrateDungeonRecord)
         : [],
       cosmetics: migrateCosmetics(parsed.cosmetics),
+      township: parsed.township ?? undefined,
+      townshipUpgrades: parsed.townshipUpgrades ?? undefined,
       log: Array.isArray(parsed.log) ? parsed.log.map(migrateLogEntry) : []
     };
   } catch {
@@ -667,24 +668,6 @@ function renderKeyInventory() {
   `;
 }
 
-function renderKeyShop() {
-  keyShop.innerHTML = "";
-
-  for (const item of keyShopItems) {
-    const canAfford = state.gold >= item.cost;
-    const row = document.createElement("div");
-    row.className = "shop-row";
-    row.innerHTML = `
-      <div>
-        <strong>${item.name}</strong>
-        <span>${item.cost.toLocaleString()} gold</span>
-      </div>
-      <button class="secondary-button" type="button" data-buy-key="${item.id}" ${canAfford ? "" : "disabled"}>Buy</button>
-    `;
-    keyShop.appendChild(row);
-  }
-}
-
 function renderActiveDungeon() {
   if (!state.activeDungeon) {
     activeDungeon.innerHTML = `<div class="empty-state">No active dungeon. Choose a dungeon below to spend a key and begin.</div>`;
@@ -792,7 +775,6 @@ function renderDungeonHistory() {
 
 function renderDungeons() {
   renderKeyInventory();
-  renderKeyShop();
   renderActiveDungeon();
   renderDungeonSelection();
   renderDungeonHistory();
@@ -868,7 +850,10 @@ function renderLog() {
       ? `<div class="dungeon-note">+${formatAmount(entry.dungeonContribution.amount)} ${entry.dungeonContribution.unit} toward ${entry.dungeonContribution.dungeonName}</div>`
       : "";
     const dungeonCompleteText = entry.dungeonCompleted
-      ? `<div class="dungeon-note">Dungeon Cleared: ${entry.dungeonCompleted.dungeonName}<br>+${formatNumber(entry.dungeonCompleted.bonusXP)} bonus ${entry.dungeonCompleted.skillName} XP</div>`
+      ? `<div class="dungeon-note">
+          Dungeon Cleared: ${entry.dungeonCompleted.dungeonName}<br>
+          +${formatNumber(entry.dungeonCompleted.bonusXP)} bonus ${entry.dungeonCompleted.skillName} XP
+        </div>`
       : "";
 
     item.innerHTML = `
@@ -1073,16 +1058,6 @@ function deleteWorkout(index) {
   render();
 }
 
-function buyKey(tier) {
-  const item = keyItemForTier(tier);
-  if (!item || state.gold < item.cost) return;
-
-  state.gold -= item.cost;
-  state.keys[tier] += 1;
-  saveState();
-  render();
-}
-
 function enterDungeon(dungeonId) {
   const dungeon = dungeonById(dungeonId);
   if (!dungeon || state.activeDungeon || !isDungeonUnlocked(dungeon) || state.keys[dungeon.tier] <= 0) return;
@@ -1193,13 +1168,6 @@ workoutLog.addEventListener("click", (event) => {
   if (!button) return;
 
   deleteWorkout(Number(button.dataset.logIndex));
-});
-
-keyShop.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-buy-key]");
-  if (!button) return;
-
-  buyKey(button.dataset.buyKey);
 });
 
 dungeonSelection.addEventListener("click", (event) => {

@@ -38,13 +38,55 @@
   ];
 
   const mapDungeons = [
-    ["map-coastal-survey", "Coastal Survey Trail", "agility", "bronze", "bronze", 8, 250, { timber: 8, supplies: 10 }, { bronze: 0.08 }, "Chart a safe supply road outside Forgehold."],
-    ["map-smuggler-cache", "Smuggler Map Cache", "attack", "iron", "iron", 180, 650, { timber: 10, iron: 4, supplies: 14 }, { bronze: 0.12, iron: 0.04 }, "Clear a hidden route and recover marked supply crates."],
-    ["map-quarry-route", "Collapsed Quarry Route", "strength", "iron", "iron", 240, 800, { stone: 22, iron: 8, supplies: 12 }, { bronze: 0.12, iron: 0.05 }, "Open a heavy stone route for long-term building materials."],
-    ["map-border-fortress", "Gold Border Fortress", "defense", "rune", "rune", 360, 1800, { timber: 10, stone: 34, iron: 18, supplies: 24 }, { bronze: 0.15, iron: 0.06, rune: 0.015 }, "Survey the old fortress line and secure a high-value stockpile."]
-  ].map(([id, name, skillId, tier, keyTier, requirement, gold, materials, keyChances, description]) => ({
-    id, name, skillId, tier, keyTier, requirement, gold, materials, keyChances, description
-  }));
+    {
+      id: "map-coastal-survey",
+      name: "Coastal Survey Trail",
+      skillId: "agility",
+      tier: "bronze",
+      keyTier: "bronze",
+      requirement: 8,
+      gold: 250,
+      materials: { timber: 8, supplies: 10 },
+      keyChances: { bronze: 0.08 },
+      description: "Chart a safe supply road outside Forgehold."
+    },
+    {
+      id: "map-smuggler-cache",
+      name: "Smuggler Map Cache",
+      skillId: "attack",
+      tier: "iron",
+      keyTier: "iron",
+      requirement: 180,
+      gold: 650,
+      materials: { timber: 10, iron: 4, supplies: 14 },
+      keyChances: { bronze: 0.12, iron: 0.04 },
+      description: "Clear a hidden route and recover marked supply crates."
+    },
+    {
+      id: "map-quarry-route",
+      name: "Collapsed Quarry Route",
+      skillId: "strength",
+      tier: "iron",
+      keyTier: "iron",
+      requirement: 240,
+      gold: 800,
+      materials: { stone: 22, iron: 8, supplies: 12 },
+      keyChances: { bronze: 0.12, iron: 0.05 },
+      description: "Open a heavy stone route for long-term building materials."
+    },
+    {
+      id: "map-border-fortress",
+      name: "Gold Border Fortress",
+      skillId: "defense",
+      tier: "rune",
+      keyTier: "rune",
+      requirement: 360,
+      gold: 1800,
+      materials: { timber: 10, stone: 34, iron: 18, supplies: 24 },
+      keyChances: { bronze: 0.15, iron: 0.06, rune: 0.015 },
+      description: "Survey the old fortress line and secure a high-value stockpile."
+    }
+  ];
 
   const chestBonus = { bronze: [2, 4], iron: [4, 8], rune: [8, 14] };
   let clicksInstalled = false;
@@ -292,10 +334,19 @@
     const progress = Math.min(active.progress || 0, dungeon.requirement);
     const percent = dungeon.requirement ? progress / dungeon.requirement * 100 : 0;
     return `<article class="dungeon-card active-dungeon-card">
-      <div class="dungeon-card-top"><div><div class="dungeon-name">${dungeon.name}</div><div class="dungeon-meta">${tierNames2[dungeon.tier]} ${skillName(dungeon.skillId)} Map Dungeon</div></div><button class="danger-button" type="button" id="abandonMapDungeonButton">Abandon</button></div>
+      <div class="dungeon-card-top">
+        <div>
+          <div class="dungeon-name">${dungeon.name}</div>
+          <div class="dungeon-meta">${tierNames2[dungeon.tier]} ${skillName(dungeon.skillId)} Map Dungeon</div>
+        </div>
+        <button class="danger-button" type="button" id="abandonMapDungeonButton">Abandon</button>
+      </div>
       <p class="map-dungeon-progress-text">${dungeon.description}</p>
       <div class="progress-track"><div class="progress-fill" style="width: ${Math.max(0, Math.min(100, percent))}%;"></div></div>
-      <div class="skill-footer"><span>${fmtAmount(progress)} / ${fmtAmount(dungeon.requirement)} ${unit(dungeon.skillId)}</span><span>${skillName(dungeon.skillId)} workouts progress this map</span></div>
+      <div class="skill-footer">
+        <span>${fmtAmount(progress)} / ${fmtAmount(dungeon.requirement)} ${unit(dungeon.skillId)}</span>
+        <span>${skillName(dungeon.skillId)} workouts progress this map</span>
+      </div>
     </article>`;
   }
 
@@ -304,12 +355,26 @@
     const ready = status === "Ready";
     const clears = upgrades().mapDungeons.clears[dungeon.id] || 0;
     return `<article class="map-dungeon-card ${ready ? "" : "locked"}">
-      <div class="map-dungeon-top"><div><h3 class="map-dungeon-name">${dungeon.name}</h3><p class="map-dungeon-copy">${dungeon.description}</p></div><span class="map-dungeon-tier">${tierNames2[dungeon.tier]}</span></div>
+      <div class="map-dungeon-top">
+        <div>
+          <h3 class="map-dungeon-name">${dungeon.name}</h3>
+          <p class="map-dungeon-copy">${dungeon.description}</p>
+        </div>
+        <span class="map-dungeon-tier">${tierNames2[dungeon.tier]}</span>
+      </div>
       <details class="map-dungeon-reward-details">
         <summary class="secondary-button map-dungeon-reward-toggle">View Rewards</summary>
-        <div class="map-dungeon-rewards"><div>${skillName(dungeon.skillId)}: ${fmtAmount(dungeon.requirement)} ${unit(dungeon.skillId)}</div><div>Cost: ${keyNames2[dungeon.keyTier]}</div><div>Rewards: ${rewardText(dungeon)}</div><div>Clears: ${fmt(clears)}</div></div>
+        <div class="map-dungeon-rewards">
+          <div>${skillName(dungeon.skillId)}: ${fmtAmount(dungeon.requirement)} ${unit(dungeon.skillId)}</div>
+          <div>Cost: ${keyNames2[dungeon.keyTier]}</div>
+          <div>Rewards: ${rewardText(dungeon)}</div>
+          <div>Clears: ${fmt(clears)}</div>
+        </div>
       </details>
-      <div class="map-dungeon-actions"><button class="secondary-button" type="button" data-start-map-dungeon="${dungeon.id}" ${ready ? "" : "disabled"}>Enter Map</button><span class="map-dungeon-status">${status}</span></div>
+      <div class="map-dungeon-actions">
+        <button class="secondary-button" type="button" data-start-map-dungeon="${dungeon.id}" ${ready ? "" : "disabled"}>Enter Map</button>
+        <span class="map-dungeon-status">${status}</span>
+      </div>
     </article>`;
   }
 
@@ -317,7 +382,15 @@
     const history = upgrades().mapDungeons.history;
     if (!history.length) return "";
     return `<div class="map-dungeon-history"><h3>Map Dungeon Clears</h3><ol class="workout-log dungeon-history">
-      ${history.slice(0, 10).map((entry) => `<li><div><div class="log-title">${entry.name} - ${tierNames2[entry.tier]} ${skillName(entry.skillId)} Map</div><div class="log-meta">Completed ${typeof formatLoggedDate === "function" ? formatLoggedDate(entry.at) : entry.at}</div><div class="dungeon-note">Rewards: ${fmt(entry.gold)} gold${entry.mats ? `, ${entry.mats}` : ""}${entry.keys ? `, ${entry.keys}` : ""}</div></div></li>`).join("")}
+      ${history.slice(0, 10).map((entry) => `<li>
+        <div>
+          <div class="log-title">${entry.name} - ${tierNames2[entry.tier]} ${skillName(entry.skillId)} Map</div>
+          <div class="log-meta">Completed ${typeof formatLoggedDate === "function" ? formatLoggedDate(entry.at) : entry.at}</div>
+          <div class="dungeon-note">
+            Rewards: ${fmt(entry.gold)} gold${entry.mats ? `, ${entry.mats}` : ""}${entry.keys ? `, ${entry.keys}` : ""}
+          </div>
+        </div>
+      </li>`).join("")}
     </ol></div>`;
   }
 
@@ -359,7 +432,16 @@
     addMats(dungeon.materials);
     for (const [tier, amount] of Object.entries(keys)) state.keys[tier] = (state.keys[tier] || 0) + amount;
     const keyText = Object.entries(keys).filter(([, amount]) => amount > 0).map(([tier, amount]) => `${fmt(amount)} ${keyNames2[tier]}`).join(", ");
-    const record = { id: dungeon.id, name: dungeon.name, tier: dungeon.tier, skillId: dungeon.skillId, gold: dungeon.gold, mats: matsText(dungeon.materials), keys: keyText, at: new Date().toISOString() };
+    const record = {
+      id: dungeon.id,
+      name: dungeon.name,
+      tier: dungeon.tier,
+      skillId: dungeon.skillId,
+      gold: dungeon.gold,
+      mats: matsText(dungeon.materials),
+      keys: keyText,
+      at: new Date().toISOString()
+    };
     u.mapDungeons.clears[dungeon.id] = (u.mapDungeons.clears[dungeon.id] || 0) + 1;
     u.mapDungeons.history.unshift(record);
     u.mapDungeons.history = u.mapDungeons.history.slice(0, 30);

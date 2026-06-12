@@ -96,10 +96,22 @@
       : "";
     const dungeonMaterials = formatMaterials(entry.dungeonCompleted?.materialRewards);
     const dungeonCompleteText = entry.dungeonCompleted
-      ? `<div class="dungeon-note">Dungeon Cleared: ${entry.dungeonCompleted.dungeonName}<br>+${formatNumber(entry.dungeonCompleted.bonusXP)} bonus ${entry.dungeonCompleted.skillName} XP${dungeonMaterials ? `<br>Materials: ${dungeonMaterials}` : ""}</div>`
+      ? `<div class="dungeon-note">
+          Dungeon Cleared: ${entry.dungeonCompleted.dungeonName}<br>
+          +${formatNumber(entry.dungeonCompleted.bonusXP)} bonus ${entry.dungeonCompleted.skillName} XP
+          ${dungeonMaterials ? `<br>Materials: ${dungeonMaterials}` : ""}
+        </div>`
       : "";
     const townshipText = entry.townshipContribution
-      ? `<div class="township-note">Township: ${Object.entries(entry.townshipContribution.contributions ?? {}).map(([skillId, value]) => workoutRequirementText(skillId, value)).join(", ")} toward ${entry.townshipContribution.buildingName}${entry.townshipContribution.completedBuilding ? `<br>Building Completed: ${entry.townshipContribution.completedBuilding.buildingName}` : ""}</div>`
+      ? `<div class="township-note">
+          Township: ${Object.entries(entry.townshipContribution.contributions ?? {})
+            .map(([skillId, value]) => workoutRequirementText(skillId, value))
+            .join(", ")}
+          toward ${entry.townshipContribution.buildingName}
+          ${entry.townshipContribution.completedBuilding
+            ? `<br>Building Completed: ${entry.townshipContribution.completedBuilding.buildingName}`
+            : ""}
+        </div>`
       : "";
 
     item.innerHTML = `
