@@ -23,7 +23,7 @@
   height: 0.62em;
   flex: 0 0 0.48em;
   margin: 0 -0.07em 0.02em -0.06em;
-  background: url("assets/level-forge-title-anvil.png") center / contain no-repeat;
+  background: url("assets/level-forge-title-anvil-v2.png") center / contain no-repeat;
   -webkit-text-fill-color: initial;
   filter: drop-shadow(0 2px 0 rgba(61, 34, 11, 0.82)) drop-shadow(0 0 12px rgba(255, 184, 77, 0.24));
 }
