@@ -1349,6 +1349,79 @@ inventory-grid,
   }
 }
 
+@media (max-width: 700px) {
+  body {
+    background-attachment: scroll;
+  }
+
+  body[data-background="dungeon-stone"],
+  body[data-background="forest-trail"],
+  body[data-background="golden-city"],
+  body[data-background="infernal-forge"],
+  body[data-background="night-sky"] {
+    background:
+      linear-gradient(180deg, rgba(5, 8, 12, 0.3), rgba(5, 8, 12, 0.74)),
+      var(--bg);
+    background-attachment: scroll;
+  }
+
+  body[data-background="dungeon-stone"]::before,
+  body[data-background="forest-trail"]::before,
+  body[data-background="golden-city"]::before,
+  body[data-background="infernal-forge"]::before,
+  body[data-background="night-sky"]::before {
+    opacity: 1;
+    background-repeat: no-repeat;
+    background-size: cover;
+    animation: none;
+    transform: translateZ(0);
+  }
+
+  body[data-background="dungeon-stone"]::before {
+    background-image:
+      linear-gradient(180deg, rgba(7, 9, 13, 0.08), rgba(7, 9, 13, 0.34)),
+      url("cosmetic-backgrounds/background-dungeon-stone.webp");
+    background-position: center top;
+  }
+
+  body[data-background="forest-trail"]::before {
+    background-image:
+      linear-gradient(180deg, rgba(4, 11, 8, 0.04), rgba(4, 10, 7, 0.34)),
+      url("cosmetic-backgrounds/background-forest-trail.webp");
+    background-position: center top;
+  }
+
+  body[data-background="golden-city"]::before {
+    background-image:
+      linear-gradient(180deg, rgba(15, 10, 5, 0.08), rgba(8, 8, 10, 0.34)),
+      url("cosmetic-backgrounds/background-golden-city.webp");
+    background-position: center top;
+  }
+
+  body[data-background="infernal-forge"]::before {
+    background-image:
+      linear-gradient(180deg, rgba(15, 6, 4, 0.08), rgba(8, 5, 5, 0.38)),
+      url("cosmetic-backgrounds/background-infernal-forge.webp");
+    background-position: 48% top;
+  }
+
+  body[data-background="night-sky"]::before {
+    background-image:
+      linear-gradient(180deg, rgba(5, 7, 13, 0.04), rgba(4, 6, 10, 0.34)),
+      url("cosmetic-backgrounds/background-night-sky.webp");
+    background-position: center top;
+  }
+
+  body[data-background="dungeon-stone"]::after,
+  body[data-background="forest-trail"]::after,
+  body[data-background="golden-city"]::after,
+  body[data-background="infernal-forge"]::after,
+  body[data-background="night-sky"]::after {
+    opacity: 0.22;
+    background-size: 150% 150%;
+  }
+}
+
 @media (max-width: 860px) {
   .skill-grid,
   .pet-grid,
