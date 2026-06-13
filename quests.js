@@ -671,7 +671,6 @@
     const keyText = formatKeyRewards(rewards.keys);
     if (keyText) rows.push(["Keys", keyText]);
 
-    if (rewards.title) rows.push(["Title", rewards.title]);
     if (rewards.questPoints) rows.push(["Quest Points", `+${numberText(rewards.questPoints)} QP`]);
 
     return rows
@@ -756,7 +755,6 @@
   }
 
   function renderQuestSummary(current) {
-    const titles = Object.keys(questState.titles);
     return `
       <section class="quest-summary" aria-label="Quest progress">
         <div>
@@ -770,10 +768,6 @@
         <div>
           <span>Total XP</span>
           <strong>${numberText(totalXP(current))}</strong>
-        </div>
-        <div>
-          <span>Titles</span>
-          <strong>${titles.length ? titles.join(", ") : "None"}</strong>
         </div>
       </section>
     `;

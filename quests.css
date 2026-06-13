@@ -5,7 +5,7 @@
 
 .quest-summary {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 
@@ -36,12 +36,6 @@
   color: var(--accent-2);
   font-size: 1.65rem;
   line-height: 1.05;
-}
-
-.quest-summary div:last-child strong {
-  color: var(--ink);
-  font-size: 1rem;
-  line-height: 1.25;
 }
 
 .quest-category-section {
