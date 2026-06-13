@@ -3,7 +3,7 @@
   if (!("serviceWorker" in navigator)) return;
 
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./service-worker.js?v=0.1.0")
+    navigator.serviceWorker.register("./service-worker.js?v=0.1.1")
       .then((registration) => registration.update())
       .catch(() => {});
   });

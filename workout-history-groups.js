@@ -157,7 +157,7 @@
         ${dropText}
       </div>
       <div class="log-actions">
-        <div class="log-xp">+${formatNumber(entry.mainXP)} ${entry.skillName}<br>+${formatNumber(entry.disciplineXP ?? 50)} Discipline</div>
+        <div class="log-xp">+${formatNumber(entry.mainXP)} ${entry.skillName}<br>+${formatNumber(entry.disciplineXP ?? 50)} Consistency</div>
         <button class="delete-workout-button" type="button" data-log-index="${index}">Delete</button>
       </div>
     `;

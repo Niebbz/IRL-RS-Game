@@ -12,9 +12,9 @@ Use this before pushing large changes to `main`.
 
 ## Workout Logging
 
-- Push day logs Attack XP, Discipline XP, and gold.
-- Pull day logs Strength XP, Discipline XP, and gold.
-- Leg day logs Defense XP, Discipline XP, and gold.
+- Push day logs Attack XP, Consistency XP, and gold.
+- Pull day logs Strength XP, Consistency XP, and gold.
+- Leg day logs Defense XP, Consistency XP, and gold.
 - Run logs Agility XP by miles only.
 - HP logs each bodyweight exercise.
 - Sit-ups give the same XP and gold rate as push-ups.

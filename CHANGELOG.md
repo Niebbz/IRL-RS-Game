@@ -2,6 +2,7 @@
 
 ## 2026-06-13
 
+- Renamed the completed-workout skill display name to Consistency while keeping the internal save ID stable.
 - Added first visible version label: `v0.1.0`.
 - Added offline caching for the home-screen web app.
 - Added account save export and import controls.

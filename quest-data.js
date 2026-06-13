@@ -9,7 +9,7 @@ const skillNames = {
   defense: "Defense",
   agility: "Agility",
   hp: "HP",
-  discipline: "Discipline"
+  discipline: "Consistency"
 };
 const materialNames = {
   timber: "Timber",
@@ -128,12 +128,12 @@ const starterBaseQuests = [
     id: "steady-flame",
     name: "A Steady Flame",
     tier: "Apprentice",
-    type: "Discipline",
+    type: "Consistency",
     description: "Prove the forge is becoming a routine, not a one-off spark.",
     requirements: [
       { kind: "totalWorkouts", label: "Log 10 total workouts", target: 10, unit: "workouts" },
       { kind: "differentWorkoutDays", label: "Log workouts on 3 different days", target: 3, unit: "days" },
-      { kind: "skillXP", skillId: "discipline", label: "Earn 1,000 Discipline XP", target: 1000, unit: "XP" }
+      { kind: "skillXP", skillId: "discipline", label: "Earn 1,000 Consistency XP", target: 1000, unit: "XP" }
     ],
     rewards: {
       xp: { discipline: 750 },
@@ -266,7 +266,7 @@ const starterBaseQuests = [
       { kind: "skillLevel", skillId: "strength", label: "Reach level 20 Strength", target: 20, unit: "level" },
       { kind: "skillLevel", skillId: "defense", label: "Reach level 20 Defense", target: 20, unit: "level" },
       { kind: "skillLevel", skillId: "agility", label: "Reach level 20 Agility", target: 20, unit: "level" },
-      { kind: "skillLevel", skillId: "discipline", label: "Reach level 20 Discipline", target: 20, unit: "level" }
+      { kind: "skillLevel", skillId: "discipline", label: "Reach level 20 Consistency", target: 20, unit: "level" }
     ],
     rewards: {
       allSkillsXP: 1000,
@@ -679,15 +679,15 @@ const guildhallQuests = [
   },
   {
     id: "guildhall-discipline-contract",
-    name: "Guildhall Discipline Contract",
+    name: "Guildhall Consistency Contract",
     tier: "Guildhall",
     type: "Guildhall",
     repeatable: true,
-    description: "Take a repeatable Discipline contract from the Guild Hall.",
+    description: "Take a repeatable Consistency contract from the Guild Hall.",
     requirements: [
       { kind: "townshipBuildingCompleted", buildingId: "guild-hall", label: "Complete the Guild Hall", target: 1, unit: "building" },
       { kind: "differentWorkoutDays", label: "Log workouts on 5 different days", target: 5, repeatEvery: 5, unit: "days" },
-      { kind: "skillXP", skillId: "discipline", label: "Earn 2,500 Discipline XP", target: 2500, repeatEvery: 2500, unit: "XP" }
+      { kind: "skillXP", skillId: "discipline", label: "Earn 2,500 Consistency XP", target: 2500, repeatEvery: 2500, unit: "XP" }
     ],
     rewards: {
       xp: { discipline: 1500 },

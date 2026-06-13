@@ -254,7 +254,7 @@
           <div class="pet-name">${skill.petName}</div>
           <div class="pet-source">${skill.name} pet</div>
           <div class="pet-source">${skill.id === "hp" ? "Drop rate: 1 / 30,000 per rep or plank minute" : dropRateText(skill.id)}</div>
-          <div class="pet-source">${skill.id === "discipline" ? "Bonus: +10% Discipline XP" : "Bonus: +10% XP and gold"}</div>
+          <div class="pet-source">${skill.id === "discipline" ? "Bonus: +10% Consistency XP" : "Bonus: +10% XP and gold"}</div>
           <div class="pet-status">${unlocked ? "Unlocked" : "Not found yet"}</div>
         `;
         petGrid.appendChild(card);

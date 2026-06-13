@@ -66,7 +66,7 @@ const skills = [
   },
   {
     id: "discipline",
-    name: "Discipline",
+    name: "Consistency",
     method: "Completed workouts",
     rule: "50 XP per workout",
     skillImage: "Image%20Upload%20Clean%20V2/skill-discipline.png",

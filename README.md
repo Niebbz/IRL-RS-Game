@@ -8,7 +8,7 @@ Open `index.html` in a browser to test the Level Forge fitness game loop.
 - Strength: pull day, 10 XP per minute
 - Defense: leg day, 10 XP per minute
 - Agility: running, 100 XP per mile
-- Discipline: 50 XP for any completed workout
+- Consistency: 50 XP for any completed workout
 
 The level curve matches the OSRS XP formula through level 99.
 

@@ -394,7 +394,7 @@ function renderPets() {
       <div class="pet-name">${skill.petName}</div>
       <div class="pet-source">${skill.name} pet</div>
       <div class="pet-source">${dropRateText(skill.id)}</div>
-      <div class="pet-source">${skill.id === "discipline" ? "Bonus: +10% Discipline XP" : "Bonus: +10% XP and gold"}</div>
+      <div class="pet-source">${skill.id === "discipline" ? "Bonus: +10% Consistency XP" : "Bonus: +10% XP and gold"}</div>
       <div class="pet-status">${unlocked ? "Unlocked" : "Not found yet"}</div>
     `;
     petGrid.appendChild(card);
@@ -605,7 +605,7 @@ function renderLog() {
         ${dropText}
       </div>
       <div class="log-actions">
-        <div class="log-xp">+${formatNumber(entry.mainXP)} ${entry.skillName}<br>+${formatNumber(entry.disciplineXP ?? 50)} Discipline</div>
+        <div class="log-xp">+${formatNumber(entry.mainXP)} ${entry.skillName}<br>+${formatNumber(entry.disciplineXP ?? 50)} Consistency</div>
         <button class="delete-workout-button" type="button" data-log-index="${index}">Delete</button>
       </div>
     `;
