@@ -5,6 +5,13 @@
   background: transparent;
 }
 
+.month-workout-list > .workout-type-group {
+  display: block;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
 .workout-month {
   overflow: hidden;
   border: 1px solid var(--line);
@@ -12,21 +19,27 @@
   background: rgba(16, 20, 27, 0.62);
 }
 
-.workout-month summary {
+.workout-month > summary,
+.workout-type > summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 14px 16px;
   cursor: pointer;
   list-style: none;
 }
 
-.workout-month summary::-webkit-details-marker {
+.workout-month > summary {
+  padding: 14px 16px;
+}
+
+.workout-month > summary::-webkit-details-marker,
+.workout-type > summary::-webkit-details-marker {
   display: none;
 }
 
-.workout-month summary::after {
+.workout-month > summary::after,
+.workout-type > summary::after {
   content: "v";
   color: var(--accent);
   font-size: 0.82rem;
@@ -34,7 +47,8 @@
   transition: transform 0.18s ease;
 }
 
-.workout-month[open] summary::after {
+.workout-month[open] > summary::after,
+.workout-type[open] > summary::after {
   transform: rotate(180deg);
 }
 
@@ -46,6 +60,7 @@
   color: var(--muted);
   font-size: 0.82rem;
   font-weight: 850;
+  margin-left: auto;
 }
 
 .month-workout-list {
@@ -56,9 +71,45 @@
   list-style: none;
 }
 
+.workout-type {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(8, 11, 16, 0.48);
+}
+
+.workout-type > summary {
+  padding: 11px 13px;
+}
+
+.workout-type-title {
+  font-weight: 900;
+}
+
+.workout-type-count {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 850;
+  margin-left: auto;
+}
+
+.type-workout-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0 10px 10px;
+  list-style: none;
+}
+
 @media (max-width: 560px) {
-  .workout-month summary {
+  .workout-month > summary,
+  .workout-type > summary {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .workout-month-count,
+  .workout-type-count {
+    margin-left: 0;
   }
 }

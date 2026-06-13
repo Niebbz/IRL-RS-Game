@@ -68,6 +68,37 @@
     return `${count.toLocaleString()} workout${count === 1 ? "" : "s"}`;
   }
 
+  function workoutTypeLabel(entry) {
+    const label = String(entry?.title ?? entry?.skillName ?? "Workout").trim();
+    return label || "Workout";
+  }
+
+  function workoutTypeKey(entry) {
+    return workoutTypeLabel(entry).toLowerCase();
+  }
+
+  function groupEntriesByWorkoutType(entries) {
+    const typeGroups = [];
+    const groupsByType = new Map();
+
+    for (const entryWithIndex of entries) {
+      const key = workoutTypeKey(entryWithIndex.entry);
+      if (!groupsByType.has(key)) {
+        const group = {
+          key,
+          label: workoutTypeLabel(entryWithIndex.entry),
+          entries: []
+        };
+        groupsByType.set(key, group);
+        typeGroups.push(group);
+      }
+
+      groupsByType.get(key).entries.push(entryWithIndex);
+    }
+
+    return typeGroups;
+  }
+
   function materialEntries(materials) {
     return Object.entries(materials ?? {}).filter(([, amount]) => amount > 0);
   }
@@ -180,8 +211,31 @@
       const monthList = document.createElement("ol");
       monthList.className = "month-workout-list";
 
-      for (const { entry, index } of group.entries) {
-        monthList.appendChild(createWorkoutLogItem(entry, index));
+      const typeGroups = groupEntriesByWorkoutType(group.entries);
+      for (const [typeIndex, typeGroup] of typeGroups.entries()) {
+        const typeItem = document.createElement("li");
+        typeItem.className = "workout-type-group";
+
+        const typeDetails = document.createElement("details");
+        typeDetails.className = "workout-type";
+        typeDetails.open = groupIndex === 0 && typeIndex === 0;
+
+        const typeSummary = document.createElement("summary");
+        typeSummary.innerHTML = `
+          <span class="workout-type-title">${typeGroup.label}</span>
+          <span class="workout-type-count">${workoutCountText(typeGroup.entries.length)}</span>
+        `;
+
+        const typeList = document.createElement("ol");
+        typeList.className = "type-workout-list";
+
+        for (const { entry, index } of typeGroup.entries) {
+          typeList.appendChild(createWorkoutLogItem(entry, index));
+        }
+
+        typeDetails.append(typeSummary, typeList);
+        typeItem.appendChild(typeDetails);
+        monthList.appendChild(typeItem);
       }
 
       details.append(summary, monthList);
