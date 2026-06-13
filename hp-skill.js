@@ -120,14 +120,9 @@
     }
   });
 
-  if (typeof startingState !== "undefined") {
-    startingState.xp.hp = 0;
-    startingState.pets.hp = false;
-  }
   state.xp.hp = Number.isFinite(state.xp.hp) ? state.xp.hp : 0;
   if (!state.pets) state.pets = {};
   if (!("hp" in state.pets)) state.pets.hp = false;
-  if (typeof petDropRates !== "undefined") petDropRates.hp = 1 / 30000;
 
   function restorePhoenixFromWorkoutLog() {
     if (state.pets.hp || !Array.isArray(state.log)) return;
@@ -146,40 +141,8 @@
   const hpAmountLabel = document.querySelector("#amountLabel");
   const hpMileSliderRow = document.querySelector("#mileSliderRow");
   const hpAmountField = document.querySelector("#amountField") ?? hpAmountInput?.closest("div");
-
-  function ensureHPExercisePicker() {
-    let row = document.querySelector("#hpExerciseRow");
-    if (row) return row;
-
-    if (!hpWorkoutType) return null;
-
-    row = document.createElement("div");
-    row.className = "hp-exercise-row";
-    row.id = "hpExerciseRow";
-    row.hidden = true;
-    row.innerHTML = `
-      <label for="hpExercise">HP exercise</label>
-      <select id="hpExercise" name="hpExercise">
-        <option value="pushups">Push-ups</option>
-        <option value="situps">Sit-ups</option>
-        <option value="bodyweightSquats">Bodyweight squats</option>
-        <option value="pullups">Pull-ups</option>
-        <option value="plank">Plank</option>
-      </select>
-    `;
-    hpWorkoutType.insertAdjacentElement("afterend", row);
-    return row;
-  }
-
-  const hpExerciseRow = ensureHPExercisePicker();
+  const hpExerciseRow = document.querySelector("#hpExerciseRow");
   const hpExerciseSelect = document.querySelector("#hpExercise");
-
-  if (hpExerciseSelect && !hpExerciseSelect.querySelector('option[value="situps"]')) {
-    const situpsOption = document.createElement("option");
-    situpsOption.value = "situps";
-    situpsOption.textContent = "Sit-ups";
-    hpExerciseSelect.querySelector('option[value="bodyweightSquats"]')?.insertAdjacentElement("beforebegin", situpsOption);
-  }
 
   function ensureWorkoutOptions() {
     if (!hpWorkoutType) return;
@@ -225,38 +188,7 @@
     return exercise;
   }
 
-  function ensurePlankPicker() {
-    let row = document.querySelector("#plankTimeRow");
-    if (row) return row;
-
-    const numberRow = document.querySelector(".number-row");
-    if (!numberRow) return null;
-
-    row = document.createElement("div");
-    row.className = "plank-picker-row";
-    row.id = "plankTimeRow";
-    row.hidden = true;
-    row.innerHTML = `
-      <div class="range-heading">
-        <span>Plank time</span>
-        <strong id="plankTimeValue">1:00</strong>
-      </div>
-      <div class="plank-time-grid">
-        <div>
-          <label for="plankMinutes">Minutes</label>
-          <input id="plankMinutes" name="plankMinutes" type="number" min="0" step="1" value="1" inputmode="numeric">
-        </div>
-        <div>
-          <label for="plankSeconds">Seconds</label>
-          <input id="plankSeconds" name="plankSeconds" type="number" min="0" max="59" step="1" value="0" inputmode="numeric">
-        </div>
-      </div>
-    `;
-    numberRow.insertAdjacentElement("afterend", row);
-    return row;
-  }
-
-  const hpPlankTimeRow = ensurePlankPicker();
+  const hpPlankTimeRow = document.querySelector("#plankTimeRow");
   const hpPlankMinutesInput = document.querySelector("#plankMinutes");
   const hpPlankSecondsInput = document.querySelector("#plankSeconds");
   const hpPlankTimeValue = document.querySelector("#plankTimeValue");
@@ -349,11 +281,7 @@
       if (hpExerciseRow) hpExerciseRow.hidden = hpWorkoutType.value !== "hp";
       hpAmountLabel.textContent = selected.unit;
       hpAmountInput.min = selected.minAmount;
-      if (selected.maxAmount) {
-        hpAmountInput.max = selected.maxAmount;
-      } else {
-        hpAmountInput.removeAttribute("max");
-      }
+      hpAmountInput.removeAttribute("max");
       hpAmountInput.step = selected.amountStep;
       if (hpMileSliderRow) hpMileSliderRow.hidden = selected.skillId !== "agility";
       if (hpPlankTimeRow) hpPlankTimeRow.hidden = !isPlankWorkout(selected);

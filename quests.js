@@ -2,12 +2,13 @@
   const questStorageKey = "level-forge-quests-v2";
   const appStorageKeys = ["irl-rs-game-state-v2", "irl-rs-game-state-v1"];
 
-  const skillIds = ["attack", "strength", "defense", "agility", "discipline"];
+  const skillIds = ["attack", "strength", "defense", "agility", "hp", "discipline"];
   const skillNames = {
     attack: "Attack",
     strength: "Strength",
     defense: "Defense",
     agility: "Agility",
+    hp: "HP",
     discipline: "Discipline"
   };
   const materialNames = {
@@ -26,6 +27,7 @@
     strength: 0,
     defense: 0,
     agility: 0,
+    hp: 0,
     discipline: 0
   };
   const baseMaterials = {
@@ -65,10 +67,11 @@
     { id: "training", name: "Training", description: "Workout, skill, and consistency goals." },
     { id: "account", name: "Account", description: "Broad milestones across the full game." },
     { id: "dungeons", name: "Dungeons", description: "Keys, clears, chests, and dungeon rewards." },
-    { id: "township", name: "Township", description: "Forgehold building and material goals." }
+    { id: "township", name: "Township", description: "Forgehold building and material goals." },
+    { id: "guildhall", name: "Guildhall", description: "Repeatable long-term contracts unlocked through the Guild Hall." }
   ];
 
-  const quests = [
+  const starterBaseQuests = [
     {
       id: "forge-awakens",
       name: "The Forge Awakens",
@@ -297,6 +300,494 @@
     }
   ];
 
+  const additionalBaseQuests = [
+    {
+      id: "push-path-initiate",
+      name: "Push Path Initiate",
+      tier: "Novice",
+      type: "Combat",
+      description: "Start building Attack through push-day training.",
+      requirements: [
+        { kind: "skillWorkouts", skillId: "attack", label: "Log 5 push-day workouts", target: 5, unit: "workouts" },
+        { kind: "skillXP", skillId: "attack", label: "Earn 2,000 Attack XP", target: 2000, unit: "XP" }
+      ],
+      rewards: {
+        xp: { attack: 500, discipline: 150 },
+        gold: 250,
+        questPoints: 1
+      }
+    },
+    {
+      id: "pull-path-initiate",
+      name: "Pull Path Initiate",
+      tier: "Novice",
+      type: "Combat",
+      description: "Start building Strength through pull-day training.",
+      requirements: [
+        { kind: "skillWorkouts", skillId: "strength", label: "Log 5 pull-day workouts", target: 5, unit: "workouts" },
+        { kind: "skillXP", skillId: "strength", label: "Earn 2,000 Strength XP", target: 2000, unit: "XP" }
+      ],
+      rewards: {
+        xp: { strength: 500, discipline: 150 },
+        gold: 250,
+        questPoints: 1
+      }
+    },
+    {
+      id: "iron-legs",
+      name: "Iron Legs",
+      tier: "Novice",
+      type: "Combat",
+      description: "Use leg days to build a stronger defensive base.",
+      requirements: [
+        { kind: "skillWorkouts", skillId: "defense", label: "Log 5 leg-day workouts", target: 5, unit: "workouts" },
+        { kind: "skillXP", skillId: "defense", label: "Earn 2,000 Defense XP", target: 2000, unit: "XP" }
+      ],
+      rewards: {
+        xp: { defense: 500, discipline: 150 },
+        gold: 250,
+        questPoints: 1
+      }
+    },
+    {
+      id: "mile-marker",
+      name: "Mile Marker",
+      tier: "Novice",
+      type: "Agility",
+      description: "Turn short runs into a reliable Agility habit.",
+      requirements: [
+        { kind: "totalRunMiles", label: "Run 10 total miles", target: 10, unit: "miles", decimals: 1 },
+        { kind: "runAtLeast", label: "Complete 1 run of at least 2 miles", target: 2, unit: "miles", decimals: 1 }
+      ],
+      rewards: {
+        xp: { agility: 800, discipline: 150 },
+        gold: 300,
+        questPoints: 1
+      }
+    },
+    {
+      id: "first-payday",
+      name: "First Payday",
+      tier: "Apprentice",
+      type: "Account",
+      description: "Earn enough gold to feel the early economy moving.",
+      requirements: [
+        { kind: "lifetimeGold", label: "Earn 1,000 lifetime gold", target: 1000, unit: "gold" },
+        { kind: "totalWorkouts", label: "Log 15 total workouts", target: 15, unit: "workouts" }
+      ],
+      rewards: {
+        xp: { discipline: 500 },
+        gold: 500,
+        materials: { supplies: 15 },
+        questPoints: 2
+      }
+    },
+    {
+      id: "key-bearer",
+      name: "Key Bearer",
+      tier: "Apprentice",
+      type: "Dungeon",
+      description: "Handle enough keys to make dungeon runs part of the loop.",
+      requirements: [
+        { kind: "totalKeysHandled", label: "Earn, buy, find, or spend 3 dungeon keys", target: 3, unit: "keys" },
+        { kind: "dungeonStarted", label: "Start 2 dungeons", target: 2, unit: "dungeons" }
+      ],
+      rewards: {
+        xp: { discipline: 450 },
+        gold: 600,
+        keys: { bronze: 1 },
+        questPoints: 2
+      }
+    },
+    {
+      id: "chest-hauler",
+      name: "Chest Hauler",
+      tier: "Apprentice",
+      type: "Dungeon",
+      description: "Start turning dungeon chests into real township resources.",
+      requirements: [
+        { kind: "dungeonChests", label: "Open 5 dungeon chests", target: 5, unit: "chests" },
+        { kind: "dungeonMaterials", label: "Find 75 materials from dungeons", target: 75, unit: "materials" }
+      ],
+      rewards: {
+        xp: { discipline: 500 },
+        gold: 700,
+        materials: { timber: 12, stone: 12, iron: 6 },
+        questPoints: 2
+      }
+    },
+    {
+      id: "palisade-raised",
+      name: "Palisade Raised",
+      tier: "Apprentice",
+      type: "Township",
+      description: "Push Forgehold past its first building and into protection.",
+      requirements: [
+        { kind: "townshipBuildings", label: "Complete 2 township buildings", target: 2, unit: "buildings" },
+        { kind: "materialsSpent", label: "Spend 25 total materials", target: 25, unit: "materials" }
+      ],
+      rewards: {
+        xp: { discipline: 600 },
+        gold: 800,
+        materials: { supplies: 25 },
+        questPoints: 2
+      }
+    },
+    {
+      id: "stone-and-iron",
+      name: "Stone and Iron",
+      tier: "Adept",
+      type: "Township",
+      description: "Stock and spend heavier materials as Forgehold expands.",
+      requirements: [
+        { kind: "totalMaterials", label: "Collect 150 total materials", target: 150, unit: "materials" },
+        { kind: "materialsSpent", label: "Spend 100 total materials", target: 100, unit: "materials" }
+      ],
+      rewards: {
+        xp: { discipline: 800 },
+        gold: 1200,
+        materials: { stone: 20, iron: 12 },
+        questPoints: 3
+      }
+    },
+    {
+      id: "long-road",
+      name: "The Long Road",
+      tier: "Adept",
+      type: "Agility",
+      description: "Stretch Agility into longer runs and meaningful mileage.",
+      requirements: [
+        { kind: "totalRunMiles", label: "Run 25 total miles", target: 25, unit: "miles", decimals: 1 },
+        { kind: "runAtLeast", label: "Complete 1 run of at least 5 miles", target: 5, unit: "miles", decimals: 1 }
+      ],
+      rewards: {
+        xp: { agility: 2000, discipline: 300 },
+        gold: 1000,
+        questPoints: 3
+      }
+    },
+    {
+      id: "upper-body-forged",
+      name: "Upper Body Forged",
+      tier: "Adept",
+      type: "Combat",
+      description: "Build both push and pull progress into your account.",
+      requirements: [
+        { kind: "skillXP", skillId: "attack", label: "Earn 5,000 Attack XP", target: 5000, unit: "XP" },
+        { kind: "skillXP", skillId: "strength", label: "Earn 5,000 Strength XP", target: 5000, unit: "XP" }
+      ],
+      rewards: {
+        xp: { attack: 1000, strength: 1000, discipline: 300 },
+        gold: 1200,
+        questPoints: 3
+      }
+    },
+    {
+      id: "lower-body-forged",
+      name: "Lower Body Forged",
+      tier: "Adept",
+      type: "Combat",
+      description: "Anchor your account with serious leg-day progress.",
+      requirements: [
+        { kind: "skillXP", skillId: "defense", label: "Earn 5,000 Defense XP", target: 5000, unit: "XP" },
+        { kind: "skillWorkouts", skillId: "defense", label: "Log 10 leg-day workouts", target: 10, unit: "workouts" }
+      ],
+      rewards: {
+        xp: { defense: 1500, discipline: 300 },
+        gold: 1200,
+        materials: { stone: 15 },
+        questPoints: 3
+      }
+    },
+    {
+      id: "workweek-warrior",
+      name: "Workweek Warrior",
+      tier: "Adept",
+      type: "Account",
+      description: "Show up across enough days to prove consistency.",
+      requirements: [
+        { kind: "differentWorkoutDays", label: "Log workouts on 7 different days", target: 7, unit: "days" },
+        { kind: "totalWorkouts", label: "Log 35 total workouts", target: 35, unit: "workouts" }
+      ],
+      rewards: {
+        allSkillsXP: 500,
+        gold: 1500,
+        materials: { supplies: 20 },
+        questPoints: 3
+      }
+    },
+    {
+      id: "bronze-delver",
+      name: "Bronze Delver",
+      tier: "Adept",
+      type: "Dungeon",
+      description: "Clear enough dungeons to make the board feel earned.",
+      requirements: [
+        { kind: "dungeonClears", label: "Clear 10 dungeons", target: 10, unit: "clears" },
+        { kind: "dungeonChests", label: "Open 10 dungeon chests", target: 10, unit: "chests" }
+      ],
+      rewards: {
+        lowestSkillXP: 1000,
+        gold: 1800,
+        keys: { iron: 1 },
+        materials: { timber: 15, stone: 15, iron: 8 },
+        questPoints: 3
+      }
+    },
+    {
+      id: "township-foreman",
+      name: "Township Foreman",
+      tier: "Veteran",
+      type: "Township",
+      description: "Lead Forgehold through a larger wave of upgrades.",
+      requirements: [
+        { kind: "townshipBuildings", label: "Complete 8 township buildings", target: 8, unit: "buildings" },
+        { kind: "materialsSpent", label: "Spend 250 total materials", target: 250, unit: "materials" }
+      ],
+      rewards: {
+        xp: { discipline: 1600 },
+        gold: 3000,
+        materials: { timber: 30, stone: 30, iron: 18, supplies: 20 },
+        questPoints: 4
+      }
+    },
+    {
+      id: "distance-runner",
+      name: "Distance Runner",
+      tier: "Veteran",
+      type: "Agility",
+      description: "Turn running into a major part of the account.",
+      requirements: [
+        { kind: "totalRunMiles", label: "Run 50 total miles", target: 50, unit: "miles", decimals: 1 },
+        { kind: "runAtLeast", label: "Complete 1 run of at least 8 miles", target: 8, unit: "miles", decimals: 1 }
+      ],
+      rewards: {
+        xp: { agility: 4000, discipline: 750 },
+        gold: 2500,
+        keys: { iron: 1 },
+        questPoints: 4
+      }
+    },
+    {
+      id: "keymaster",
+      name: "Keymaster",
+      tier: "Veteran",
+      type: "Dungeon",
+      description: "Prove your dungeon loop has become a long-term system.",
+      requirements: [
+        { kind: "totalKeysHandled", label: "Earn, buy, find, or spend 10 dungeon keys", target: 10, unit: "keys" },
+        { kind: "dungeonClears", label: "Clear 12 dungeons", target: 12, unit: "clears" }
+      ],
+      rewards: {
+        lowestSkillXP: 1500,
+        gold: 3500,
+        keys: { rune: 1 },
+        materials: { supplies: 40 },
+        questPoints: 4
+      }
+    },
+    {
+      id: "base-game-cape",
+      name: "Base Game Cape",
+      tier: "Master",
+      type: "Account",
+      description: "Complete the base quest board and prove the whole account is forged.",
+      requirements: [
+        { kind: "questsCompleted", label: "Claim 29 base quests", target: 29, unit: "quests" },
+        { kind: "totalXP", label: "Earn 100,000 total XP", target: 100000, unit: "XP" },
+        { kind: "totalWorkouts", label: "Log 100 total workouts", target: 100, unit: "workouts" }
+      ],
+      rewards: {
+        allSkillsXP: 3000,
+        gold: 10000,
+        keys: { rune: 2 },
+        materials: { timber: 50, stone: 50, iron: 30, supplies: 50 },
+        questPoints: 8
+      }
+    }
+  ];
+
+  // Repeatable Guildhall quests use lifetime counters with rising targets after each claim.
+  const guildhallQuests = [
+    {
+      id: "guildhall-push-contract",
+      name: "Guildhall Push Contract",
+      tier: "Guildhall",
+      type: "Guildhall",
+      repeatable: true,
+      description: "Take a repeatable Attack contract from the Guild Hall.",
+      requirements: [
+        { kind: "townshipBuildingCompleted", buildingId: "guild-hall", label: "Complete the Guild Hall", target: 1, unit: "building" },
+        { kind: "skillWorkouts", skillId: "attack", label: "Log 10 push-day workouts", target: 10, repeatEvery: 10, unit: "workouts" }
+      ],
+      rewards: {
+        xp: { attack: 1000, discipline: 250 },
+        gold: 1200,
+        materials: { supplies: 10 }
+      }
+    },
+    {
+      id: "guildhall-pull-contract",
+      name: "Guildhall Pull Contract",
+      tier: "Guildhall",
+      type: "Guildhall",
+      repeatable: true,
+      description: "Take a repeatable Strength contract from the Guild Hall.",
+      requirements: [
+        { kind: "townshipBuildingCompleted", buildingId: "guild-hall", label: "Complete the Guild Hall", target: 1, unit: "building" },
+        { kind: "skillWorkouts", skillId: "strength", label: "Log 10 pull-day workouts", target: 10, repeatEvery: 10, unit: "workouts" }
+      ],
+      rewards: {
+        xp: { strength: 1000, discipline: 250 },
+        gold: 1200,
+        materials: { timber: 10 }
+      }
+    },
+    {
+      id: "guildhall-guard-contract",
+      name: "Guildhall Guard Contract",
+      tier: "Guildhall",
+      type: "Guildhall",
+      repeatable: true,
+      description: "Take a repeatable Defense contract from the Guild Hall.",
+      requirements: [
+        { kind: "townshipBuildingCompleted", buildingId: "guild-hall", label: "Complete the Guild Hall", target: 1, unit: "building" },
+        { kind: "skillWorkouts", skillId: "defense", label: "Log 10 leg-day workouts", target: 10, repeatEvery: 10, unit: "workouts" }
+      ],
+      rewards: {
+        xp: { defense: 1000, discipline: 250 },
+        gold: 1200,
+        materials: { stone: 10 }
+      }
+    },
+    {
+      id: "guildhall-road-contract",
+      name: "Guildhall Road Contract",
+      tier: "Guildhall",
+      type: "Guildhall",
+      repeatable: true,
+      description: "Take a repeatable Agility contract from the Guild Hall.",
+      requirements: [
+        { kind: "townshipBuildingCompleted", buildingId: "guild-hall", label: "Complete the Guild Hall", target: 1, unit: "building" },
+        { kind: "totalRunMiles", label: "Run 20 total miles", target: 20, repeatEvery: 20, unit: "miles", decimals: 1 }
+      ],
+      rewards: {
+        xp: { agility: 2000, discipline: 250 },
+        gold: 1400,
+        materials: { supplies: 12 }
+      }
+    },
+    {
+      id: "guildhall-discipline-contract",
+      name: "Guildhall Discipline Contract",
+      tier: "Guildhall",
+      type: "Guildhall",
+      repeatable: true,
+      description: "Take a repeatable Discipline contract from the Guild Hall.",
+      requirements: [
+        { kind: "townshipBuildingCompleted", buildingId: "guild-hall", label: "Complete the Guild Hall", target: 1, unit: "building" },
+        { kind: "differentWorkoutDays", label: "Log workouts on 5 different days", target: 5, repeatEvery: 5, unit: "days" },
+        { kind: "skillXP", skillId: "discipline", label: "Earn 2,500 Discipline XP", target: 2500, repeatEvery: 2500, unit: "XP" }
+      ],
+      rewards: {
+        xp: { discipline: 1500 },
+        gold: 1500,
+        materials: { supplies: 15 }
+      }
+    },
+    {
+      id: "guildhall-delver-contract",
+      name: "Guildhall Delver Contract",
+      tier: "Guildhall",
+      type: "Guildhall",
+      repeatable: true,
+      description: "Take a repeatable dungeon-clearing contract from the Guild Hall.",
+      requirements: [
+        { kind: "townshipBuildingCompleted", buildingId: "guild-hall", label: "Complete the Guild Hall", target: 1, unit: "building" },
+        { kind: "dungeonClears", label: "Clear 5 dungeons", target: 5, repeatEvery: 5, unit: "clears" }
+      ],
+      rewards: {
+        lowestSkillXP: 1000,
+        gold: 2000,
+        keys: { bronze: 1 },
+        materials: { timber: 8, stone: 8, iron: 4 }
+      }
+    },
+    {
+      id: "guildhall-chest-contract",
+      name: "Guildhall Chest Contract",
+      tier: "Guildhall",
+      type: "Guildhall",
+      repeatable: true,
+      description: "Take a repeatable material-recovery contract from the Guild Hall.",
+      requirements: [
+        { kind: "townshipBuildingCompleted", buildingId: "guild-hall", label: "Complete the Guild Hall", target: 1, unit: "building" },
+        { kind: "dungeonMaterials", label: "Find 100 materials from dungeons", target: 100, repeatEvery: 100, unit: "materials" }
+      ],
+      rewards: {
+        xp: { discipline: 800 },
+        gold: 1800,
+        materials: { timber: 15, stone: 15, iron: 8, supplies: 10 }
+      }
+    },
+    {
+      id: "guildhall-builder-contract",
+      name: "Guildhall Builder Contract",
+      tier: "Guildhall",
+      type: "Guildhall",
+      repeatable: true,
+      description: "Take a repeatable township-building contract from the Guild Hall.",
+      requirements: [
+        { kind: "townshipBuildingCompleted", buildingId: "guild-hall", label: "Complete the Guild Hall", target: 1, unit: "building" },
+        { kind: "townshipProjectsStarted", label: "Start 3 township projects", target: 3, repeatEvery: 3, unit: "projects" }
+      ],
+      rewards: {
+        xp: { discipline: 1000 },
+        gold: 2200,
+        materials: { timber: 20, stone: 16, supplies: 12 }
+      }
+    },
+    {
+      id: "guildhall-supplier-contract",
+      name: "Guildhall Supplier Contract",
+      tier: "Guildhall",
+      type: "Guildhall",
+      repeatable: true,
+      description: "Take a repeatable storehouse contract from the Guild Hall.",
+      requirements: [
+        { kind: "townshipBuildingCompleted", buildingId: "guild-hall", label: "Complete the Guild Hall", target: 1, unit: "building" },
+        { kind: "totalMaterials", label: "Collect 150 total materials", target: 150, repeatEvery: 150, unit: "materials" }
+      ],
+      rewards: {
+        xp: { discipline: 800 },
+        gold: 1800,
+        materials: { timber: 12, stone: 12, iron: 8, supplies: 18 }
+      }
+    },
+    {
+      id: "guildhall-gold-contract",
+      name: "Guildhall Gold Contract",
+      tier: "Guildhall",
+      type: "Guildhall",
+      repeatable: true,
+      description: "Take a repeatable economy contract from the Guild Hall.",
+      requirements: [
+        { kind: "townshipBuildingCompleted", buildingId: "guild-hall", label: "Complete the Guild Hall", target: 1, unit: "building" },
+        { kind: "lifetimeGold", label: "Earn 5,000 lifetime gold", target: 5000, repeatEvery: 5000, unit: "gold" }
+      ],
+      rewards: {
+        lowestSkillXP: 750,
+        gold: 2500,
+        keys: { iron: 1 },
+        materials: { supplies: 20 }
+      }
+    }
+  ];
+
+  const baseQuests = [...starterBaseQuests, ...additionalBaseQuests];
+  const quests = [...baseQuests, ...guildhallQuests];
+  const baseQuestIds = new Set(baseQuests.map((quest) => quest.id));
+
   let questState = loadQuestState();
 
   function loadQuestState() {
@@ -304,6 +795,7 @@
       const saved = JSON.parse(localStorage.getItem(questStorageKey));
       const completed = {};
       const titles = {};
+      const repeatable = {};
 
       if (Array.isArray(saved?.completedQuestIds)) {
         for (const questId of saved.completedQuestIds) completed[questId] = { completedAt: null };
@@ -321,9 +813,19 @@
         for (const [title, record] of Object.entries(saved.titles)) titles[title] = record;
       }
 
-      return { completed, titles };
+      if (saved?.repeatable && typeof saved.repeatable === "object") {
+        for (const [questId, record] of Object.entries(saved.repeatable)) {
+          const completions = Math.max(0, Number(record?.completions) || 0);
+          repeatable[questId] = {
+            completions,
+            lastCompletedAt: record?.lastCompletedAt ?? null
+          };
+        }
+      }
+
+      return { completed, titles, repeatable };
     } catch {
-      return { completed: {}, titles: {} };
+      return { completed: {}, titles: {}, repeatable: {} };
     }
   }
 
@@ -332,7 +834,7 @@
   }
 
   window.resetLevelForgeQuests = function () {
-    questState = { completed: {}, titles: {} };
+    questState = { completed: {}, titles: {}, repeatable: {} };
     saveQuestState();
   };
 
@@ -561,9 +1063,35 @@
     return Math.max(Object.keys(current.township.completedBuildings ?? {}).length, current.township.history.length);
   }
 
+  function townshipBuildingCompleted(current, buildingId) {
+    const completed = Boolean(current.township.completedBuildings?.[buildingId])
+      || current.township.history.some((entry) => entry.buildingId === buildingId);
+
+    return completed ? 1 : 0;
+  }
+
+  function repeatableRecord(questId) {
+    questState.repeatable ||= {};
+    questState.repeatable[questId] ||= { completions: 0, lastCompletedAt: null };
+    return questState.repeatable[questId];
+  }
+
+  function repeatableCompletionCount(questId) {
+    return Math.max(0, Number(repeatableRecord(questId).completions) || 0);
+  }
+
+  function scaledRequirement(requirement, quest) {
+    if (!quest.repeatable || !Number.isFinite(requirement.repeatEvery)) return requirement;
+
+    return {
+      ...requirement,
+      target: requirement.target + requirement.repeatEvery * repeatableCompletionCount(quest.id)
+    };
+  }
+
   function questsCompleted(excludeQuestId = null) {
     return Object.keys(questState.completed)
-      .filter((questId) => questId !== excludeQuestId)
+      .filter((questId) => questId !== excludeQuestId && baseQuestIds.has(questId))
       .length;
   }
 
@@ -585,6 +1113,7 @@
     if (requirement.kind === "materialsSpent") return spentMaterials(current);
     if (requirement.kind === "townshipProjectsStarted") return townshipProjectsStarted(current);
     if (requirement.kind === "townshipBuildings") return townshipBuildingsCompleted(current);
+    if (requirement.kind === "townshipBuildingCompleted") return townshipBuildingCompleted(current, requirement.buildingId);
     if (requirement.kind === "townshipHistory") return current.township.history.length;
     if (requirement.kind === "skillLevel") return levelForSkill(requirement.skillId, current);
     if (requirement.kind === "questsCompleted") return questsCompleted(questId);
@@ -594,12 +1123,13 @@
 
   function evaluateQuest(quest, current) {
     const requirements = quest.requirements.map((requirement) => {
-      const progress = requirementProgress(requirement, current, quest.id);
+      const activeRequirement = scaledRequirement(requirement, quest);
+      const progress = requirementProgress(activeRequirement, current, quest.id);
 
       return {
-        ...requirement,
+        ...activeRequirement,
         progress,
-        complete: progress >= requirement.target
+        complete: progress >= activeRequirement.target
       };
     });
 
@@ -684,6 +1214,16 @@
   }
 
   function questStatusText(quest, isCompleted, isReady, isUnlocked) {
+    if (quest.repeatable) {
+      const completions = repeatableCompletionCount(quest.id);
+      const completionText = completions
+        ? ` | Completed ${numberText(completions)} ${completions === 1 ? "time" : "times"}`
+        : "";
+
+      if (!isUnlocked) return "Locked";
+      return isReady ? `Ready to claim${completionText}` : `Repeatable${completionText}`;
+    }
+
     if (isCompleted) {
       const completedAt = formatQuestDate(questState.completed[quest.id]?.completedAt);
       return completedAt ? `Completed ${completedAt}` : "Completed";
@@ -693,7 +1233,12 @@
     return isReady ? "Ready to claim" : "Available";
   }
 
-  function questButtonText(isCompleted, isReady, isUnlocked) {
+  function questButtonText(quest, isCompleted, isReady, isUnlocked) {
+    if (quest.repeatable) {
+      if (!isUnlocked) return "Locked";
+      return isReady ? "Claim Reward" : "Repeatable";
+    }
+
     if (isCompleted) return "Completed";
     if (!isUnlocked) return "Locked";
     if (isReady) return "Claim Reward";
@@ -705,6 +1250,7 @@
     if (quest.type === "Dungeon") return "dungeons";
     if (quest.type === "Township") return "township";
     if (quest.type === "Account") return "account";
+    if (quest.type === "Guildhall") return "guildhall";
     return "training";
   }
 
@@ -747,10 +1293,14 @@
   }
 
   function syncQuestReset(current) {
-    if (Object.keys(questState.completed).length === 0 && Object.keys(questState.titles).length === 0) return;
+    if (
+      Object.keys(questState.completed).length === 0
+      && Object.keys(questState.titles).length === 0
+      && Object.keys(questState.repeatable ?? {}).length === 0
+    ) return;
     if (!appLooksFresh(current)) return;
 
-    questState = { completed: {}, titles: {} };
+    questState = { completed: {}, titles: {}, repeatable: {} };
     saveQuestState();
   }
 
@@ -762,8 +1312,8 @@
           <strong>${numberText(questPoints())}</strong>
         </div>
         <div>
-          <span>Completed</span>
-          <strong>${numberText(questsCompleted())} / ${numberText(quests.length)}</strong>
+          <span>Base Quests</span>
+          <strong>${numberText(questsCompleted())} / ${numberText(baseQuests.length)}</strong>
         </div>
         <div>
           <span>Total XP</span>
@@ -775,10 +1325,11 @@
 
   function renderQuestCard(quest, current) {
     const evaluation = evaluateQuest(quest, current);
-    const isCompleted = Boolean(questState.completed[quest.id]);
+    const isCompleted = !quest.repeatable && Boolean(questState.completed[quest.id]);
     const isUnlocked = questIsUnlocked(quest);
     const isReady = isUnlocked && evaluation.complete && !isCompleted;
     const card = document.createElement("article");
+    const tierLabel = quest.repeatable ? "Repeatable" : quest.tier;
 
     card.className = `quest-card${isCompleted ? " completed" : ""}${isReady ? " ready" : ""}${!isUnlocked ? " locked" : ""}`;
     card.innerHTML = `
@@ -789,7 +1340,7 @@
         </div>
         <div class="quest-tags" aria-label="Quest tags">
           <span class="quest-tag">${quest.type}</span>
-          <span class="quest-tier-tag">${quest.tier}</span>
+          <span class="quest-tier-tag">${tierLabel}</span>
         </div>
       </div>
       <div class="quest-block">
@@ -810,7 +1361,7 @@
             type="button"
             data-claim-quest="${quest.id}"
             ${isReady ? "" : "disabled"}
-          >${questButtonText(isCompleted, isReady, isUnlocked)}</button>
+          >${questButtonText(quest, isCompleted, isReady, isUnlocked)}</button>
         </div>
       </div>
       ${renderRewardPanel(quest)}
@@ -820,7 +1371,7 @@
   }
 
   function completedQuestList() {
-    return quests
+    return baseQuests
       .filter((quest) => questState.completed[quest.id])
       .sort((left, right) => {
         const leftDate = new Date(questState.completed[left.id]?.completedAt ?? 0).getTime();
@@ -874,7 +1425,7 @@
             <strong>Completed Quests</strong>
             <small>Quests leave their category once claimed.</small>
           </span>
-          <em>${numberText(completed.length)} / ${numberText(quests.length)}</em>
+          <em>${numberText(completed.length)} / ${numberText(baseQuests.length)}</em>
         </summary>
         <div class="completed-quest-grid"></div>
       </details>
@@ -925,7 +1476,7 @@
     syncQuestReset(current);
     questGrid.innerHTML = renderQuestSummary(current);
 
-    const activeQuests = quests.filter((quest) => !questState.completed[quest.id]);
+    const activeQuests = quests.filter((quest) => quest.repeatable || !questState.completed[quest.id]);
     let renderedCategoryCount = 0;
     for (const category of questCategories) {
       const categoryQuests = activeQuests.filter((quest) => questCategoryId(quest) === category.id);
@@ -992,18 +1543,27 @@
 
   function claimQuest(questId) {
     const quest = quests.find((item) => item.id === questId);
-    if (!quest || questState.completed[quest.id] || !questIsUnlocked(quest)) return;
+    if (!quest || (!quest.repeatable && questState.completed[quest.id]) || !questIsUnlocked(quest)) return;
 
     const current = currentAppState();
     const evaluation = evaluateQuest(quest, current);
     if (!evaluation.complete) return;
 
     const appliedRewards = applyRewards(current, quest);
-    questState.completed[quest.id] = {
-      completedAt: new Date().toISOString(),
-      questPoints: quest.rewards.questPoints ?? 0,
-      rewards: appliedRewards
-    };
+    const completedAt = new Date().toISOString();
+
+    if (quest.repeatable) {
+      const record = repeatableRecord(quest.id);
+      record.completions = repeatableCompletionCount(quest.id) + 1;
+      record.lastCompletedAt = completedAt;
+      record.lastRewards = appliedRewards;
+    } else {
+      questState.completed[quest.id] = {
+        completedAt,
+        questPoints: quest.rewards.questPoints ?? 0,
+        rewards: appliedRewards
+      };
+    }
 
     saveQuestState();
     persistAppState(current);

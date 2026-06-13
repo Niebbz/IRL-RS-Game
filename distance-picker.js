@@ -10,8 +10,6 @@
   const wheels = Array.from(document.querySelectorAll("[data-distance-control]"));
 
   if (!amountInput || !workoutType || !row || !wholeInput || !tenthInput || wheels.length === 0) return;
-  // The main app still owns XP math; this helper only removes the old UI cap for runs.
-  if (typeof workoutMap !== "undefined" && workoutMap.run) delete workoutMap.run.maxAmount;
 
   function numberFrom(value, fallback) {
     if (value === "" || value === null || value === undefined) return fallback;

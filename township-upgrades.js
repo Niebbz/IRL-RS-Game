@@ -13,7 +13,7 @@
     ["stables", "Stables", "Agility dungeon chests gain a small route supply bundle."],
     ["marketplace", "Marketplace", "Improves the shop discount to 10% and material sellback to 35%."],
     ["stone-walls", "Stone Walls", "Refunds 5% of the gold and materials spent funding later buildings."],
-    ["guild-hall", "Guild Hall", "Unlocks a foundation for advanced questlines without repeatable quests yet."],
+    ["guild-hall", "Guild Hall", "Unlocks 10 repeatable Guildhall quests for long-term contracts."],
     ["cartographers-lodge", "Cartographer's Lodge", "Unlocks map dungeons with gold, material, and key rewards."]
   ];
 
@@ -439,7 +439,9 @@
       skillId: dungeon.skillId,
       gold: dungeon.gold,
       mats: matsText(dungeon.materials),
+      materialRewards: { ...dungeon.materials },
       keys: keyText,
+      keyRewards: { ...keys },
       at: new Date().toISOString()
     };
     u.mapDungeons.clears[dungeon.id] = (u.mapDungeons.clears[dungeon.id] || 0) + 1;
@@ -471,8 +473,63 @@
     return result;
   }
 
-  function reverseMap(entry) {
-    if (!entry?.mapDungeonContribution || entry.mapDungeonCompleted) return;
+  function keyRewardsFromMapRecord(record) {
+    if (record?.keyRewards && typeof record.keyRewards === "object") return record.keyRewards;
+
+    const keyText = String(record?.keys ?? "");
+    const rewards = {};
+    for (const [tier, name] of Object.entries(keyNames2)) {
+      const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const match = keyText.match(new RegExp(`(\\d+)\\s+${escapedName}`, "i"));
+      if (match) rewards[tier] = Number(match[1]) || 0;
+    }
+
+    return rewards;
+  }
+
+  function subtractMapRewards(record) {
+    const dungeon = mapById(record?.id);
+    const materialRewards = record?.materialRewards && typeof record.materialRewards === "object"
+      ? record.materialRewards
+      : dungeon?.materials ?? {};
+    const keyRewards = keyRewardsFromMapRecord(record);
+
+    state.gold = Math.max(0, (state.gold || 0) - (record?.gold || dungeon?.gold || 0));
+    for (const [id, amount] of Object.entries(materialRewards)) {
+      state.township.materials[id] = Math.max(0, (state.township.materials[id] || 0) - (amount || 0));
+    }
+    for (const [tier, amount] of Object.entries(keyRewards)) {
+      state.keys[tier] = Math.max(0, (state.keys[tier] || 0) - (amount || 0));
+    }
+  }
+
+  function reverseMap(entry, index) {
+    if (!entry?.mapDungeonContribution) return;
+    const u = upgrades();
+    const completed = entry.mapDungeonCompleted;
+
+    if (completed) {
+      subtractMapRewards(completed);
+      if (completed.id && u.mapDungeons.clears[completed.id]) {
+        u.mapDungeons.clears[completed.id] = Math.max(0, u.mapDungeons.clears[completed.id] - 1);
+        if (u.mapDungeons.clears[completed.id] === 0) delete u.mapDungeons.clears[completed.id];
+      }
+      u.mapDungeons.history = u.mapDungeons.history.filter((record) => (
+        record.id !== completed.id || record.at !== completed.at
+      ));
+
+      const dungeon = mapById(completed.id);
+      if (index === 0 && dungeon && !u.mapDungeons.active) {
+        u.mapDungeons.active = {
+          id: dungeon.id,
+          progress: Math.max(0, dungeon.requirement - (entry.mapDungeonContribution.amount || 0)),
+          at: entry.createdAt ?? new Date().toISOString()
+        };
+      }
+      saveState();
+      return;
+    }
+
     const active = activeMap();
     if (!active || active.id !== entry.mapDungeonContribution.dungeonId) return;
     active.progress = Math.max(0, (active.progress || 0) - (entry.mapDungeonContribution.amount || 0));
@@ -507,7 +564,7 @@
     if (typeof deleteWorkout === "function" && !deleteWorkout.__townshipUpgrades) {
       const base = deleteWorkout;
       deleteWorkout = function (index) {
-        reverseMap(state.log?.[index]);
+        reverseMap(state.log?.[index], index);
         base(index);
       };
       deleteWorkout.__townshipUpgrades = true;

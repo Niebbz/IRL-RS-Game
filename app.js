@@ -117,7 +117,6 @@ const workoutMap = {
     xpPerUnit: 100,
     goldPerUnit: 10,
     minAmount: 0.1,
-    maxAmount: 26.2,
     amountStep: 0.1,
     defaultAmount: 3
   }
@@ -496,10 +495,6 @@ function dropRateText(skillId) {
   return `Drop rate: 1 / ${formatDropRate(skillId)} per ${dropRateUnit(skillId)}`;
 }
 
-function unitForSkill(skillId) {
-  return skillId === "agility" ? "mile" : "minute";
-}
-
 function unitForSkillPlural(skillId) {
   return skillId === "agility" ? "miles" : "minutes";
 }
@@ -536,9 +531,7 @@ function normalizeAmount(selected, value) {
   const minimum = selected.minAmount ?? 1;
   if (!Number.isFinite(parsed) || parsed < minimum) return selected.defaultAmount;
 
-  const maximum = selected.maxAmount ?? Number.POSITIVE_INFINITY;
-  const clamped = Math.min(parsed, maximum);
-  return selected.amountStep === 0.1 ? Math.round(clamped * 10) / 10 : Math.round(clamped);
+  return selected.amountStep === 0.1 ? Math.round(parsed * 10) / 10 : Math.round(parsed);
 }
 
 function splitMiles(amount) {
@@ -582,10 +575,6 @@ function isDungeonUnlocked(dungeon) {
 
   const previous = previousDungeon(dungeon);
   return previous ? clearCount(previous.id) > 0 : false;
-}
-
-function keyItemForTier(tier) {
-  return keyShopItems.find((item) => item.id === tier);
 }
 
 function rollPet(skillId, rollCount = 1) {
@@ -793,11 +782,7 @@ function updateWorkoutFields() {
   const selected = workoutMap[workoutType.value];
   amountLabel.textContent = selected.unit;
   amountInput.min = selected.minAmount;
-  if (selected.maxAmount) {
-    amountInput.max = selected.maxAmount;
-  } else {
-    amountInput.removeAttribute("max");
-  }
+  amountInput.removeAttribute("max");
   amountInput.step = selected.amountStep;
   mileSliderRow.hidden = selected.skillId !== "agility";
   amountInput.value = selected.defaultAmount;
