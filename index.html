@@ -71,6 +71,24 @@
             </div>
           </div>
           <div class="skill-grid" id="skillGrid"></div>
+          <section class="account-tools" aria-labelledby="accountToolsTitle">
+            <div class="section-heading compact-heading">
+              <div>
+                <p class="eyebrow">Backup</p>
+                <h2 id="accountToolsTitle">Account Tools</h2>
+              </div>
+            </div>
+            <div class="account-action-grid">
+              <button class="secondary-button account-tool-button" id="exportSaveButton" type="button">
+                Export Save
+              </button>
+              <label class="secondary-button account-tool-button import-save-label" for="importSaveInput">
+                Import Save
+              </label>
+              <input id="importSaveInput" type="file" accept="application/json,.json" hidden>
+            </div>
+            <p class="save-backup-status" id="saveBackupStatus" aria-live="polite"></p>
+          </section>
           <div class="reset-action-row">
             <button class="danger-button reset-progress-button" id="resetButton" type="button">
               Reset All Progress
@@ -415,5 +433,6 @@
     <script src="shop.js?v=7"></script>
     <script src="quest-data.js?v=1"></script>
     <script src="quests.js?v=11"></script>
+    <script src="save-tools.js?v=1"></script>
   </body>
 </html>

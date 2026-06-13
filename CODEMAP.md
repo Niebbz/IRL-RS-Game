@@ -19,6 +19,7 @@ This is the live GitHub Pages web app.
 - `township-upgrades.js` and `township-upgrades.css` handle township buffs and map dungeons.
 - `quest-data.js` contains quest definitions.
 - `quests.js` evaluates quest progress, gives rewards, handles repeatables, and renders the quest board.
+- `save-tools.js` exports and imports browser save backups.
 - `dungeon-dropdowns.js` and `dungeon-rewards-panel.js` make the dungeon UI easier to scan.
 
 ## Load Order
@@ -28,5 +29,6 @@ This is the live GitHub Pages web app.
 3. `app.js` creates the main state, render functions, and workout logic.
 4. Feature scripts load after `app.js` and safely extend the main app.
 5. `quest-data.js` loads before `quests.js`.
+6. `save-tools.js` loads after quest data so exported backups include quest progress.
 
 Keep IDs stable when possible because saved progress, quests, pets, dungeons, township buildings, and shop purchases reference IDs in browser storage.
