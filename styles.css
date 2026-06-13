@@ -142,20 +142,27 @@ body[data-background="golden-city"]::before {
 }
 
 body[data-background="golden-city"]::after {
-  opacity: 0.44;
+  opacity: 0.72;
+  mix-blend-mode: screen;
   background:
     radial-gradient(ellipse at 72% 18%, rgba(255, 222, 118, 0.52), transparent 32%),
     radial-gradient(circle at 30% 72%, rgba(255, 167, 66, 0.18), transparent 24%),
     radial-gradient(circle at 58% 44%, rgba(255, 241, 168, 0.12), transparent 26%),
-    radial-gradient(circle, rgba(255, 232, 150, 0.42) 0 1px, transparent 3px),
-    radial-gradient(circle, rgba(255, 199, 91, 0.3) 0 1px, transparent 3px),
-    radial-gradient(circle, rgba(255, 240, 188, 0.36) 0 1px, transparent 3px),
-    radial-gradient(circle, rgba(255, 213, 118, 0.26) 0 1.5px, transparent 4px),
-    radial-gradient(circle, rgba(255, 226, 147, 0.32) 0 1px, transparent 3px),
-    radial-gradient(circle, rgba(255, 211, 103, 0.24) 0 1.5px, transparent 4px),
-    radial-gradient(circle, rgba(255, 244, 200, 0.28) 0 1px, transparent 3px);
-  background-position: 0 0, 0 0, 0 0, 21% 44%, 37% 58%, 63% 35%, 78% 67%, 52% 72%, 69% 48%, 86% 39%;
-  background-size: auto, auto, auto, 90px 90px, 100px 100px, 84px 84px, 110px 110px, 96px 96px, 112px 112px, 78px 78px;
+    radial-gradient(circle at 24% 22%, rgba(255, 244, 190, 0.72) 0 1.7px, transparent 4.5px),
+    radial-gradient(circle at 31% 18%, rgba(255, 209, 107, 0.58) 0 1.8px, transparent 4.5px),
+    radial-gradient(circle at 37% 28%, rgba(255, 232, 150, 0.68) 0 1.4px, transparent 4px),
+    radial-gradient(circle at 43% 16%, rgba(255, 199, 91, 0.54) 0 1.8px, transparent 4.5px),
+    radial-gradient(circle at 49% 24%, rgba(255, 240, 188, 0.7) 0 1.4px, transparent 4px),
+    radial-gradient(circle at 56% 14%, rgba(255, 213, 118, 0.55) 0 1.8px, transparent 4.5px),
+    radial-gradient(circle at 62% 27%, rgba(255, 226, 147, 0.66) 0 1.4px, transparent 4px),
+    radial-gradient(circle at 68% 18%, rgba(255, 211, 103, 0.52) 0 1.8px, transparent 4.5px),
+    radial-gradient(circle at 75% 29%, rgba(255, 244, 200, 0.68) 0 1.4px, transparent 4px),
+    radial-gradient(circle at 82% 20%, rgba(255, 222, 126, 0.56) 0 1.8px, transparent 4.5px),
+    radial-gradient(circle at 18% 42%, rgba(255, 236, 172, 0.58) 0 1.4px, transparent 4px),
+    radial-gradient(circle at 33% 48%, rgba(255, 202, 93, 0.5) 0 1.8px, transparent 4.5px),
+    radial-gradient(circle at 52% 39%, rgba(255, 246, 202, 0.6) 0 1.4px, transparent 4px),
+    radial-gradient(circle at 71% 45%, rgba(255, 220, 132, 0.52) 0 1.8px, transparent 4.5px),
+    radial-gradient(circle at 86% 36%, rgba(255, 242, 190, 0.58) 0 1.4px, transparent 4px);
   background-repeat: no-repeat;
   animation: cityDustLoop 10s ease-in-out infinite;
 }
@@ -1350,17 +1357,15 @@ inventory-grid,
 @keyframes cityDustLoop {
   0%,
   100% {
-    opacity: 0.34;
+    opacity: 0.58;
     filter: brightness(1);
-    background-position: 0 0, 0 0, 0 0, 21% 44%, 37% 58%, 63% 35%, 78% 67%, 52% 72%, 69% 48%, 86% 39%;
     transform: translate3d(0, 0, 0);
   }
 
   50% {
-    opacity: 0.5;
-    filter: brightness(1.14);
-    background-position: 0 0, 0 0, 0 0, 22% 41%, 38% 55%, 62% 32%, 79% 64%, 53% 69%, 70% 45%, 85% 36%;
-    transform: translate3d(2px, -8px, 0);
+    opacity: 0.9;
+    filter: brightness(1.28);
+    transform: translate3d(4px, -10px, 0);
   }
 }
 
@@ -1645,20 +1650,27 @@ inventory-grid,
   }
 
   body[data-background="golden-city"]::after {
-    opacity: 0.56;
+    opacity: 0.72;
+    mix-blend-mode: screen;
     background:
-      radial-gradient(circle at 16% 24%, rgba(255, 248, 184, 0.9) 0 2px, transparent 5px),
-      radial-gradient(circle at 46% 34%, rgba(255, 246, 174, 0.82) 0 1.5px, transparent 5px),
-      radial-gradient(circle at 82% 21%, rgba(255, 248, 184, 0.86) 0 1.5px, transparent 5px),
-      radial-gradient(circle, rgba(255, 232, 150, 0.42) 0 1px, transparent 3px),
-      radial-gradient(circle, rgba(255, 199, 91, 0.3) 0 1px, transparent 3px),
-      radial-gradient(circle, rgba(255, 240, 188, 0.36) 0 1px, transparent 3px),
-      radial-gradient(circle, rgba(255, 213, 118, 0.26) 0 1.5px, transparent 4px),
-      radial-gradient(circle, rgba(255, 226, 147, 0.32) 0 1px, transparent 3px),
-      radial-gradient(circle, rgba(255, 211, 103, 0.24) 0 1.5px, transparent 4px),
-      radial-gradient(circle, rgba(255, 244, 200, 0.28) 0 1px, transparent 3px);
-    background-position: 0 0, 0 0, 0 0, 21% 44%, 37% 58%, 63% 35%, 78% 67%, 52% 72%, 69% 48%, 86% 39%;
-    background-size: auto, auto, auto, 90px 90px, 100px 100px, 84px 84px, 110px 110px, 96px 96px, 112px 112px, 78px 78px;
+      radial-gradient(ellipse at 72% 18%, rgba(255, 222, 118, 0.52), transparent 32%),
+      radial-gradient(circle at 30% 72%, rgba(255, 167, 66, 0.18), transparent 24%),
+      radial-gradient(circle at 58% 44%, rgba(255, 241, 168, 0.12), transparent 26%),
+      radial-gradient(circle at 24% 22%, rgba(255, 244, 190, 0.72) 0 1.7px, transparent 4.5px),
+      radial-gradient(circle at 31% 18%, rgba(255, 209, 107, 0.58) 0 1.8px, transparent 4.5px),
+      radial-gradient(circle at 37% 28%, rgba(255, 232, 150, 0.68) 0 1.4px, transparent 4px),
+      radial-gradient(circle at 43% 16%, rgba(255, 199, 91, 0.54) 0 1.8px, transparent 4.5px),
+      radial-gradient(circle at 49% 24%, rgba(255, 240, 188, 0.7) 0 1.4px, transparent 4px),
+      radial-gradient(circle at 56% 14%, rgba(255, 213, 118, 0.55) 0 1.8px, transparent 4.5px),
+      radial-gradient(circle at 62% 27%, rgba(255, 226, 147, 0.66) 0 1.4px, transparent 4px),
+      radial-gradient(circle at 68% 18%, rgba(255, 211, 103, 0.52) 0 1.8px, transparent 4.5px),
+      radial-gradient(circle at 75% 29%, rgba(255, 244, 200, 0.68) 0 1.4px, transparent 4px),
+      radial-gradient(circle at 82% 20%, rgba(255, 222, 126, 0.56) 0 1.8px, transparent 4.5px),
+      radial-gradient(circle at 18% 42%, rgba(255, 236, 172, 0.58) 0 1.4px, transparent 4px),
+      radial-gradient(circle at 33% 48%, rgba(255, 202, 93, 0.5) 0 1.8px, transparent 4.5px),
+      radial-gradient(circle at 52% 39%, rgba(255, 246, 202, 0.6) 0 1.4px, transparent 4px),
+      radial-gradient(circle at 71% 45%, rgba(255, 220, 132, 0.52) 0 1.8px, transparent 4.5px),
+      radial-gradient(circle at 86% 36%, rgba(255, 242, 190, 0.58) 0 1.4px, transparent 4px);
     background-repeat: no-repeat;
     animation: cityDustLoop 10s ease-in-out infinite;
   }
