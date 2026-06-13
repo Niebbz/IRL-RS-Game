@@ -7,6 +7,7 @@ Use this before pushing large changes to `main`.
 - The page opens without a blank screen.
 - The hamburger menu opens, closes, and switches tabs.
 - Total level and gold render in the header.
+- The footer shows the current app version.
 - Mobile layout is readable on a phone-width screen.
 
 ## Workout Logging
@@ -54,3 +55,9 @@ Use this before pushing large changes to `main`.
 - Import Save restores a valid backup.
 - Reset All Progress shows a warning first.
 - Reset All Progress clears XP, pets, gold, keys, quests, shop purchases, backgrounds, township progress, and history.
+
+## Offline Safety
+
+- The service worker file loads without syntax errors.
+- The service worker cache list only references files that exist.
+- After the site loads once, the home-screen app can reopen when the phone is briefly offline.

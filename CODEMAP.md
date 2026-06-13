@@ -7,6 +7,9 @@ This is the live GitHub Pages web app.
 - `index.html` defines the page tabs and script loading order.
 - `game-data.js` contains the stable game data used by the main app: skills, workouts, dungeon tiers, pet rates, starting state, and storage key.
 - `app.js` contains the main runtime: saved-state migration, rendering, workout logging, dungeon progress, deletes, reset, and navigation.
+- `app-version.js` displays the current app version.
+- `offline.js` registers the service worker for offline support.
+- `service-worker.js` caches app files for the iPhone home-screen version.
 - `styles.css` contains the shared app layout, cards, backgrounds, animations, and responsive styling.
 
 ## Feature Files
@@ -30,5 +33,8 @@ This is the live GitHub Pages web app.
 4. Feature scripts load after `app.js` and safely extend the main app.
 5. `quest-data.js` loads before `quests.js`.
 6. `save-tools.js` loads after quest data so exported backups include quest progress.
+7. `offline.js` loads last so the service worker sees the latest script and style versions.
 
 Keep IDs stable when possible because saved progress, quests, pets, dungeons, township buildings, and shop purchases reference IDs in browser storage.
+
+When changing cached files, update `levelForgeVersion` in `app-version.js`, the cache name in `service-worker.js`, and the affected query strings in `index.html`.

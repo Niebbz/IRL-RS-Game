@@ -3,8 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#090b0f">
     <title>Level Forge</title>
-    <link rel="stylesheet" href="styles.css?v=16">
+    <link rel="stylesheet" href="styles.css?v=17">
     <link rel="stylesheet" href="distance-picker.css">
     <link rel="stylesheet" href="workout-history-groups.css?v=6">
     <link rel="stylesheet" href="dungeon-rewards-panel.css?v=1">
@@ -418,6 +419,10 @@
           <ol class="workout-log" id="workoutLog"></ol>
         </section>
       </main>
+
+      <footer class="app-footer" aria-label="App version">
+        <span id="appVersionLabel">Level Forge</span>
+      </footer>
     </div>
 
     <!-- Data tables load first; runtime scripts below attach behavior to the page. -->
@@ -434,5 +439,7 @@
     <script src="quest-data.js?v=1"></script>
     <script src="quests.js?v=11"></script>
     <script src="save-tools.js?v=1"></script>
+    <script src="app-version.js?v=1"></script>
+    <script src="offline.js?v=1"></script>
   </body>
 </html>

@@ -26,7 +26,8 @@
 
 1. Create a branch for bigger work.
 2. Make the change.
-3. Run the checklist in `TEST_CHECKLIST.md`.
-4. Commit the change.
-5. Push to GitHub.
-6. Confirm GitHub Pages passes.
+3. Bump the version when cached files change.
+4. Run the checklist in `TEST_CHECKLIST.md`.
+5. Commit the change.
+6. Push to GitHub.
+7. Confirm GitHub Pages passes.
